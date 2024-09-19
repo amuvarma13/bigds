@@ -17,7 +17,7 @@ def remove_consecutive_duplicates(tokens):
     return [k for k, _ in groupby(tokens)]
 
 def process_batch(examples):
-    examples['audio_tokens'] = [remove_consecutive_duplicates(tokens) for tokens in examples['facodec_1']]
+    # examples['audio_tokens'] = [remove_consecutive_duplicates(tokens) for tokens in examples['facodec_1']]
     return examples
 
 editable_dataset = editable_dataset.map(
