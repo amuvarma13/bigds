@@ -9,11 +9,11 @@ dataset_name = "eliasfiz/audio"
 split = "train"
 local_dir = "./downloaded_parquet_files"
 files_to_download = parquet_files = [
-    "vm_0_0-00000-of-0000.parquet",
+    "vm_0_0-00000-of-00001.parquet",
     "vm_0_1-00000-of-00001.parquet",
     "vm_0_2-00000-of-00001.parquet",
     "vm_10_0-00000-of-00001.parquet",
-    "vm_10_1-00000-of-00001.parquet",   
+    "vm_10_1-00000-of-00001.parquet",
     "vm_10_2-00000-of-00001.parquet",
     "vm_11_0-00000-of-00001.parquet",
     "vm_11_1-00000-of-00001.parquet",
