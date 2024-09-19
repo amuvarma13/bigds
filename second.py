@@ -2,6 +2,7 @@ from datasets import load_dataset
 import random
 from transformers import AutoTokenizer
 import numpy as np
+from datasets import concatenate_datasets
 
 dataset_name = "amuvarma/1m-fac_0"
 split = 'train'
@@ -111,7 +112,7 @@ processed_first_half = first_half_with_instructions.map(
     num_proc=4
 )
 
-second_half_dataset = editable_dataset['train'].select(range(midpoint, num_samples))
+second_half_dataset = editable_dataset.select(range(midpoint, num_samples))
 
 
 with open('./stt.txt', 'r', encoding='utf-8') as file:
@@ -167,7 +168,7 @@ second_half_dataset_processed = second_half_dataset.map(
     num_proc=4  # Adjust based on your CPU cores
 )
 
-from datasets import concatenate_datasets
+
 
 # First, let's add the 'type' column to each dataset
 def add_type_column(example, type_value):
