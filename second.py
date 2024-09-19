@@ -122,7 +122,7 @@ with open('./stt.txt', 'r', encoding='utf-8') as file:
 
 
 def add_instructs(example):
-    random_instruction = random.choice(stt_list)
+    random_instruction = random.choice(stt_list) 
 
     tokenized = tokenizer(random_instruction, truncation=False)
     instructs = tokenized['input_ids'] + [1]
