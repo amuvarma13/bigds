@@ -10,7 +10,7 @@ dsy = load_dataset(ds_name)
 batch_size=200
 
 
-ds = dsy["train"].select(range(10000))
+ds = dsy["train"]
 
 
 def remove_consecutive_duplicates_batched(ds):
@@ -34,31 +34,28 @@ def remove_consecutive_duplicates_batched(ds):
 # Usage
 ds = remove_consecutive_duplicates_batched(ds)
 
-ds.push_to_hub("amuvarma/multilayer-1m-0-dedup")
 
-
-def add_offset_to_facodec_batched(ds, offset=256003):
+def add_offset_to_facodec_batched(ds, offset=256003, batch_size=32):
     def process_batch(batch):
         for col in ['facodec_0', 'facodec_1', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5']:
-            # Convert list of lists to 2D numpy array
-            arr = np.array(batch[col].tolist())
+            # Process each list in the batch separately
+            processed_lists = []
+            for lst in batch[col]:
+                # Add offset to all elements in the list
+                processed_lists.append([x + offset for x in lst])
             
-            # Add offset to all elements
-            arr += offset
-            
-            # Convert back to list of lists
-            batch[col] = arr.tolist()
+            # Update the batch with the processed lists
+            batch[col] = processed_lists
         
         # Create facodec_1_shifted column
         batch["facodec_1_shifted"] = batch["facodec_1"]
         
         return batch
 
-    return ds.map(process_batch, batched=True)
+    return ds.map(process_batch, batched=True, batch_size=batch_size)
 
 # Usage
 ds = add_offset_to_facodec_batched(ds)
-
 max_length = 2000
 
 
