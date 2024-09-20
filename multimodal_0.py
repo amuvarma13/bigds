@@ -7,6 +7,8 @@ import torch
 ds_name = "amuvarma/1m-fac_0"
 dsy = load_dataset(ds_name)
 
+batch_size=32
+
 
 ds = dsy["train"]
 
@@ -15,8 +17,12 @@ ds = dsy["train"]
 def remove_consecutive_duplicates_batched(ds, batch_size=32):
     def process_batch(batch):
         for col in ['facodec_0', 'facodec_1', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5']:
-            # Convert list of lists to 2D numpy array
-            arr = np.array(batch[col].tolist())
+            # Check if batch[col] is already a list of lists
+            if isinstance(batch[col], list) and all(isinstance(item, list) for item in batch[col]):
+                arr = np.array(batch[col])
+            else:
+                # If it's not, assume it's a feature with a single list
+                arr = np.array([batch[col]])
             
             # Create a boolean mask for elements that are different from their previous element
             mask = np.ones(arr.shape, dtype=bool)
@@ -33,8 +39,7 @@ def remove_consecutive_duplicates_batched(ds, batch_size=32):
 ds = remove_consecutive_duplicates_batched(ds)
 
 
-
-def add_offset_to_facodec_batched(ds, offset=256003, batch_size=32):
+def add_offset_to_facodec_batched(ds, offset=256003):
     def process_batch(batch):
         for col in ['facodec_0', 'facodec_1', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5']:
             # Convert list of lists to 2D numpy array
@@ -51,7 +56,7 @@ def add_offset_to_facodec_batched(ds, offset=256003, batch_size=32):
         
         return batch
 
-    return ds.map(process_batch, batched=True, batch_size=batch_size)
+    return ds.map(process_batch, batched=True)
 
 # Usage
 ds = add_offset_to_facodec_batched(ds)
@@ -59,7 +64,7 @@ ds = add_offset_to_facodec_batched(ds)
 max_length = 2000
 
 
-def prepare_dataset_for_model_batched(ds, batch_size=32):
+def prepare_dataset_for_model_batched(ds):
     # First, find the maximum length across all rows
     max_length = max(len(row['facodec_0']) for row in ds)
 
