@@ -59,15 +59,15 @@ ds = add_offset_to_facodec_batched(ds)
 max_length = 2000
 
 
-def prepare_dataset_for_model_batched(ds):
+def prepare_dataset_for_model_batched(ds, batch_size=32):
     # First, find the maximum length across all rows
     max_length = max(len(row['facodec_0']) for row in ds)
 
     def process_batch(batch):
         # Convert lists to numpy arrays for efficient processing
-        input_ids = np.array(batch['facodec_0'].tolist())
-        facodec_1 = np.array(batch['facodec_1'].tolist())
-        facodec_1_shifted = np.array(batch['facodec_1_shifted'].tolist())
+        input_ids = np.array(batch['facodec_0'])
+        facodec_1 = np.array(batch['facodec_1'])
+        facodec_1_shifted = np.array(batch['facodec_1_shifted'])
 
         # Get original lengths
         original_lengths = np.array([len(row) for row in input_ids])
@@ -78,8 +78,9 @@ def prepare_dataset_for_model_batched(ds):
             attention_mask[i, :length] = 1
 
         # Shift facodec_1_shifted and append 256002
-        facodec_1_shifted = np.roll(facodec_1_shifted, -1, axis=1)
-        facodec_1_shifted[np.arange(len(facodec_1_shifted)), original_lengths - 1] = 256002
+        facodec_1_shifted = np.array([np.roll(row, -1) for row in facodec_1_shifted])
+        for i, length in enumerate(original_lengths):
+            facodec_1_shifted[i, length - 1] = 256002
 
         # Pad arrays
         input_ids = pad_2d_array(input_ids, max_length)
@@ -95,8 +96,7 @@ def prepare_dataset_for_model_batched(ds):
         return batch
 
     def pad_2d_array(arr, target_length):
-        pad_width = ((0, 0), (0, target_length - arr.shape[1]))
-        return np.pad(arr, pad_width, mode='constant', constant_values=0)
+        return np.array([np.pad(row, (0, target_length - len(row)), mode='constant', constant_values=0) for row in arr])
 
     # Apply the processing to each batch
     ds = ds.map(process_batch, batched=True, batch_size=batch_size)
