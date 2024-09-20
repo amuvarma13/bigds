@@ -108,9 +108,6 @@ ds = add_offset_to_facodec_batched(ds)
 max_length = 2000
 
 
-
-
-
 def prepare_dataset_for_model_batched(ds, batch_size=32):
     # First, find the maximum length across all rows
     max_length = max(len(row['facodec_0']) for row in ds)
@@ -124,15 +121,17 @@ def prepare_dataset_for_model_batched(ds, batch_size=32):
     def process_batch(batch, update_progress):
         # Get original lengths
         original_lengths = [len(row) for row in batch['facodec_0']]
-        max_batch_length = max(original_lengths)
 
-        # Create padded arrays
-        input_ids = pad_sequences(batch['facodec_0'], max_batch_length)
-        facodec_1 = pad_sequences(batch['facodec_1'], max_batch_length)
-        facodec_1_shifted = pad_sequences(batch['facodec_1_shifted'], max_batch_length)
+        # Create padded arrays for all facodec columns
+        for i in range(6):
+            col_name = f'facodec_{i}'
+            batch[col_name] = pad_sequences(batch[col_name], max_length).tolist()
+
+        # Create padded array for facodec_1_shifted
+        facodec_1_shifted = pad_sequences(batch['facodec_1_shifted'], max_length)
 
         # Create attention mask
-        attention_mask = np.zeros((len(input_ids), max_batch_length), dtype=np.int64)
+        attention_mask = np.zeros((len(batch['facodec_0']), max_length), dtype=np.int64)
         for i, length in enumerate(original_lengths):
             attention_mask[i, :length] = 1
 
@@ -141,17 +140,9 @@ def prepare_dataset_for_model_batched(ds, batch_size=32):
             facodec_1_shifted[i] = np.roll(facodec_1_shifted[i], -1)
             facodec_1_shifted[i, length - 1] = 256002
 
-        # Pad to global max_length if necessary
-        if max_batch_length < max_length:
-            input_ids = np.pad(input_ids, ((0, 0), (0, max_length - max_batch_length)))
-            facodec_1 = np.pad(facodec_1, ((0, 0), (0, max_length - max_batch_length)))
-            facodec_1_shifted = np.pad(facodec_1_shifted, ((0, 0), (0, max_length - max_batch_length)))
-            attention_mask = np.pad(attention_mask, ((0, 0), (0, max_length - max_batch_length)))
-
         # Update batch with processed arrays
-        batch['input_ids'] = input_ids.tolist()
+        batch['input_ids'] = batch['facodec_0']
         batch['attention_mask'] = attention_mask.tolist()
-        batch['facodec_1'] = facodec_1.tolist()
         batch['facodec_1_shifted'] = facodec_1_shifted.tolist()
 
         # Update the progress bar
