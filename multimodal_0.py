@@ -18,7 +18,10 @@ def remove_consecutive_duplicates_batched(ds, batch_size=1000):
     # Get the total number of batches
     num_batches = len(ds) // batch_size + (1 if len(ds) % batch_size != 0 else 0)
 
-    def process_batch(batch):
+    # Create a progress bar
+    progress_bar = tqdm(total=num_batches, desc="Processing batches", unit="batch")
+
+    def process_batch(batch, update_progress):
         for col in ['facodec_0', 'facodec_1', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5']:
             # Process each list in the batch separately
             processed_lists = []
@@ -31,21 +34,20 @@ def remove_consecutive_duplicates_batched(ds, batch_size=1000):
             # Update the batch with the processed lists
             batch[col] = processed_lists
         
+        # Update the progress bar
+        update_progress(1)
+        
         return batch
 
-    # Create a progress bar
-    progress_bar = tqdm(total=num_batches, desc="Processing batches", unit="batch")
-
-    def update_progress(arg):
-        progress_bar.update(1)
-        return arg
+    def update_progress(num):
+        progress_bar.update(num)
 
     # Apply the mapping with progress bar
     ds = ds.map(
         process_batch,
+        fn_kwargs={'update_progress': update_progress},
         batched=True,
-        batch_size=batch_size,
-        fn_kwargs={'update_progress': update_progress}
+        batch_size=batch_size
     )
 
     # Close the progress bar
@@ -55,7 +57,6 @@ def remove_consecutive_duplicates_batched(ds, batch_size=1000):
 
 # Usage
 ds = remove_consecutive_duplicates_batched(ds)
-
 
 
 def add_offset_to_facodec_batched(ds, offset=256003, batch_size=32):
