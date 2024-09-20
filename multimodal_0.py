@@ -17,19 +17,16 @@ ds = dsy["train"]
 def remove_consecutive_duplicates_batched(ds, batch_size=32):
     def process_batch(batch):
         for col in ['facodec_0', 'facodec_1', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5']:
-            # Check if batch[col] is already a list of lists
-            if isinstance(batch[col], list) and all(isinstance(item, list) for item in batch[col]):
-                arr = np.array(batch[col])
-            else:
-                # If it's not, assume it's a feature with a single list
-                arr = np.array([batch[col]])
+            # Process each list in the batch separately
+            processed_lists = []
+            for lst in batch[col]:
+                # Create a boolean mask for elements that are different from their previous element
+                mask = [True] + [lst[i] != lst[i-1] for i in range(1, len(lst))]
+                # Apply the mask
+                processed_lists.append([x for x, keep in zip(lst, mask) if keep])
             
-            # Create a boolean mask for elements that are different from their previous element
-            mask = np.ones(arr.shape, dtype=bool)
-            mask[:, 1:] = arr[:, 1:] != arr[:, :-1]
-            
-            # Apply the mask to each row
-            batch[col] = [row[m].tolist() for row, m in zip(arr, mask)]
+            # Update the batch with the processed lists
+            batch[col] = processed_lists
         
         return batch
 
