@@ -7,14 +7,13 @@ import torch
 ds_name = "amuvarma/1m-fac_0"
 dsy = load_dataset(ds_name)
 
-batch_size=32
+batch_size=200
 
 
 ds = dsy["train"]
 
 
-
-def remove_consecutive_duplicates_batched(ds, batch_size=32):
+def remove_consecutive_duplicates_batched(ds):
     def process_batch(batch):
         for col in ['facodec_0', 'facodec_1', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5']:
             # Process each list in the batch separately
