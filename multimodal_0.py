@@ -10,7 +10,7 @@ dsy = load_dataset(ds_name)
 batch_size=200
 
 
-ds = dsy["train"]
+ds = dsy["train"].select(range(1000))
 
 
 def remove_consecutive_duplicates_batched(ds):
