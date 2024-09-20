@@ -59,7 +59,7 @@ def remove_consecutive_duplicates_batched(ds, batch_size=1000):
 ds = remove_consecutive_duplicates_batched(ds)
 
 
-ds.push_to_hub("amuvarma/multilayer-1m-0-dedup_0")
+ds.push_to_hub("amuvarma/multilayer-1m-0-dedup_0_0")
 
 
 def add_offset_to_facodec_batched(ds, offset=256003, batch_size=32):
@@ -108,9 +108,10 @@ def add_offset_to_facodec_batched(ds, offset=256003, batch_size=32):
 ds = add_offset_to_facodec_batched(ds)
 
 
-ds.push_to_hub("amuvarma/multilayer-1m-0-dedup_1")
+ds.push_to_hub("amuvarma/multilayer-1m-0-dedup_0_1")
 
 max_length = 2000
+
 
 
 
@@ -122,7 +123,10 @@ def prepare_dataset_for_model_batched(ds, batch_size=32):
     # Calculate the total number of batches
     num_batches = len(ds) // batch_size + (1 if len(ds) % batch_size != 0 else 0)
 
-    def process_batch(batch):
+    # Create a progress bar
+    progress_bar = tqdm(total=num_batches, desc="Preparing dataset", unit="batch")
+
+    def process_batch(batch, update_progress):
         # Get original lengths
         original_lengths = [len(row) for row in batch['facodec_0']]
         max_batch_length = max(original_lengths)
@@ -155,24 +159,23 @@ def prepare_dataset_for_model_batched(ds, batch_size=32):
         batch['facodec_1'] = facodec_1.tolist()
         batch['facodec_1_shifted'] = facodec_1_shifted.tolist()
 
+        # Update the progress bar
+        update_progress(1)
+
         return batch
 
     def pad_sequences(sequences, max_len):
         return np.array([np.pad(seq, (0, max_len - len(seq)), 'constant') for seq in sequences])
 
-    # Create a progress bar
-    progress_bar = tqdm(total=num_batches, desc="Preparing dataset", unit="batch")
-
-    def update_progress(arg):
-        progress_bar.update(1)
-        return arg
+    def update_progress(num):
+        progress_bar.update(num)
 
     # Apply the processing to each batch with progress bar
     ds = ds.map(
         process_batch,
+        fn_kwargs={'update_progress': update_progress},
         batched=True,
-        batch_size=batch_size,
-        fn_kwargs={'update_progress': update_progress}
+        batch_size=batch_size
     )
 
     # Close the progress bar
@@ -183,8 +186,6 @@ def prepare_dataset_for_model_batched(ds, batch_size=32):
 
     return ds
 
-
 # Usage
 ds = prepare_dataset_for_model_batched(ds)
-
 ds.push_to_hub("amuvarma/multilayer-1m-0-dedup")
