@@ -2,6 +2,7 @@ from datasets import load_dataset
 import datasets
 import numpy as np
 import torch
+from tqdm.auto import tqdm
 
 
 ds_name = "amuvarma/1m-fac_0"
@@ -13,7 +14,10 @@ batch_size=200
 ds = dsy["train"]
 
 
-def remove_consecutive_duplicates_batched(ds):
+def remove_consecutive_duplicates_batched(ds, batch_size=1000):
+    # Get the total number of batches
+    num_batches = len(ds) // batch_size + (1 if len(ds) % batch_size != 0 else 0)
+
     def process_batch(batch):
         for col in ['facodec_0', 'facodec_1', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5']:
             # Process each list in the batch separately
@@ -29,13 +33,35 @@ def remove_consecutive_duplicates_batched(ds):
         
         return batch
 
-    return ds.map(process_batch, batched=True, batch_size=batch_size)
+    # Create a progress bar
+    progress_bar = tqdm(total=num_batches, desc="Processing batches", unit="batch")
+
+    def update_progress(arg):
+        progress_bar.update(1)
+        return arg
+
+    # Apply the mapping with progress bar
+    ds = ds.map(
+        process_batch,
+        batched=True,
+        batch_size=batch_size,
+        fn_kwargs={'update_progress': update_progress}
+    )
+
+    # Close the progress bar
+    progress_bar.close()
+
+    return ds
 
 # Usage
 ds = remove_consecutive_duplicates_batched(ds)
 
 
+
 def add_offset_to_facodec_batched(ds, offset=256003, batch_size=32):
+    # Get the total number of batches
+    num_batches = len(ds) // batch_size + (1 if len(ds) % batch_size != 0 else 0)
+
     def process_batch(batch):
         for col in ['facodec_0', 'facodec_1', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5']:
             # Process each list in the batch separately
@@ -52,17 +78,43 @@ def add_offset_to_facodec_batched(ds, offset=256003, batch_size=32):
         
         return batch
 
-    return ds.map(process_batch, batched=True, batch_size=batch_size)
+    # Create a progress bar
+    progress_bar = tqdm(total=num_batches, desc="Processing batches", unit="batch")
+
+    def update_progress(arg):
+        progress_bar.update(1)
+        return arg
+
+    # Apply the mapping with progress bar
+    ds = ds.map(
+        process_batch,
+        batched=True,
+        batch_size=batch_size,
+        fn_kwargs={'update_progress': update_progress}
+    )
+
+    # Close the progress bar
+    progress_bar.close()
+
+    return ds
 
 # Usage
 ds = add_offset_to_facodec_batched(ds)
+
+
+
+
 max_length = 2000
+
 
 
 
 def prepare_dataset_for_model_batched(ds, batch_size=32):
     # First, find the maximum length across all rows
     max_length = max(len(row['facodec_0']) for row in ds)
+
+    # Calculate the total number of batches
+    num_batches = len(ds) // batch_size + (1 if len(ds) % batch_size != 0 else 0)
 
     def process_batch(batch):
         # Get original lengths
@@ -102,14 +154,31 @@ def prepare_dataset_for_model_batched(ds, batch_size=32):
     def pad_sequences(sequences, max_len):
         return np.array([np.pad(seq, (0, max_len - len(seq)), 'constant') for seq in sequences])
 
-    # Apply the processing to each batch
-    ds = ds.map(process_batch, batched=True, batch_size=batch_size)
+    # Create a progress bar
+    progress_bar = tqdm(total=num_batches, desc="Preparing dataset", unit="batch")
+
+    def update_progress(arg):
+        progress_bar.update(1)
+        return arg
+
+    # Apply the processing to each batch with progress bar
+    ds = ds.map(
+        process_batch,
+        batched=True,
+        batch_size=batch_size,
+        fn_kwargs={'update_progress': update_progress}
+    )
+
+    # Close the progress bar
+    progress_bar.close()
 
     # Set the format of the dataset to convert lists to pytorch tensors
     ds = ds.with_format("torch")
 
     return ds
 
+
 # Usage
 ds = prepare_dataset_for_model_batched(ds)
+
 ds.push_to_hub("amuvarma/multilayer-1m-0-dedup")
