@@ -2,7 +2,8 @@ from datasets import load_dataset
 import datasets
 import numpy as np
 import torch
-
+from concurrent.futures import ThreadPoolExecutor
+import multiprocessing
 
 ds_name = "amuvarma/1m-fac_0"
 dsy = load_dataset(ds_name)
@@ -13,28 +14,26 @@ batch_size=200
 ds = dsy["train"].select(range(20000))
 
 
-def remove_consecutive_duplicates_batched(ds):
+def remove_consecutive_duplicates_batched(ds, batch_size=32, num_proc=None):
+    if num_proc is None:
+        num_proc = multiprocessing.cpu_count()  # Use all available CPU cores by default
+
+    def process_list(lst):
+        mask = [True] + [lst[i] != lst[i-1] for i in range(1, len(lst))]
+        return [x for x, keep in zip(lst, mask) if keep]
+
     def process_batch(batch):
-        for col in ['facodec_0', 'facodec_1', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5']:
-            # Process each list in the batch separately
-            processed_lists = []
-            for lst in batch[col]:
-                # Create a boolean mask for elements that are different from their previous element
-                mask = [True] + [lst[i] != lst[i-1] for i in range(1, len(lst))]
-                # Apply the mask
-                processed_lists.append([x for x, keep in zip(lst, mask) if keep])
-            
-            # Update the batch with the processed lists
-            batch[col] = processed_lists
+        with ThreadPoolExecutor(max_workers=num_proc) as executor:
+            for col in ['facodec_0', 'facodec_1', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5']:
+                # Process each list in the batch in parallel
+                batch[col] = list(executor.map(process_list, batch[col]))
         
         return batch
 
     return ds.map(process_batch, batched=True, batch_size=batch_size)
 
 # Usage
-ds = remove_consecutive_duplicates_batched(ds)
-
-
+ds = remove_consecutive_duplicates_batched(ds, batch_size=32, num_proc=4)
 def add_offset_to_facodec_batched(ds, offset=256003, batch_size=32):
     def process_batch(batch):
         for col in ['facodec_0', 'facodec_1', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5']:
