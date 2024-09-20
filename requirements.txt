@@ -1,4 +1,4 @@
 datasets
 pyarrow
 transformers
-from tqdm.auto import tqdm
+tdqm
