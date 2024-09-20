@@ -1,11 +1,11 @@
 from datasets import load_dataset
 import datasets
 
-ds_name = "eliasfiz/y"
+ds_name = "eliasfiz/audio"
 dsy = load_dataset(ds_name)
 
 
-ds = dsy["vm_27_0"]
+ds = dsy["train"]
 
 
 
