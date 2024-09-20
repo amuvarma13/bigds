@@ -59,33 +59,37 @@ ds = add_offset_to_facodec_batched(ds)
 max_length = 2000
 
 
+
 def prepare_dataset_for_model_batched(ds, batch_size=32):
     # First, find the maximum length across all rows
     max_length = max(len(row['facodec_0']) for row in ds)
 
     def process_batch(batch):
-        # Convert lists to numpy arrays for efficient processing
-        input_ids = np.array(batch['facodec_0'])
-        facodec_1 = np.array(batch['facodec_1'])
-        facodec_1_shifted = np.array(batch['facodec_1_shifted'])
-
         # Get original lengths
-        original_lengths = np.array([len(row) for row in input_ids])
+        original_lengths = [len(row) for row in batch['facodec_0']]
+        max_batch_length = max(original_lengths)
+
+        # Create padded arrays
+        input_ids = pad_sequences(batch['facodec_0'], max_batch_length)
+        facodec_1 = pad_sequences(batch['facodec_1'], max_batch_length)
+        facodec_1_shifted = pad_sequences(batch['facodec_1_shifted'], max_batch_length)
 
         # Create attention mask
-        attention_mask = np.zeros((len(input_ids), max_length), dtype=np.int64)
+        attention_mask = np.zeros((len(input_ids), max_batch_length), dtype=np.int64)
         for i, length in enumerate(original_lengths):
             attention_mask[i, :length] = 1
 
         # Shift facodec_1_shifted and append 256002
-        facodec_1_shifted = np.array([np.roll(row, -1) for row in facodec_1_shifted])
         for i, length in enumerate(original_lengths):
+            facodec_1_shifted[i] = np.roll(facodec_1_shifted[i], -1)
             facodec_1_shifted[i, length - 1] = 256002
 
-        # Pad arrays
-        input_ids = pad_2d_array(input_ids, max_length)
-        facodec_1 = pad_2d_array(facodec_1, max_length)
-        facodec_1_shifted = pad_2d_array(facodec_1_shifted, max_length)
+        # Pad to global max_length if necessary
+        if max_batch_length < max_length:
+            input_ids = np.pad(input_ids, ((0, 0), (0, max_length - max_batch_length)))
+            facodec_1 = np.pad(facodec_1, ((0, 0), (0, max_length - max_batch_length)))
+            facodec_1_shifted = np.pad(facodec_1_shifted, ((0, 0), (0, max_length - max_batch_length)))
+            attention_mask = np.pad(attention_mask, ((0, 0), (0, max_length - max_batch_length)))
 
         # Update batch with processed arrays
         batch['input_ids'] = input_ids.tolist()
@@ -95,8 +99,8 @@ def prepare_dataset_for_model_batched(ds, batch_size=32):
 
         return batch
 
-    def pad_2d_array(arr, target_length):
-        return np.array([np.pad(row, (0, target_length - len(row)), mode='constant', constant_values=0) for row in arr])
+    def pad_sequences(sequences, max_len):
+        return np.array([np.pad(seq, (0, max_len - len(seq)), 'constant') for seq in sequences])
 
     # Apply the processing to each batch
     ds = ds.map(process_batch, batched=True, batch_size=batch_size)
@@ -108,5 +112,4 @@ def prepare_dataset_for_model_batched(ds, batch_size=32):
 
 # Usage
 ds = prepare_dataset_for_model_batched(ds)
-
 ds.push_to_hub("amuvarma/multilayer-1m-0")
