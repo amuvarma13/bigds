@@ -10,7 +10,7 @@ dsy = load_dataset(ds_name)
 batch_size=200
 
 
-ds = dsy["train"]
+ds = dsy["train"].select(range(10000))
 
 
 def remove_consecutive_duplicates_batched(ds):
@@ -33,6 +33,8 @@ def remove_consecutive_duplicates_batched(ds):
 
 # Usage
 ds = remove_consecutive_duplicates_batched(ds)
+
+ds.push_to_hub("amuvarma/multilayer-1m-0-dedup")
 
 
 def add_offset_to_facodec_batched(ds, offset=256003):
