@@ -11,7 +11,7 @@ dsy = load_dataset(ds_name)
 batch_size=200
 
 
-ds = dsy["train"].select(range(100000, 400000))
+ds = dsy["train"].select(range(0, 1000))
 
 
 def remove_consecutive_duplicates_batched(ds, batch_size=1000):
@@ -22,17 +22,15 @@ def remove_consecutive_duplicates_batched(ds, batch_size=1000):
     progress_bar = tqdm(total=num_batches, desc="Processing batches", unit="batch")
 
     def process_batch(batch, update_progress):
-        for col in ['facodec_0', 'facodec_1', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5']:
-            # Process each list in the batch separately
-            processed_lists = []
-            for lst in batch[col]:
-                # Create a boolean mask for elements that are different from their previous element
-                mask = [True] + [lst[i] != lst[i-1] for i in range(1, len(lst))]
-                # Apply the mask
-                processed_lists.append([x for x, keep in zip(lst, mask) if keep])
+        columns = ['facodec_0', 'facodec_1', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5']
+        
+        for i in range(len(batch['facodec_1'])):
+            # Create a boolean mask for elements in facodec_1 that are different from their previous element
+            mask = [True] + [batch['facodec_1'][i][j] != batch['facodec_1'][i][j-1] for j in range(1, len(batch['facodec_1'][i]))]
             
-            # Update the batch with the processed lists
-            batch[col] = processed_lists
+            # Apply the mask to all columns
+            for col in columns:
+                batch[col][i] = [x for x, keep in zip(batch[col][i], mask) if keep]
         
         # Update the progress bar
         update_progress(1)
@@ -57,7 +55,6 @@ def remove_consecutive_duplicates_batched(ds, batch_size=1000):
 
 # Usage
 ds = remove_consecutive_duplicates_batched(ds)
-
 
 
 
