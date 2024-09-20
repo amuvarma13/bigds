@@ -11,7 +11,7 @@ dsy = load_dataset(ds_name)
 batch_size=200
 
 
-ds = dsy["train"]
+ds = dsy["train"].select(range(1000))
 
 
 def remove_consecutive_duplicates_batched(ds, batch_size=1000):
@@ -59,6 +59,8 @@ def remove_consecutive_duplicates_batched(ds, batch_size=1000):
 ds = remove_consecutive_duplicates_batched(ds)
 
 
+ds.push_to_hub("amuvarma/multilayer-1m-0-dedup_0")
+
 def add_offset_to_facodec_batched(ds, offset=256003, batch_size=32):
     # Get the total number of batches
     num_batches = len(ds) // batch_size + (1 if len(ds) % batch_size != 0 else 0)
@@ -104,6 +106,7 @@ ds = add_offset_to_facodec_batched(ds)
 
 
 
+ds.push_to_hub("amuvarma/multilayer-1m-0-dedup_1")
 
 max_length = 2000
 
