@@ -10,7 +10,7 @@ dsy = load_dataset(ds_name)
 batch_size=200
 
 
-ds = dsy["train"].select(range(20000))
+ds = dsy["train"]
 
 
 def remove_consecutive_duplicates_batched(ds):
@@ -112,4 +112,4 @@ def prepare_dataset_for_model_batched(ds, batch_size=32):
 
 # Usage
 ds = prepare_dataset_for_model_batched(ds)
-ds.push_to_hub("amuvarma/multilayer-1m-0")
+ds.push_to_hub("amuvarma/multilayer-1m-0-dedup")
