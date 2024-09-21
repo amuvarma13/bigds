@@ -4,7 +4,7 @@ from transformers import AutoTokenizer
 import numpy as np
 from datasets import concatenate_datasets
 
-dataset_name = "amuvarma/1m-fac_0"
+dataset_name = "amuvarma/dup-1k-fac"
 split = 'train'
 
 dataset = load_dataset(dataset_name, split="train")
@@ -13,18 +13,41 @@ editable_dataset = dataset
 #first lets remove duplicates from the dataset
 from itertools import groupby
 
+from itertools import groupby
+
 def remove_consecutive_duplicates(tokens, n=3):
     result = []
-    for k, g in groupby(tokens):
+    indices_to_keep = []
+    for i, (k, g) in enumerate(groupby(tokens)):
         group = list(g)
         if len(group) < n:
             result.extend(group)
+            indices_to_keep.extend(range(i, i + len(group)))
         else:
             result.append(k)
-    return result
+            indices_to_keep.append(i)
+    return result, indices_to_keep
 
 def process_batch(examples):
-    examples['audio_tokens'] = [remove_consecutive_duplicates(tokens) for tokens in examples['facodec_1']]
+    processed_tokens = []
+    indices_to_keep = []
+    
+    for tokens in examples['facodec_1']:
+        tokens_processed, indices = remove_consecutive_duplicates(tokens)
+        processed_tokens.append(tokens_processed)
+        indices_to_keep.append(indices)
+    
+    examples['audio_tokens'] = processed_tokens
+    
+    # Apply the same filtering to other columns
+    columns_to_process = ['facodec_0','facodec_1', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5']  
+    for column in columns_to_process:
+        if column in examples:
+            examples[column] = [
+                [token for i, token in enumerate(tokens) if i in indices]
+                for tokens, indices in zip(examples[column], indices_to_keep)
+            ]
+    
     return examples
 
 editable_dataset = editable_dataset.map(
