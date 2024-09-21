@@ -3,6 +3,7 @@ import random
 from transformers import AutoTokenizer
 import numpy as np
 from datasets import concatenate_datasets
+from itertools import groupby
 
 dataset_name = "amuvarma/dup-1k-fac"
 split = 'train'
@@ -11,9 +12,8 @@ dataset = load_dataset(dataset_name, split="train")
 editable_dataset = dataset
 
 #first lets remove duplicates from the dataset
-from itertools import groupby
 
-from itertools import groupby
+
 
 def remove_consecutive_duplicates(tokens, n=3):
     result = []
