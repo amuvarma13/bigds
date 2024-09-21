@@ -13,12 +13,18 @@ editable_dataset = dataset
 #first lets remove duplicates from the dataset
 from itertools import groupby
 
-def remove_consecutive_duplicates(tokens):
-    return [k for k, _ in groupby(tokens)]
+def remove_consecutive_duplicates(tokens, n=3):
+    result = []
+    for k, g in groupby(tokens):
+        group = list(g)
+        if len(group) < n:
+            result.extend(group)
+        else:
+            result.append(k)
+    return result
 
 def process_batch(examples):
-    # examples['audio_tokens'] = [remove_consecutive_duplicates(tokens) for tokens in examples['facodec_1']]
-    examples['audio_tokens'] = [(tokens) for tokens in examples['facodec_1']]
+    examples['audio_tokens'] = [remove_consecutive_duplicates(tokens) for tokens in examples['facodec_1']]
     return examples
 
 editable_dataset = editable_dataset.map(
