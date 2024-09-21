@@ -58,7 +58,7 @@ ds = remove_consecutive_duplicates_batched(ds)
 
 
 
-def add_offset_to_facodec_batched(ds, offset=256003, batch_size=32):
+def add_offset_to_facodec_batched(ds, offset=128259, batch_size=32):
     # Get the total number of batches
     num_batches = len(ds) // batch_size + (1 if len(ds) % batch_size != 0 else 0)
 
@@ -174,4 +174,4 @@ def prepare_dataset_for_model_batched(ds, batch_size=32):
 
 # Usage
 ds = prepare_dataset_for_model_batched(ds)
-ds.push_to_hub("amuvarma/multilayer-1m-0-dedup")
+ds.push_to_hub("amuvarma/multilayer-1m-0-dedup-llama")
