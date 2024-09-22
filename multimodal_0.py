@@ -179,4 +179,4 @@ def prepare_dataset_for_model_batched(ds, batch_size=32):
 ds = prepare_dataset_for_model_batched(ds)
 
 print("dataset prepared")
-ds.push_to_hub("amuvarma/multilayer-1m-0-dedup-llama")
+ds.push_to_hub("amuvarma/multilayer-100k-0-dedup-llama")
