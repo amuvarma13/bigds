@@ -5,7 +5,7 @@ import torch
 from tqdm.auto import tqdm
 
 
-ds_name = "amuvarma/1m-fac_0"
+ds_name = "amuvarma/100k-fac_0"
 dsy = load_dataset(ds_name)
 
 batch_size=200
