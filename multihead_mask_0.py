@@ -20,7 +20,7 @@ def create_text_labels(example):
 
     for i in range(len(input_ids) - 1):
         if not (256010 <= input_ids[i] <= 257034):
-            text_labels[i] = input_ids[i]
+            text_labels[i] = input_ids[i] 
     
     example['text_labels'] = text_labels
     return example
