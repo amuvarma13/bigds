@@ -21,19 +21,20 @@ end_of_speech = tokeniser_len + 6
 
 start_of_audio_token_index = tokeniser_len + 7
 
+fac_order = ['facodec_1', 'facodec_0', 'facodec_3']
+
 
 def process_dataset(dataset):
     # Reorder facodec columns
-    new_order = ['facodec_1', 'facodec_0']
     
     # Function to add values to facodec columns
     def add_values(example):
-        for i, col in enumerate(new_order):
+        for i, col in enumerate(fac_order):
             example[col] = [x + start_of_audio_token_index + i * 1024 for x in example[col]]
         return example
     
     # Apply the transformations
-    dataset = dataset.map(lambda x: {col: x[col] for col in new_order})
+    dataset = dataset.map(lambda x: {col: x[col] for col in fac_order})
     dataset = dataset.map(add_values)
     
     return dataset
@@ -64,11 +65,10 @@ def create_input_ids(example):
     input_ids = [start_of_human] + example['tokenised_text'] + [end_of_human, start_of_ai]
     
     # Interleave the facodec lists
-    facodec_order = ['facodec_1', 'facodec_0']
-    max_len = max(len(example[facodec]) for facodec in facodec_order)
+    max_len = max(len(example[facodec]) for facodec in fac_order)
     
     for i in range(max_len):
-        for facodec in facodec_order:
+        for facodec in fac_order:
             if i < len(example[facodec]):
                 input_ids.append(example[facodec][i])
     
