@@ -64,7 +64,7 @@ def create_input_ids(example):
     input_ids = [start_of_human] + example['tokenised_text'] + [end_of_human, start_of_ai]
     
     # Interleave the facodec lists
-    facodec_order = ['facodec_1', 'facodec_0', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5']
+    facodec_order = ['facodec_1', 'facodec_0']
     max_len = max(len(example[facodec]) for facodec in facodec_order)
     
     for i in range(max_len):
