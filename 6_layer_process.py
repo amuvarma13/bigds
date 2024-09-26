@@ -24,7 +24,7 @@ start_of_audio_token_index = tokeniser_len + 7
 
 def process_dataset(dataset):
     # Reorder facodec columns
-    new_order = ['facodec_1', 'facodec_0', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5']
+    new_order = ['facodec_1', 'facodec_0', 'facodec_3']
     
     # Function to add values to facodec columns
     def add_values(example):
