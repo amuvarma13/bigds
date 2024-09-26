@@ -6,12 +6,13 @@ import datasets
 tok_name = "google/gemma-2-2b"
 tokeniser = AutoTokenizer.from_pretrained(tok_name)
 
-push_name = "amuvarma/6_layer_interleave-102345-500k-0-llama"
+push_name = "amuvarma/interleave-103-gemma-1m-dup3"
 
 ds_name = "amuvarma/1m_raw_dups3"
 ds = load_dataset(ds_name)
 
-tokeniser_len = 128256
+
+tokeniser_len = 256000
 start_of_human = tokeniser_len + 1
 end_of_human = tokeniser_len + 2
 start_of_ai = tokeniser_len + 3
