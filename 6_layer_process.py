@@ -6,7 +6,7 @@ import datasets
 tok_name = "google/gemma-2-2b"
 tokeniser = AutoTokenizer.from_pretrained(tok_name)
 
-push_name = "amuvarma/6_layer_interleave-102345-500k-0"
+push_name = "amuvarma/6_layer_interleave-102345-500k-0-llama"
 
 ds_name = "amuvarma/raw_500k_0"
 ds = load_dataset(ds_name)
@@ -24,7 +24,7 @@ start_of_audio_token_index = tokeniser_len + 7
 
 def process_dataset(dataset):
     # Reorder facodec columns
-    new_order = ['facodec_1', 'facodec_0', 'facodec_3']
+    new_order = ['facodec_1', 'facodec_0']
     
     # Function to add values to facodec columns
     def add_values(example):
