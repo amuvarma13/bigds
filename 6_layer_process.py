@@ -98,4 +98,15 @@ def pad_and_create_mask(example):
 ds_4 = ds_3.map(pad_and_create_mask)
 
 
-ds_4.push_to_hub(push_name)
+pad_token = 0
+def preprocess_function(examples, ):
+    examples['labels'] = [
+        (token_id if token_id != pad_token else -100) for token_id in examples['input_ids']
+    ]
+    return examples
+
+ds_5 = ds_4.map(preprocess_function, batched=True)
+
+
+
+ds_5.push_to_hub(push_name)
