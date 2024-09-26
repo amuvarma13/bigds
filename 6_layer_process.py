@@ -11,12 +11,15 @@ push_name = "amuvarma/6_layer_interleave-102345-500k-0"
 ds_name = "amuvarma/raw_500k_0"
 ds = load_dataset(ds_name)
 
-start_of_human = 256001
-end_of_human = 256002
-start_of_ai =256003
-end_of_ai = 256004
-start_of_speech = 256005
-end_of_speech = 256006
+tokeniser_len = 128256
+start_of_human = tokeniser_len + 1
+end_of_human = tokeniser_len + 2
+start_of_ai = tokeniser_len + 3
+end_of_ai =  tokeniser_len + 4
+start_of_speech = tokeniser_len + 5
+end_of_speech = tokeniser_len + 6
+
+start_of_audio_token_index = tokeniser_len + 7
 
 
 def process_dataset(dataset):
@@ -26,7 +29,7 @@ def process_dataset(dataset):
     # Function to add values to facodec columns
     def add_values(example):
         for i, col in enumerate(new_order):
-            example[col] = [x + 256010 + i * 1024 for x in example[col]]
+            example[col] = [x + start_of_audio_token_index + i * 1024 for x in example[col]]
         return example
     
     # Apply the transformations
