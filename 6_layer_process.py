@@ -8,7 +8,7 @@ tokeniser = AutoTokenizer.from_pretrained(tok_name)
 
 push_name = "amuvarma/6_layer_interleave-102345-500k-0-llama"
 
-ds_name = "amuvarma/raw_500k_0"
+ds_name = "amuvarma/1m_raw_dups3"
 ds = load_dataset(ds_name)
 
 tokeniser_len = 128256
