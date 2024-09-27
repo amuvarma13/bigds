@@ -6,13 +6,13 @@ import datasets
 tok_name = "google/gemma-2-2b"
 tokeniser = AutoTokenizer.from_pretrained(tok_name)
 
-push_name = "amuvarma/interleave-103-gemma-1m-dup3"
+push_name = "amuvarma/interleave-10-llama-1m-dup3"
 
 ds_name = "amuvarma/1m_raw_dups3"
 ds = load_dataset(ds_name)
 
 
-tokeniser_len = 256000
+tokeniser_len = 128256
 start_of_human = tokeniser_len + 1
 end_of_human = tokeniser_len + 2
 start_of_ai = tokeniser_len + 3
@@ -22,7 +22,7 @@ end_of_speech = tokeniser_len + 6
 
 start_of_audio_token_index = tokeniser_len + 7
 
-fac_order = ['facodec_1', 'facodec_0', 'facodec_3']
+fac_order = ['facodec_1', 'facodec_0']
 
 
 def process_dataset(dataset):
@@ -95,7 +95,6 @@ def pad_and_create_mask(example):
     # Create attention_mask
     example['attention_mask'] = [1] * len(example['input_ids']) + [0] * (max_length - len(example['input_ids']))
     
-    # Ensure attention_mask is also of length max_length
     example['attention_mask'] = example['attention_mask'][:max_length]
     
     return example
@@ -103,7 +102,8 @@ ds_4 = ds_3.map(pad_and_create_mask)
 
 
 pad_token = 0
-def preprocess_function(examples, ):
+
+def preprocess_function(examples):
     examples['labels'] = [
         (token_id if token_id != pad_token else -100) for token_id in examples['input_ids']
     ]
