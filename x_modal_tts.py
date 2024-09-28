@@ -6,7 +6,7 @@ import random
 
 tkn = "google/gemma-2-2b"
 tokenizer = AutoTokenizer.from_pretrained(tkn)
-dsn = "amuvarma/6-interleave-800k-0"
+dsn = "amuvarma/750k-raw_dups3-0"
 # dsn = "amuvarma/raw_1k_0"
 total_examples = 748000
 mid_point = total_examples // 2
