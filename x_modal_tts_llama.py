@@ -48,7 +48,7 @@ def create_audio_tokens(example):
 
     for j in range(max_length):
         for i, original_i in enumerate(column_order):
-            offset = 256010 + (i * 1024)  # Offset based on position in column_order
+            offset = audio_tokens_start + (i * 1024)  # Offset based on position in column_order
             facodec_column = f'facodec_{original_i}'  # Use original index for column name
             modified_token = example[facodec_column][j] + offset
             audio_tokens.append(modified_token)

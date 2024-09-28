@@ -1,7 +1,12 @@
 from datasets import load_dataset
+import multiprocessing
+
+num_threads = multiprocessing.cpu_count()
 
 ds_name = "amuvarma/1m-fac_0"
 ds = load_dataset(ds_name)
+
+
 
 def remove_excess_consecutive_integers(dataset):
     def process_row(row):
@@ -39,7 +44,10 @@ def remove_excess_consecutive_integers(dataset):
         return new_row
 
     # Use map to process each row
-    processed_dataset = dataset.map(process_row)
+    processed_dataset = dataset.map(
+        process_row, 
+        num_proc=num_threads,
+        )
     
     return processed_dataset
 
