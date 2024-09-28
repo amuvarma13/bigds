@@ -1,11 +1,13 @@
 import multiprocessing
 from datasets import load_dataset
 from transformers import AutoTokenizer
+from datasets import concatenate_datasets
 import random
 
 tkn = "google/gemma-2-2b"
 tokenizer = AutoTokenizer.from_pretrained(tkn)
-dsn = "amuvarma/6-interleave-800k-0"
+# dsn = "amuvarma/6-interleave-800k-0"
+dsn = "amuvarma/raw_1k_0"
 total_examples = 748000
 mid_point = total_examples // 2
 
@@ -16,28 +18,41 @@ cpu_count = multiprocessing.cpu_count()
 # Set num_threads to CPU count or a maximum of 8, whichever is smaller
 num_threads = cpu_count
 
+tokeniser_length = 256000
+
 start_of_text = 2
 end_of_text = 1
 
-start_of_speech = 256001
-end_of_speech = 256002
+start_of_speech = tokeniser_length + 1
+end_of_speech = tokeniser_length + 2
 
-start_of_human = 256003
-end_of_human = 256004
+start_of_human = tokeniser_length + 3
+end_of_human = tokeniser_length + 4
 
-start_of_ai = 256005
-end_of_ai = 256006
+start_of_ai = tokeniser_length + 5
+end_of_ai =  tokeniser_length + 6
+
+pad_token = tokeniser_length + 7
+
+audio_tokens_start = tokeniser_length + 10
 
 
 ds = load_dataset(dsn)
 
 def create_audio_tokens(example):
     audio_tokens = []
-    for i in range(6):
-        offset = 256010 + i * 1024
-        facodec_column = f'facodec_{i}'
-        modified_tokens = [token + offset for token in example[facodec_column]]
-        audio_tokens.extend(modified_tokens)
+    max_length = len(example['facodec_0'])
+
+    # Define the new order of columns for processing
+    column_order = [1, 0, 2, 3, 4, 5]
+
+    for j in range(max_length):
+        for i, original_i in enumerate(column_order):
+            offset = audio_tokens_start + (i * 1024)  # Offset based on position in column_order
+            facodec_column = f'facodec_{original_i}'  # Use original index for column name
+            modified_token = example[facodec_column][j] + offset
+            audio_tokens.append(modified_token)
+
     return {'audio_tokens': audio_tokens}
 
 
@@ -50,7 +65,7 @@ ds_aud = ds['train'].map(
 
 def create_text_tokens(example):
     text_tokens = tokenizer.encode(example['transcript'], add_special_tokens=True)
-    text_tokens.append(1)  # Append token 1 to the end
+    text_tokens.append(end_of_text)  # Append token 1 to the end
     return {'text_tokens': text_tokens}
 
 ds_txt = ds_aud.map(
@@ -85,7 +100,7 @@ def process_tts_row(example, tts_list, tokenizer):
 
     tokens = tokenizer.encode(combined_text, add_special_tokens=True)
 
-    tokens.append(1)
+    tokens.append(end_of_text)
 
     example['system_message'] = tokens
 
@@ -125,13 +140,13 @@ def create_input_ids_stt(example):
     random_string = random.choice(stt_list)
     if random.random() < 0.7:  # Add a line break 70% of the time
         random_string += '\n'
-    tokenized_random_string = tokenizer.encode(random_string, add_special_tokens=False)
+    tokenized_random_string = tokenizer.encode(random_string, add_special_tokens=True)
 
     # Construct the input_ids
     input_ids = (
         [start_of_human] +
         tokenized_random_string +
-        [1,  # Appending token 1
+        [end_of_text,
          start_of_speech] +
         example['audio_tokens'] +
         [end_of_speech, end_of_human, start_of_ai] +
@@ -149,7 +164,7 @@ stt_dataset = stt_dataset.map(
     desc="Creating input_ids column for STT dataset"
 )
 
-from datasets import concatenate_datasets
+
 columns_to_keep = ['transcript', 'input_ids'] + [f'facodec_{i}' for i in range(6)]
 
 
@@ -179,7 +194,7 @@ def pad_and_create_mask(example):
     else:
         padding_length = max_length - len(example['input_ids'])
         example['attention_mask'] = [1] * len(example['input_ids']) + [0] * padding_length
-        example['input_ids'] = example['input_ids'] + [0] * padding_length
+        example['input_ids'] = example['input_ids'] + [pad_token] * padding_length
 
     return example
 
@@ -189,4 +204,5 @@ full_processed_padded = combined_dataset.map(
     num_proc=4  # Adjust based on your CPU cores
 )
 
-full_processed_padded.push_to_hub("amuvarma/6-layer-crossmodal-750k-0")
+# full_processed_padded.push_to_hub("amuvarma/6-layer-crossmodal-750k-llama-0")
+full_processed_padded.push_to_hub("amuvarma/6-layer-crossmodal-1k-5")
