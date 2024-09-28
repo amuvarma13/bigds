@@ -3,7 +3,7 @@ import multiprocessing
 
 num_threads = multiprocessing.cpu_count()
 
-ds_name = "amuvarma/1m-fac_0"
+ds_name = "amuvarma/6-interleave-800k-0"
 ds = load_dataset(ds_name)
 
 
