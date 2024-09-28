@@ -4,9 +4,9 @@ from transformers import AutoTokenizer
 from datasets import concatenate_datasets
 import random
 
-tkn = "google/gemma-2-2b"
+tkn = "meta-llama/Llama-3.2-3B-Instruct"
 tokenizer = AutoTokenizer.from_pretrained(tkn)
-dsn = "meta-llama/Llama-3.2-3B-Instruct"
+dsn = "amuvarma/6-interleave-800k-0"
 total_examples = 748000
 mid_point = total_examples // 2
 
