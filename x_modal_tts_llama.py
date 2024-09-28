@@ -6,7 +6,8 @@ import random
 
 tkn = "meta-llama/Llama-3.2-3B-Instruct"
 tokenizer = AutoTokenizer.from_pretrained(tkn)
-dsn = "amuvarma/6-interleave-800k-0"
+# dsn = "amuvarma/6-interleave-800k-0"
+dsn = "amuvarma/raw_1k_0"
 total_examples = 748000
 mid_point = total_examples // 2
 
@@ -203,4 +204,5 @@ full_processed_padded = combined_dataset.map(
     num_proc=4  # Adjust based on your CPU cores
 )
 
-full_processed_padded.push_to_hub("amuvarma/6-layer-crossmodal-750k-llama-0")
+# full_processed_padded.push_to_hub("amuvarma/6-layer-crossmodal-750k-llama-0")
+full_processed_padded.push_to_hub("amuvarma/6-layer-crossmodal-1k-5")
