@@ -11,8 +11,7 @@ pad_token = 0
 
 
 # dsn = "amuvarma/raw_1k_0"
-total_examples = 748000
-mid_point = total_examples // 2
+
 tokenizer = AutoTokenizer.from_pretrained(tkn)
 
 
@@ -43,6 +42,9 @@ audio_tokens_start = tokeniser_length + 10
 
 
 ds = load_dataset(dsn)
+
+total_examples = len(ds['train'])
+mid_point = total_examples // 2
 
 def create_audio_tokens(example):
     audio_tokens = []
@@ -203,10 +205,22 @@ def pad_and_create_mask(example):
 
     return example
 
+
 # Apply padding and create attention mask
 full_processed_padded = combined_dataset.map(
     pad_and_create_mask,
     num_proc=88  # Adjust based on your CPU cores
+)
+
+def preprocess_function(examples, ):
+    examples['labels'] = [
+        (token_id if token_id != pad_token else -100) for token_id in examples['input_ids']
+    ]
+    return examples
+
+full_processed_padded = full_processed_padded.map(
+    preprocess_function,
+    num_proc=88
 )
 
 full_processed_padded.push_to_hub("amuvarma/6-layer-crossmodal-750k-1")
