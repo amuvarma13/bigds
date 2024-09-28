@@ -201,7 +201,7 @@ def pad_and_create_mask(example):
 # Apply padding and create attention mask
 full_processed_padded = combined_dataset.map(
     pad_and_create_mask,
-    num_proc=4  # Adjust based on your CPU cores
+    num_proc=88  # Adjust based on your CPU cores
 )
 
 full_processed_padded.push_to_hub("amuvarma/6-layer-crossmodal-750k-1")
