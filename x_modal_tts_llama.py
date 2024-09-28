@@ -40,11 +40,18 @@ ds = load_dataset(dsn)
 
 def create_audio_tokens(example):
     audio_tokens = []
-    for i in range(6):
-        offset = audio_tokens_start + i * 1024
-        facodec_column = f'facodec_{i}'
-        modified_tokens = [token + offset for token in example[facodec_column]]
-        audio_tokens.extend(modified_tokens)
+    max_length = len(example['facodec_0'])
+
+    # Define the new order of columns for processing
+    column_order = [1, 0, 2, 3, 4, 5]
+
+    for j in range(max_length):
+        for i, original_i in enumerate(column_order):
+            offset = 256010 + (i * 1024)  # Offset based on position in column_order
+            facodec_column = f'facodec_{original_i}'  # Use original index for column name
+            modified_token = example[facodec_column][j] + offset
+            audio_tokens.append(modified_token)
+
     return {'audio_tokens': audio_tokens}
 
 
@@ -132,7 +139,7 @@ def create_input_ids_stt(example):
     random_string = random.choice(stt_list)
     if random.random() < 0.7:  # Add a line break 70% of the time
         random_string += '\n'
-    tokenized_random_string = tokenizer.encode(random_string, add_special_tokens=False)
+    tokenized_random_string = tokenizer.encode(random_string, add_special_tokens=True)
 
     # Construct the input_ids
     input_ids = (
