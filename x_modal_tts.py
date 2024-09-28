@@ -5,11 +5,15 @@ from datasets import concatenate_datasets
 import random
 
 tkn = "google/gemma-2-2b"
-tokenizer = AutoTokenizer.from_pretrained(tkn)
 dsn = "amuvarma/750k-raw_dups3-0"
+tokeniser_length = 256000
+
+
 # dsn = "amuvarma/raw_1k_0"
 total_examples = 748000
 mid_point = total_examples // 2
+tokenizer = AutoTokenizer.from_pretrained(tkn)
+pad_token = 0
 
 
 
@@ -18,7 +22,7 @@ cpu_count = multiprocessing.cpu_count()
 # Set num_threads to CPU count or a maximum of 8, whichever is smaller
 num_threads = cpu_count
 
-tokeniser_length = 256000
+
 
 start_of_text = 2
 end_of_text = 1
@@ -32,7 +36,7 @@ end_of_human = tokeniser_length + 4
 start_of_ai = tokeniser_length + 5
 end_of_ai =  tokeniser_length + 6
 
-pad_token = tokeniser_length + 7
+
 
 audio_tokens_start = tokeniser_length + 10
 
@@ -205,4 +209,5 @@ full_processed_padded = combined_dataset.map(
 )
 
 full_processed_padded.push_to_hub("amuvarma/6-layer-crossmodal-750k-1")
+
 # full_processed_padded.push_to_hub("amuvarma/6-layer-crossmodal-1k-6")
