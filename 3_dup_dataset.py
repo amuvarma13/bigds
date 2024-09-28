@@ -56,4 +56,4 @@ dataset = ds['train']  # Assuming you want to process the 'train' split
 processed_dataset = remove_excess_consecutive_integers(dataset)
 
 
-processed_dataset.push_to_hub("amuvarma/1m_raw_dups3")
+processed_dataset.push_to_hub("amuvarma/750k-raw_dups3-0")
