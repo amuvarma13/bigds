@@ -204,5 +204,16 @@ full_processed_padded = combined_dataset.map(
     num_proc=4  # Adjust based on your CPU cores
 )
 
+def preprocess_function(examples, ):
+    examples['labels'] = [
+        (token_id if token_id != pad_token else -100) for token_id in examples['input_ids']
+    ]
+    return examples
+
+full_processed_padded = full_processed_padded.map(
+    preprocess_function,
+    num_proc=88
+)
+
 full_processed_padded.push_to_hub("amuvarma/6-layer-crossmodal-750k-llama-2")
 # full_processed_padded.push_to_hub("amuvarma/6-layer-crossmodal-1k-5")
