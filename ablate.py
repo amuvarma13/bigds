@@ -21,6 +21,9 @@ def preprocess_function(examples):
 
     return examples
 
-padded_ds = ds.map(preprocess_function, batched=True)
+padded_ds = ds.map(
+    preprocess_function, 
+    num_proc=88,
+    batched=True)
 
 padded_ds.push_to_hub("amuvarma/6-layer-crossmodal-750k-llama-tts-ablate-content_0")
