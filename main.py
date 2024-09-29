@@ -5,7 +5,7 @@ import pyarrow.parquet as pq
 import pyarrow as pa
 from datasets import Dataset
 
-dataset_name = "eliasfiz/audio_10m"
+dataset_name = "eliasfiz/audio_10m_run_2"
 split = "train"
 local_dir = "./downloaded_parquet_files"
 files_to_download = [
