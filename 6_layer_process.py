@@ -103,13 +103,24 @@ ds_4 = ds_3.map(pad_and_create_mask)
 
 
 pad_token = 0
-def preprocess_function(examples, ):
+def preprocess_function(examples):
     examples['labels'] = [
         (token_id if token_id != pad_token else -100) for token_id in examples['input_ids']
     ]
     return examples
 
-ds_5 = ds_4.map(preprocess_function, batched=True)
+# Determine the number of CPU cores available
+num_cpus = os.cpu_count()
+
+# Use 75% of available CPUs, but at least 1
+num_processes = max(1, int(num_cpus * 0.75))
+
+ds_5 = ds_4.map(
+    preprocess_function,
+    batched=True,
+    num_proc=num_processes,
+    desc="Preprocessing dataset"
+)
 
 
 
