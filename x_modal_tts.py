@@ -44,7 +44,7 @@ audio_tokens_start = tokeniser_length + 10
 ds = load_dataset(dsn)
 
 total_examples = len(ds['train'])
-mid_point = total_examples - 1
+mid_point = total_examples - 2
 # mid_point = total_examples // 2
 
 def create_audio_tokens(example):
