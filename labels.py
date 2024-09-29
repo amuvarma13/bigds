@@ -1,6 +1,6 @@
 from datasets import load_dataset
 
-full_processed_padded = load_dataset("amuvarma/6-layer-crossmodal-750k-1")
+full_processed_padded = load_dataset("amuvarma/6_layer_interleave-102345-500k-0")
 
 pad_token = 0
 
@@ -15,4 +15,4 @@ full_processed_padded = full_processed_padded.map(
     num_proc=88
 )
 
-full_processed_padded.push_to_hub("amuvarma/6-layer-crossmodal-750k-2")
+full_processed_padded.push_to_hub("amuvarma/6_layer_interleave-102345-500k-1")
