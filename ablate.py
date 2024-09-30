@@ -1,9 +1,9 @@
 from datasets import load_dataset
-ds = load_dataset("amuvarma/6-layer-crossmodal-750k-llama-tts-0")
+ds = load_dataset("amuvarma/500k-wdups-tts-0")
 
 def preprocess_function(examples):
-    start_ignore = 128266 +1024
-    end_ignore = start_ignore + 2048
+    start_ignore = 256010
+    end_ignore = start_ignore + 1024
 
     def process_sequence(seq):
         return [
@@ -26,4 +26,4 @@ padded_ds = ds.map(
     num_proc=88,
     batched=True)
 
-padded_ds.push_to_hub("amuvarma/6-layer-crossmodal-750k-llama-tts-ablate-content_1")
+padded_ds.push_to_hub("amuvarma/500k-wdups-tts-0ablate-content_0")
