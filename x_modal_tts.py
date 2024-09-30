@@ -5,7 +5,7 @@ from datasets import concatenate_datasets
 import random
 
 tkn = "google/gemma-2-2b"
-dsn = "amuvarma/750k-raw_dups3-0"
+dsn = "amuvarma/raw_500k_0"
 tokeniser_length = 256000
 pad_token = 0
 
