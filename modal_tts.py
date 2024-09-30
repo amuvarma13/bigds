@@ -35,9 +35,22 @@ audio_tokens_start = tokeniser_length + 10
 ds = load_dataset(dsn, split='train')
 
 
-ds = ds[:500000]
 
 
+def limit_dataset(examples, idx):
+    end_idx = min(500000 - idx[0], len(next(iter(examples.values()))))
+    return {k: v[:end_idx] for k, v in examples.items()}
+
+max_samples = 500000
+
+
+new_ds = ds.map(
+    limit_dataset,
+    with_indices=True,
+    num_proc=num_threads,
+    batched=True,
+    desc=f"Limiting dataset to {max_samples} samples"
+)
 
 
 
@@ -59,7 +72,7 @@ def create_audio_tokens(example):
 
 
 # Apply the function to create the new column using multithreading
-ds_aud = ds.map(
+ds_aud = new_ds.map(
     create_audio_tokens,
     num_proc=num_threads,  # Use the globally defined num_threads
     desc="Creating audio_tokens column"  # Optional: adds a progress bar description
