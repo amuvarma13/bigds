@@ -33,8 +33,11 @@ end_of_ai =  tokeniser_length + 6
 audio_tokens_start = tokeniser_length + 10
 
 ds = load_dataset(dsn)
+ds["train"] = ds
 
 ds = ds.select(range(500000))
+
+ds = ds["train"]
 
 
 
