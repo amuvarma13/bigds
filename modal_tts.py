@@ -35,7 +35,7 @@ audio_tokens_start = tokeniser_length + 10
 ds = load_dataset(dsn, split='train')
 
 
-ds = ds.select(range(500000))
+ds = ds[:500000]
 
 
 
@@ -59,7 +59,7 @@ def create_audio_tokens(example):
 
 
 # Apply the function to create the new column using multithreading
-ds_aud = ds['train'].map(
+ds_aud = ds.map(
     create_audio_tokens,
     num_proc=num_threads,  # Use the globally defined num_threads
     desc="Creating audio_tokens column"  # Optional: adds a progress bar description
