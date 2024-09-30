@@ -35,7 +35,7 @@ audio_tokens_start = tokeniser_length + 10
 ds = load_dataset(dsn, split='train')
 
 
-ds = ds["train"].select(range(500000))
+ds = ds.select(range(500000))
 
 
 
