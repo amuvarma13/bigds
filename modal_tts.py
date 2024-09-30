@@ -5,7 +5,7 @@ from datasets import concatenate_datasets
 import random
 
 tkn = "google/gemma-2-2b"
-dsn = "amuvarma/raw_500k_0"
+dsn = "amuvarma/750k-raw"
 tokeniser_length = 256000
 pad_token = 0
 
@@ -34,7 +34,9 @@ audio_tokens_start = tokeniser_length + 10
 
 ds = load_dataset(dsn)
 
-total_examples = len(ds['train'])
+ds = ds['train'].select(range(500000))
+
+
 
 
 def create_audio_tokens(example):
