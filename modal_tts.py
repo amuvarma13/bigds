@@ -5,7 +5,7 @@ from datasets import concatenate_datasets
 import random
 
 tkn = "google/gemma-2-2b"
-dsn = "amuvarma/750k-raw"
+dsn = "amuvarma/raw_500k_0"
 tokeniser_length = 256000
 pad_token = 0
 
@@ -154,4 +154,4 @@ full_processed_padded = full_processed_padded.map(
     num_proc=88
 )
 
-full_processed_padded.push_to_hub("amuvarma/750k-wdups-tts-0")
+full_processed_padded.push_to_hub("amuvarma/500k-wdups-tts-1")
