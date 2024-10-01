@@ -175,7 +175,7 @@ import logging
 import psutil
 
 def load_and_combine_parquet_files_into_dataset(files):
-    local_file_routes = [f"downloaded_parquet_files/data/{file}" for file in files]
+    local_file_routes = [f"downloaded_parquet_files/{file}" for file in files]
     sub_ds_tables = []
     missing_files = []
 
