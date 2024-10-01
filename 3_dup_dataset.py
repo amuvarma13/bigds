@@ -3,8 +3,8 @@ import multiprocessing
 
 num_threads = multiprocessing.cpu_count()
 
-ds_name = "amuvarma/6-interleave-800k-0"
-ds = load_dataset(ds_name)
+dsn = "eliasfiz/audio_2m_combined"
+ds = load_dataset(dsn)
 
 
 
@@ -56,4 +56,4 @@ dataset = ds['train']  # Assuming you want to process the 'train' split
 processed_dataset = remove_excess_consecutive_integers(dataset)
 
 
-processed_dataset.push_to_hub("amuvarma/750k-raw_dups3-0")
+processed_dataset.push_to_hub("amuvarma/2.2m-n3dups")

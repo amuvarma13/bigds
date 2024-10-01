@@ -154,4 +154,4 @@ full_processed_padded = full_processed_padded.map(
     num_proc=88
 )
 
-full_processed_padded.push_to_hub("amuvarma/500k-wdups-tts-1")
+full_processed_padded.push_to_hub("amuvarma/2.2-wdups-tts-1")
