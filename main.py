@@ -217,8 +217,8 @@ def load_and_combine_parquet_files_into_dataset(files):
 try:
     files = ["file1.parquet", "file2.parquet", "file3.parquet"]
     my_dataset = load_and_combine_parquet_files_into_dataset(files)
+    my_dataset.push_to_hub("amuvarma/tts-10k-part-3")
     print("Dataset loaded successfully")
 except Exception as e:
     print(f"Failed to load dataset: {str(e)}")
 
-my_dataset.push_to_hub("amuvarma/tts-10k-part-3")
