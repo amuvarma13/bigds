@@ -167,14 +167,57 @@ download_dataset_parquet_files(dataset_name, split, local_dir, files_to_download
 print("Downloaded all files")
 
 
+import pyarrow as pa
+import pyarrow.parquet as pq
+from datasets import Dataset
+import os
+import logging
+import psutil
 
 def load_and_combine_parquet_files_into_dataset(files):
-  local_file_routes = [f"downloaded_parquet_files/data/{file}" for file in files]
-  sub_ds_tables = [pq.read_table(route) for route in local_file_routes]
-  combined_table = pa.concat_tables(sub_ds_tables)
-  dataset = Dataset(combined_table)
-  return dataset
+    try:
+        local_file_routes = [f"downloaded_parquet_files/data/{file}" for file in files]
+        sub_ds_tables = []
 
-my_dataset = load_and_combine_parquet_files_into_dataset(files_to_download)
+        for route in local_file_routes:
+            if not os.path.exists(route):
+                raise FileNotFoundError(f"File not found: {route}")
+
+            try:
+                table = pq.read_table(route)
+                sub_ds_tables.append(table)
+            except pa.lib.ArrowIOError as e:
+                logging.error(f"Error reading file {route}: {str(e)}")
+                continue
+
+        if not sub_ds_tables:
+            raise ValueError("No valid tables were loaded")
+
+        # Check available memory before concatenation
+        available_memory = psutil.virtual_memory().available
+        total_table_memory = sum(table.nbytes for table in sub_ds_tables)
+        
+        if total_table_memory > available_memory:
+            raise MemoryError("Not enough memory to concatenate tables")
+
+        combined_table = pa.concat_tables(sub_ds_tables)
+        dataset = Dataset(combined_table)
+        return dataset
+
+    except MemoryError as e:
+        logging.error(f"Out of memory error: {str(e)}")
+        # You might want to implement a fallback strategy here, such as processing in batches
+        raise
+    except Exception as e:
+        logging.error(f"An unexpected error occurred: {str(e)}")
+        raise
+
+# Example usage
+try:
+    files = ["file1.parquet", "file2.parquet", "file3.parquet"]
+    my_dataset = load_and_combine_parquet_files_into_dataset(files)
+    print("Dataset loaded successfully")
+except Exception as e:
+    print(f"Failed to load dataset: {str(e)}")
 
 my_dataset.push_to_hub("amuvarma/tts-10k-part-3")
