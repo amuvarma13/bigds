@@ -174,6 +174,7 @@ import os
 import logging
 import psutil
 
+my_dataset = None
 def load_and_combine_parquet_files_into_dataset(files):
     try:
         local_file_routes = [f"downloaded_parquet_files/data/{file}" for file in files]
