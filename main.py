@@ -9,7 +9,6 @@ dataset_name = "CanopyLabs/audio_2m_small"
 split = "train"
 local_dir = "./downloaded_parquet_files"
 files_to_download = [
-
     "vm_0-00000-of-00001.parquet",
     "vm_107-00000-of-00001.parquet",
     "vm_108-00000-of-00001.parquet",
@@ -164,6 +163,8 @@ def download_dataset_parquet_files(dataset_name, split, local_dir, files_to_down
 
 files_to_download_ext = [f"data/{filename}" for filename in files_to_download]
 download_dataset_parquet_files(dataset_name, split, local_dir, files_to_download_ext)
+
+print("Downloaded all files")
 
 
 
