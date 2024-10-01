@@ -174,50 +174,58 @@ import os
 import logging
 import psutil
 
-my_dataset = None
 def load_and_combine_parquet_files_into_dataset(files):
+    local_file_routes = [f"downloaded_parquet_files/data/{file}" for file in files]
+    sub_ds_tables = []
+    missing_files = []
+
+    for route in local_file_routes:
+        if not os.path.exists(route):
+            logging.warning(f"File not found: {route}")
+            missing_files.append(route)
+            continue
+
+        try:
+            table = pq.read_table(route)
+            sub_ds_tables.append(table)
+        except pa.lib.ArrowIOError as e:
+            logging.error(f"Error reading file {route}: {str(e)}")
+            continue
+
+    if not sub_ds_tables:
+        logging.warning("No valid tables were loaded")
+        return None, missing_files
+
     try:
-        local_file_routes = [f"downloaded_parquet_files/data/{file}" for file in files]
-        sub_ds_tables = []
-
-        for route in local_file_routes:
-            if not os.path.exists(route):
-                raise FileNotFoundError(f"File not found: {route}")
-
-            try:
-                table = pq.read_table(route)
-                sub_ds_tables.append(table)
-            except pa.lib.ArrowIOError as e:
-                logging.error(f"Error reading file {route}: {str(e)}")
-                continue
-
-        if not sub_ds_tables:
-            raise ValueError("No valid tables were loaded")
-
         # Check available memory before concatenation
         available_memory = psutil.virtual_memory().available
         total_table_memory = sum(table.nbytes for table in sub_ds_tables)
         
         if total_table_memory > available_memory:
-            raise MemoryError("Not enough memory to concatenate tables")
+            logging.warning("Not enough memory to concatenate all tables. Processing a subset.")
+            # Process as many tables as possible given the available memory
+            while total_table_memory > available_memory and len(sub_ds_tables) > 1:
+                sub_ds_tables.pop()
+                total_table_memory = sum(table.nbytes for table in sub_ds_tables)
 
         combined_table = pa.concat_tables(sub_ds_tables)
         dataset = Dataset(combined_table)
-        return dataset
+        return dataset, missing_files
 
-    except MemoryError as e:
-        logging.error(f"Out of memory error: {str(e)}")
-        # You might want to implement a fallback strategy here, such as processing in batches
-        raise
     except Exception as e:
         logging.error(f"An unexpected error occurred: {str(e)}")
-        raise
+        return None, missing_files
 
 # Example usage
-try:
-    my_dataset = load_and_combine_parquet_files_into_dataset(files_to_download_ext)
-    my_dataset.push_to_hub("amuvarma/tts-10k-part-3")
-    print("Dataset loaded successfully")
-except Exception as e:
-    print(f"Failed to load dataset: {str(e)}")
 
+dataset, missing_files = load_and_combine_parquet_files_into_dataset(files_to_download_ext)
+
+if dataset is not None:
+    print("Dataset loaded successfully")
+    print(f"Number of rows: {len(dataset)}")
+    print(f"Number of columns: {len(dataset.column_names)}")
+else:
+    print("Failed to load dataset")
+
+if missing_files:
+    print(f"The following files were not found: {', '.join(missing_files)}")
