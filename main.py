@@ -167,65 +167,14 @@ download_dataset_parquet_files(dataset_name, split, local_dir, files_to_download
 print("Downloaded all files")
 
 
-import pyarrow as pa
-import pyarrow.parquet as pq
-from datasets import Dataset
-import os
-import logging
-import psutil
 
 def load_and_combine_parquet_files_into_dataset(files):
-    local_file_routes = [f"downloaded_parquet_files/{file}" for file in files]
-    sub_ds_tables = []
-    missing_files = []
+  local_file_routes = [f"downloaded_parquet_files/data/{file}" for file in files]
+  sub_ds_tables = [pq.read_table(route) for route in local_file_routes]
+  combined_table = pa.concat_tables(sub_ds_tables)
+  dataset = Dataset(combined_table)
+  return dataset
 
-    for route in local_file_routes:
-        if not os.path.exists(route):
-            logging.warning(f"File not found: {route}")
-            missing_files.append(route)
-            continue
+my_dataset = load_and_combine_parquet_files_into_dataset(files_to_download)
 
-        try:
-            table = pq.read_table(route)
-            sub_ds_tables.append(table)
-        except pa.lib.ArrowIOError as e:
-            logging.error(f"Error reading file {route}: {str(e)}")
-            continue
-
-    if not sub_ds_tables:
-        logging.warning("No valid tables were loaded")
-        return None, missing_files
-
-    try:
-        # Check available memory before concatenation
-        available_memory = psutil.virtual_memory().available
-        total_table_memory = sum(table.nbytes for table in sub_ds_tables)
-        
-        if total_table_memory > available_memory:
-            logging.warning("Not enough memory to concatenate all tables. Processing a subset.")
-            # Process as many tables as possible given the available memory
-            while total_table_memory > available_memory and len(sub_ds_tables) > 1:
-                sub_ds_tables.pop()
-                total_table_memory = sum(table.nbytes for table in sub_ds_tables)
-
-        combined_table = pa.concat_tables(sub_ds_tables)
-        dataset = Dataset(combined_table)
-        return dataset, missing_files
-
-    except Exception as e:
-        logging.error(f"An unexpected error occurred: {str(e)}")
-        return None, missing_files
-
-# Example usage
-
-dataset, missing_files = load_and_combine_parquet_files_into_dataset(files_to_download_ext)
-
-if dataset is not None:
-    print("Dataset loaded successfully")
-    print(f"Number of rows: {len(dataset)}")
-    print(f"Number of columns: {len(dataset.column_names)}")
-else:
-    print("Failed to load dataset")
-
-if missing_files:
-    print(f"The following files were not found: {', '.join(missing_files)}")
+my_dataset.push_to_hub("amuvarma/tts-10k-part-3")
