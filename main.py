@@ -157,4 +157,4 @@ def load_and_combine_parquet_files_into_dataset(files):
 
 my_dataset = load_and_combine_parquet_files_into_dataset(files_to_download)
 
-my_dataset.push_to_hub("amuvarma/6-interleave-800k-0")
+my_dataset.push_to_hub("amuvarma/tts-10k-part-1")
