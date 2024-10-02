@@ -145,8 +145,16 @@ full_processed_padded = full_processed_padded.map(
     num_proc=88
 )
 
-selected_columns = ["input_ids", "attention_mask", "labels"]
-dataset_to_upload = full_processed_padded.select(selected_columns)
+all_columns = full_processed_padded.column_names
 
-# Now upload the dataset with only the selected columns
+# Specify the columns we want to keep
+columns_to_keep = ["input_ids", "attention_mask", "labels"]
+
+# Identify columns to remove
+columns_to_remove = [col for col in all_columns if col not in columns_to_keep]
+
+# Remove unwanted columns
+dataset_to_upload = full_processed_padded.remove_columns(columns_to_remove)
+
+# Now upload the dataset with only the desired columns
 dataset_to_upload.push_to_hub("amuvarma/2.2-dups3-tts-0")
