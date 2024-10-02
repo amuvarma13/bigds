@@ -57,10 +57,9 @@ def create_audio_tokens(example):
     return {'audio_tokens': audio_tokens}
 
 
-# Apply the function to create the new column using multithreading
 ds_aud = ds.map(
     create_audio_tokens,
-    num_proc=num_threads,  # Use the globally defined num_threads
+    num_proc=num_threads, 
     desc="Creating audio_tokens column"  # Optional: adds a progress bar description
 )
 
@@ -74,14 +73,6 @@ ds_txt = ds_aud.map(
     num_proc=num_threads,
     desc="Creating text_tokens column"
 )
-
-def load_file_to_list(file_path):
-    with open(file_path, 'r') as file:
-        return [line.strip() for line in file]
-
-
-
-
 
 
 
