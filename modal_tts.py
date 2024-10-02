@@ -145,4 +145,8 @@ full_processed_padded = full_processed_padded.map(
     num_proc=88
 )
 
-full_processed_padded.push_to_hub("amuvarma/2.2-dups3-tts-0")
+selected_columns = ["input_ids", "attention_mask", "labels"]
+dataset_to_upload = full_processed_padded.select(columns=selected_columns)
+
+# Now upload the dataset with only the selected columns
+dataset_to_upload.push_to_hub("amuvarma/2.2-dups3-tts-0")
