@@ -5,7 +5,7 @@ from datasets import concatenate_datasets
 import random
 
 tkn = "google/gemma-2-2b"
-dsn = "amuvarma/2.2m-3dups"
+dsn = "eliasfiz/audio_2m_combined"
 tokeniser_length = 256000
 pad_token = 0
 
@@ -157,4 +157,4 @@ columns_to_remove = [col for col in all_columns if col not in columns_to_keep]
 dataset_to_upload = full_processed_padded.remove_columns(columns_to_remove)
 
 # Now upload the dataset with only the desired columns
-dataset_to_upload.push_to_hub("amuvarma/2.2-dups3-tts-0")
+dataset_to_upload.push_to_hub("amuvarma/2.2-wdups-tts-0")
