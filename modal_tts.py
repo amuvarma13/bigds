@@ -15,9 +15,9 @@ cpu_count = multiprocessing.cpu_count()
 
 num_threads = cpu_count
 
-pad_token = 128009
+pad_token = tokeniser_length + 7
 start_of_text = 128000
-end_of_text = tokeniser_length + 7
+end_of_text = 128009
 
 start_of_speech = tokeniser_length + 1
 end_of_speech = tokeniser_length + 2
