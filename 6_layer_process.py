@@ -1,6 +1,7 @@
 from datasets import load_dataset
 from transformers import AutoTokenizer
 import datasets
+import os
 
 
 tok_name = "google/gemma-2-2b"
@@ -22,7 +23,7 @@ end_of_speech = tokeniser_len + 6
 
 start_of_audio_token_index = tokeniser_len + 7
 
-fac_order = ['facodec_1', 'facodec_0', 'facodec_3']
+fac_order = ['facodec_1']
 
 
 def process_dataset(dataset):

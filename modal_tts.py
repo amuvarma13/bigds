@@ -6,7 +6,6 @@ import random
 
 tkn = "meta-llama/Llama-3.2-3B-Instruct"
 dsn = "eliasfiz/audio_2m_combined"
-tokeniser_length = 128256
 
 
 tokenizer = AutoTokenizer.from_pretrained(tkn)
@@ -14,6 +13,8 @@ tokenizer = AutoTokenizer.from_pretrained(tkn)
 cpu_count = multiprocessing.cpu_count()
 
 num_threads = cpu_count
+
+tokeniser_length = 128256
 
 pad_token = tokeniser_length + 7
 start_of_text = 128000
