@@ -52,8 +52,7 @@ def create_audio_tokens(example):
     max_length = len(example['facodec_0'])
 
     # Define the new order of columns for processing
-    # column_order = [1, 0, 2, 3, 4, 5]
-    column_order = [1]
+    column_order = [1, 0, 2, 3, 4, 5]
 
     for j in range(max_length):
         for i, original_i in enumerate(column_order):

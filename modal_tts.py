@@ -4,8 +4,10 @@ from transformers import AutoTokenizer
 from datasets import concatenate_datasets
 import random
 
-tkn = "meta-llama/Llama-3.2-3B-Instruct"
-dsn = "eliasfiz/audio_2m_combined"
+tkn = "google/gemma-2-2b"
+dsn = "amuvarma/2.2m-3dups"
+tokeniser_length = 256000
+pad_token = 0
 
 
 tokenizer = AutoTokenizer.from_pretrained(tkn)
@@ -14,11 +16,9 @@ cpu_count = multiprocessing.cpu_count()
 
 num_threads = cpu_count
 
-tokeniser_length = 128256
 
-pad_token = tokeniser_length + 7
-start_of_text = 128000
-end_of_text = 128009
+start_of_text = 2
+end_of_text = 1
 
 start_of_speech = tokeniser_length + 1
 end_of_speech = tokeniser_length + 2
@@ -45,7 +45,7 @@ def create_audio_tokens(example):
     audio_tokens = []
     max_length = len(example['facodec_0'])
 
-    column_order = [1, 0, 2, 3, 4, 5]
+    column_order = [1]
 
     for j in range(max_length):
         for i, original_i in enumerate(column_order):
@@ -157,4 +157,4 @@ columns_to_remove = [col for col in all_columns if col not in columns_to_keep]
 dataset_to_upload = full_processed_padded.remove_columns(columns_to_remove)
 
 # Now upload the dataset with only the desired columns
-dataset_to_upload.push_to_hub("amuvarma/2.-llama-wdups-tts-0")
+dataset_to_upload.push_to_hub("amuvarma/2.2-dups3-onlyrow1-tts-0")
