@@ -7,7 +7,7 @@ import random
 tkn = "google/gemma-2-2b"
 dsn = "amuvarma/2.2m-3dups"
 tokeniser_length = 256000
-pad_token = 0
+
 
 
 tokenizer = AutoTokenizer.from_pretrained(tkn)
@@ -16,7 +16,7 @@ cpu_count = multiprocessing.cpu_count()
 
 num_threads = cpu_count
 
-
+pad_token = 0
 start_of_text = 2
 end_of_text = 1
 
@@ -113,7 +113,7 @@ tts_dataset = tts_dataset.map(
 )
 
 
-max_length = 8192
+max_length = 1024
 
 
 def pad_and_create_mask(example):
