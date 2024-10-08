@@ -5,7 +5,7 @@ from datasets import concatenate_datasets
 import random
 
 tkn = "meta-llama/Llama-3.2-3B-Instruct"
-dsn = "amuvarma/2.2m-3dups"
+dsn = "amuvarma/finteune-24k-0"
 tokeniser_length = 256000
 
 
