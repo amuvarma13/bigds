@@ -6,7 +6,7 @@ import random
 
 tkn = "meta-llama/Llama-3.2-3B-Instruct"
 dsn = "amuvarma/finteune-24k-0"
-tokeniser_length = 256000
+
 
 
 
@@ -16,9 +16,9 @@ cpu_count = multiprocessing.cpu_count()
 
 num_threads = cpu_count
 
-
-start_of_text = 2
-end_of_text = 1
+tokeniser_length = 128256
+start_of_text = 128000
+end_of_text = 128009
 
 start_of_speech = tokeniser_length + 1
 end_of_speech = tokeniser_length + 2
