@@ -5,8 +5,7 @@ from datasets import concatenate_datasets
 import random
 
 tkn = "meta-llama/Llama-3.2-3B-Instruct"
-dsn = "amuvarma/finteune-24k-0"
-
+dsn = "amuvarma/2.2m-3dups"
 
 
 
@@ -15,6 +14,7 @@ tokenizer = AutoTokenizer.from_pretrained(tkn)
 cpu_count = multiprocessing.cpu_count()
 
 num_threads = cpu_count
+
 
 tokeniser_length = 128256
 start_of_text = 128000
