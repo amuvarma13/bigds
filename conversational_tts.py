@@ -176,26 +176,26 @@ tts_dataset = ds_txt
 def create_input_ids(example):
     input_ids = (
         [start_of_human] +
-        example['human1'] +
+        example['human1_text'] +
         [end_of_human]+
         [start_of_ai] +
-        example['transcript1'] +
+        example['transcript1_text'] +
         [start_of_speech] +
         example['audio_tokens_1'] +
         [end_of_speech, end_of_ai] +
         [start_of_human] +
-        example['human2'] +
+        example['human2_text'] +
         [end_of_human]+
         [start_of_ai] +
-        example['transcript2'] +
+        example['transcript2_text'] +
         [start_of_speech] +
         example['audio_tokens_2'] +
         [end_of_speech, end_of_ai] +
         [start_of_human] +
-        example['human3'] +
+        example['human3_text'] +
         [end_of_human]+
         [start_of_ai] +
-        example['transcript3'] +
+        example['transcript3_text'] +
         [start_of_speech] +
         example['audio_tokens_3'] +
         [end_of_speech, end_of_ai]
