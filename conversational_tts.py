@@ -211,7 +211,7 @@ tts_dataset = tts_dataset.map(
 )
 
 
-max_length = 25000
+max_length = 24000
 
 
 def pad_and_create_mask(example):
