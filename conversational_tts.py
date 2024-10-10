@@ -70,7 +70,7 @@ def create_audio_tokens2(example):
             modified_token = example[facodec_column][j] + offset
             audio_tokens.append(modified_token)
 
-    return {'audio_tokens_1': audio_tokens}
+    return {'audio_tokens_2': audio_tokens}
 
 ds_aud = ds_aud.map(
     create_audio_tokens2,
@@ -91,7 +91,7 @@ def create_audio_tokens3(example):
             modified_token = example[facodec_column][j] + offset
             audio_tokens.append(modified_token)
 
-    return {'audio_tokens_1': audio_tokens}
+    return {'audio_tokens_3': audio_tokens}
 
 ds_aud = ds_aud.map(
     create_audio_tokens3,
