@@ -39,7 +39,7 @@ ds = load_dataset(dsn, split='train')
 
 def create_audio_tokens1(example):
     audio_tokens = []
-    max_length = len(example['facodec_0'])
+    max_length = len(example['facodec_0_idx1'])
 
     column_order = [1]
 
@@ -59,7 +59,7 @@ ds_aud = ds.map(
 )
 def create_audio_tokens2(example):
     audio_tokens = []
-    max_length = len(example['facodec_0'])
+    max_length = len(example['facodec_0_idx2'])
 
     column_order = [1]
 
@@ -80,7 +80,7 @@ ds_aud = ds_aud.map(
 
 def create_audio_tokens3(example):
     audio_tokens = []
-    max_length = len(example['facodec_0'])
+    max_length = len(example['facodec_0_idx3'])
 
     column_order = [1]
 
