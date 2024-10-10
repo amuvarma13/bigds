@@ -41,7 +41,7 @@ def create_audio_tokens1(example):
     audio_tokens = []
     max_length = len(example['facodec_0_idx1'])
 
-    column_order = [1]
+    column_order = [1,0,2,3,4,5]
 
     for j in range(max_length):
         for i, original_i in enumerate(column_order):
@@ -61,7 +61,7 @@ def create_audio_tokens2(example):
     audio_tokens = []
     max_length = len(example['facodec_0_idx2'])
 
-    column_order = [1]
+    column_order = [1,0,2,3,4,5]
 
     for j in range(max_length):
         for i, original_i in enumerate(column_order):
@@ -82,7 +82,7 @@ def create_audio_tokens3(example):
     audio_tokens = []
     max_length = len(example['facodec_0_idx3'])
 
-    column_order = [1]
+    column_order = [1,0,2,3,4,5]
 
     for j in range(max_length):
         for i, original_i in enumerate(column_order):
