@@ -50,6 +50,7 @@ ds_txt = ds.map(
 )
 
 def create_question_tokens(example):
+    
     text_tokens = tokenizer.encode(example['question'], add_special_tokens=True)
     text_tokens.append(end_of_text)  # Append token 1 to the end
     return {'question_text': text_tokens}
@@ -61,6 +62,8 @@ ds_txt = ds_txt.map(
 )
 
 def create_answers_tokens(example):
+
+    print(example['answers']["text"])
     text_tokens = tokenizer.encode(example['answers']["text"], add_special_tokens=True)
     text_tokens.append(end_of_text)  # Append token 1 to the end
     return {'answer_text': text_tokens}
