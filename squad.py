@@ -44,7 +44,7 @@ def create_context_tokens(example):
     return {'context_text': text_tokens}
 
 ds_txt = ds.map(
-    create_text_tokensh1,
+    create_context_tokens,
     num_proc=num_threads,
     desc="Creating text_tokens column"
 )
