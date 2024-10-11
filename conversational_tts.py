@@ -6,7 +6,6 @@ import random
 
 tkn = "meta-llama/Llama-3.2-3B-Instruct"
 dsn = "eliasfiz/merged_audio_conversational_facodec"
-tokeniser_length = 256000
 
 
 
