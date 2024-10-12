@@ -93,9 +93,9 @@ tts_dataset = tts_dataset.map(
 
 def create_input_ids(example):
     input_ids = (
-        # [start_of_human] +
-        # example['system_message'] +
-        # [end_of_human]+
+        [start_of_human] +
+        example['system_message'] +
+        [end_of_human]+
         [start_of_ai, start_of_speech] +
         example['audio_tokens'] +
         [end_of_speech, end_of_ai]
