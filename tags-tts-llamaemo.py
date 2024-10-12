@@ -76,25 +76,10 @@ ds_txt = ds_aud.map(
 tts_dataset = ds_txt
 
 
-def process_tts_row(example):
-    combined_text = example['transcript']
-    tokens = tokenizer.encode(combined_text, add_special_tokens=True)
-    tokens.append(end_of_text)
-    example['system_message'] = tokens
-    return example
-
-
-tts_dataset = tts_dataset.map(
-    process_tts_row,
-    num_proc=num_threads,
-    desc="Processing TTS dataset"
-)
-
-
 def create_input_ids(example):
     input_ids = (
         [start_of_human] +
-        example['system_message'] +
+        example['text_tokens'] +
         [end_of_human]+
         [start_of_ai, start_of_speech] +
         example['audio_tokens'] +
