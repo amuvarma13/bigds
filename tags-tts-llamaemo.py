@@ -5,7 +5,7 @@ from datasets import concatenate_datasets
 import random
 
 tkn = "meta-llama/Llama-3.2-3B-Instruct"
-dsn = "amuvarma/5200-emo-audio"
+dsn = "amuvarma/5200-emo-audio-nodups"
 
 
 
@@ -142,4 +142,4 @@ columns_to_remove = [col for col in all_columns if col not in columns_to_keep]
 dataset_to_upload = full_processed_padded.remove_columns(columns_to_remove)
 
 # Now upload the dataset with only the desired columns
-dataset_to_upload.push_to_hub("amuvarma/5200-emo-instruct")
+dataset_to_upload.push_to_hub("amuvarma/5200-emo-instruct-3dups")
