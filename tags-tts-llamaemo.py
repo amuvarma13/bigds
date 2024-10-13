@@ -5,7 +5,7 @@ from datasets import concatenate_datasets
 import random
 
 tkn = "meta-llama/Llama-3.2-3B-Instruct"
-dsn = "eliasfiz/emo300_facodec"
+dsn = "eliasfiz/annoted_dataset-5200_facodeced"
 
 
 
@@ -61,7 +61,7 @@ ds_aud = ds.map(
 def create_text_tokens(example):
     emotion =   example['emotion']
     instruction_string = f"<{emotion}> {example['transcript']} </{emotion}>"
-    instruction_string = f"{example['transcript']}"
+
 
     text_tokens = tokenizer.encode(instruction_string, add_special_tokens=True)
     text_tokens.append(end_of_text)  # Append token 1 to the end
@@ -142,4 +142,4 @@ columns_to_remove = [col for col in all_columns if col not in columns_to_keep]
 dataset_to_upload = full_processed_padded.remove_columns(columns_to_remove)
 
 # Now upload the dataset with only the desired columns
-dataset_to_upload.push_to_hub("amuvarma/300-emo-instruct-no-tags")
+dataset_to_upload.push_to_hub("amuvarma/5200-emo-instruct")
