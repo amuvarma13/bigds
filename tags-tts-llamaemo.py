@@ -5,7 +5,7 @@ from datasets import concatenate_datasets
 import random
 
 tkn = "meta-llama/Llama-3.2-3B-Instruct"
-dsn = "amuvarma/5200-emo-audio-nodups"
+dsn = "amuvarma/luna-trejo-novad-0"
 
 
 
@@ -60,7 +60,9 @@ ds_aud = ds.map(
 
 def create_text_tokens(example):
     emotion =   example['emotion']
-    instruction_string = f"<{emotion}> {example['transcript']} </{emotion}>"
+    # instruction_string = f"<{emotion}> {example['transcript']} </{emotion}>"
+    instruction_string = f"{example['transcript']}"
+
 
 
     text_tokens = tokenizer.encode(instruction_string, add_special_tokens=True)
