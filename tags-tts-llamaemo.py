@@ -13,7 +13,7 @@ tokenizer = AutoTokenizer.from_pretrained(tkn)
 
 cpu_count = multiprocessing.cpu_count()
 
-num_threads = cpu_count
+num_threads = cpu_count 
 
 
 tokeniser_length = 128256
