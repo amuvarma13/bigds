@@ -32,7 +32,7 @@ pad_token = tokeniser_length + 7
 
 audio_tokens_start = tokeniser_length + 10
 
-ds = load_dataset(dsn, split='train')
+ds = load_dataset(dsn, split='vm_0')
 
 
 
