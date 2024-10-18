@@ -4,7 +4,7 @@ import multiprocessing
 num_threads = multiprocessing.cpu_count()
 
 dsn = "eliasfiz/audio-lunatrejo-0_facodec"
-ds = load_dataset(dsn)
+ds = load_dataset(dsn, split='vm_0')
 
 
 
