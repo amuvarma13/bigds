@@ -52,7 +52,7 @@ def remove_excess_consecutive_integers(dataset):
     return processed_dataset
 
 # Use the function
-dataset = ds['train']  # Assuming you want to process the 'train' split
+dataset = ds  # Assuming you want to process the 'train' split
 processed_dataset = remove_excess_consecutive_integers(dataset)
 
 
