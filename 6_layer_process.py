@@ -7,7 +7,7 @@ import os
 tkn = "meta-llama/Llama-3.2-3B-Instruct"
 tokeniser = AutoTokenizer.from_pretrained(tkn)
 
-push_name = "amuvarma/50k-llama-dups3-contonly"
+push_name = "amuvarma/50k-llama-dups3-6row"
 
 ds_name = "amuvarma/50k-llama-dups3-raw"
 ds = load_dataset(ds_name)
@@ -29,7 +29,7 @@ pad_token = tokeniser_length + 7
 
 audio_tokens_start = tokeniser_length + 10
 
-fac_order = ['facodec_1']
+fac_order = ['facodec_1', 'facodec_0', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5']
 
 
 def process_dataset(dataset):
