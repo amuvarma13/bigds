@@ -4,24 +4,30 @@ import datasets
 import os
 
 
-tok_name = "google/gemma-2-2b"
-tokeniser = AutoTokenizer.from_pretrained(tok_name)
+tkn = "meta-llama/Llama-3.2-3B-Instruct"
+tokeniser = AutoTokenizer.from_pretrained(tkn)
 
-push_name = "amuvarma/gemma-750k-1row"
+push_name = "amuvarma/50k-llama-dups3-contonly"
 
-ds_name = "amuvarma/1m_raw_dups3"
+ds_name = "amuvarma/50k-llama-dups3-raw"
 ds = load_dataset(ds_name)
 
 
-tokeniser_len = 256000
-start_of_human = tokeniser_len + 1
-end_of_human = tokeniser_len + 2
-start_of_ai = tokeniser_len + 3
-end_of_ai =  tokeniser_len + 4
-start_of_speech = tokeniser_len + 5
-end_of_speech = tokeniser_len + 6
+tokeniser_length = 128256
+start_of_text = 128000
+end_of_text = 128009
 
-start_of_audio_token_index = tokeniser_len + 7
+start_of_speech = tokeniser_length + 1
+end_of_speech = tokeniser_length + 2
+
+start_of_human = tokeniser_length + 3
+end_of_human = tokeniser_length + 4
+
+start_of_ai = tokeniser_length + 5
+end_of_ai =  tokeniser_length + 6
+pad_token = tokeniser_length + 7
+
+audio_tokens_start = tokeniser_length + 10
 
 fac_order = ['facodec_1']
 
@@ -32,7 +38,7 @@ def process_dataset(dataset):
     # Function to add values to facodec columns
     def add_values(example):
         for i, col in enumerate(fac_order):
-            example[col] = [x + start_of_audio_token_index + i * 1024 for x in example[col]]
+            example[col] = [x + audio_tokens_start + i * 1024 for x in example[col]]
         return example
     
     # Apply the transformations
@@ -82,7 +88,7 @@ def create_input_ids(example):
 
 ds_3 = ds_2.map(create_input_ids)
 
-max_length = 8192
+max_length = 2048
 def pad_and_create_mask(example):
     # Assume max_length is defined globally in the notebook
     
