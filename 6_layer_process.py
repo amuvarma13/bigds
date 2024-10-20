@@ -90,26 +90,22 @@ ds_3 = ds_2.map(create_input_ids)
 
 max_length = 2048
 def pad_and_create_mask(example):
-    # Assume max_length is defined globally in the notebook
-    
-    # Pad or truncate input_ids
+
     if len(example['input_ids']) > max_length:
         example['input_ids'] = example['input_ids'][:max_length]
     else:
         padding_length = max_length - len(example['input_ids'])
         example['input_ids'] = example['input_ids'] + [pad_token] * padding_length
     
-    # Create attention_mask
+
     example['attention_mask'] = [1] * len(example['input_ids']) + [0] * (max_length - len(example['input_ids']))
     
-    # Ensure attention_mask is also of length max_length
+
     example['attention_mask'] = example['attention_mask'][:max_length]
     
     return example
 ds_4 = ds_3.map(pad_and_create_mask)
 
-
-pad_token = 0
 def preprocess_function(examples):
     examples['labels'] = [
         (token_id if token_id != pad_token else -100) for token_id in examples['input_ids']
