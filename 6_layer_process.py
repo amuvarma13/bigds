@@ -7,7 +7,7 @@ import os
 tok_name = "google/gemma-2-2b"
 tokeniser = AutoTokenizer.from_pretrained(tok_name)
 
-push_name = "amuvarma/interleave-103-gemma-1m-dup3"
+push_name = "amuvarma/gemma-750k-1row"
 
 ds_name = "amuvarma/1m_raw_dups3"
 ds = load_dataset(ds_name)
