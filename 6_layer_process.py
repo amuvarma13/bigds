@@ -97,7 +97,7 @@ def pad_and_create_mask(example):
         example['input_ids'] = example['input_ids'][:max_length]
     else:
         padding_length = max_length - len(example['input_ids'])
-        example['input_ids'] = example['input_ids'] + [0] * padding_length
+        example['input_ids'] = example['input_ids'] + [pad_token] * padding_length
     
     # Create attention_mask
     example['attention_mask'] = [1] * len(example['input_ids']) + [0] * (max_length - len(example['input_ids']))
