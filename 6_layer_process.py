@@ -9,7 +9,7 @@ tokeniser = AutoTokenizer.from_pretrained(tkn)
 
 push_name = "amuvarma/370k-tts-0"
 
-ds_name = "amuvarma/amuvarma/370k-1-raw"
+ds_name = "amuvarma/370k-1-raw"
 ds = load_dataset(ds_name)
 
 
