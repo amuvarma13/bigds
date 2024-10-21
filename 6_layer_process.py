@@ -122,6 +122,11 @@ ds_5 = ds_4.map(
     desc="Preprocessing dataset"
 )
 
+columns_to_keep = ["input_ids", "attention_mask", "labels"]
+all_columns = ds_5.column_names
+columns_to_remove = [col for col in all_columns if col not in columns_to_keep]
+dataset_to_upload = ds_5.remove_columns(columns_to_remove)
 
 
-ds_5.push_to_hub(push_name)
+
+dataset_to_upload.push_to_hub(push_name)
