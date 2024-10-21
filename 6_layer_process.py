@@ -88,7 +88,7 @@ def create_input_ids(example):
 
 ds_3 = ds_2.map(create_input_ids)
 
-max_length = 8192
+max_length = 2048
 def pad_and_create_mask(example):
     if len(example['input_ids']) > max_length:
         example['input_ids'] = example['input_ids'][:max_length]
