@@ -9,7 +9,7 @@ tokeniser = AutoTokenizer.from_pretrained(tkn)
 
 push_name = "amuvarma/370k-tts-0"
 
-ds_name = "amuvarma/370k-1-raw"
+ds_name = "amuvarma/370k-2-raw"
 ds = load_dataset(ds_name)
 
 
@@ -70,7 +70,8 @@ def tokenize_and_add_to_dataset(dataset):
 ds_2 = tokenize_and_add_to_dataset(ds_1)
 
 def create_input_ids(example):
-    input_ids = [start_of_human]
+    input_ids = [start_of_human] + example['tokenised_text'] + [end_of_human, start_of_ai]
+    
     # Interleave the facodec lists
     max_len = max(len(example[facodec]) for facodec in fac_order)
     
@@ -78,11 +79,8 @@ def create_input_ids(example):
         for facodec in fac_order:
             if i < len(example[facodec]):
                 input_ids.append(example[facodec][i])
-
     
-    input_ids += [end_of_speech, end_of_human, start_of_ai]
-    input_ids += example['tokenised_text'] + [end_of_ai]
-
+    input_ids += [end_of_speech, end_of_ai]
     
     example['input_ids'] = input_ids
     return example
@@ -90,7 +88,7 @@ def create_input_ids(example):
 
 ds_3 = ds_2.map(create_input_ids)
 
-max_length = 2048
+max_length = 8192
 def pad_and_create_mask(example):
     if len(example['input_ids']) > max_length:
         example['input_ids'] = example['input_ids'][:max_length]
