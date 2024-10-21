@@ -7,9 +7,9 @@ import os
 tkn = "meta-llama/Llama-3.2-3B-Instruct"
 tokeniser = AutoTokenizer.from_pretrained(tkn)
 
-push_name = "amuvarma/370k-stt-0"
+push_name = "amuvarma/370k-tts-0"
 
-ds_name = "amuvarma/370k-2-raw"
+ds_name = "amuvarma/370k-1-raw"
 ds = load_dataset(ds_name)
 
 
