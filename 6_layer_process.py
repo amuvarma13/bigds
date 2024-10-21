@@ -7,9 +7,9 @@ import os
 tkn = "meta-llama/Llama-3.2-3B-Instruct"
 tokeniser = AutoTokenizer.from_pretrained(tkn)
 
-push_name = "amuvarma/370k-tts-0"
+push_name = "amuvarma/370k-stt-0"
 
-ds_name = "amuvarma/370k-1-raw"
+ds_name = "amuvarma/370k-2-raw"
 ds = load_dataset(ds_name)
 
 
@@ -70,8 +70,7 @@ def tokenize_and_add_to_dataset(dataset):
 ds_2 = tokenize_and_add_to_dataset(ds_1)
 
 def create_input_ids(example):
-    input_ids = [start_of_human] + example['tokenised_text'] + [end_of_human, start_of_ai]
-    
+    input_ids = [start_of_human]
     # Interleave the facodec lists
     max_len = max(len(example[facodec]) for facodec in fac_order)
     
@@ -79,8 +78,11 @@ def create_input_ids(example):
         for facodec in fac_order:
             if i < len(example[facodec]):
                 input_ids.append(example[facodec][i])
+
     
-    input_ids += [end_of_speech, end_of_ai]
+    input_ids += [end_of_speech, end_of_human, start_of_ai]
+    input_ids += example['tokenised_text'] + [end_of_ai]
+
     
     example['input_ids'] = input_ids
     return example
