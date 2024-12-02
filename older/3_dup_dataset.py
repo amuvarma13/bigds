@@ -46,7 +46,7 @@ def remove_excess_consecutive_integers(dataset, column_name):
         
         # Update facodec columns
         new_row = row.copy()
-        facodec_columns = ['facodec_0', 'facodec_1', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5']
+        facodec_columns = ['facodec_1','facodec_0', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5']
         for idx, col in enumerate(facodec_columns):
             if col in row:
                 new_row[col] = [
