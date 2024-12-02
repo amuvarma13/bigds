@@ -1,0 +1,102 @@
+Say <phrase> in a <emotion> voice 
+Speak <phrase> with <emotion> feeling
+Read <phrase> in a <emotion> tone
+Say <phrase> with <emotion> emphasis
+Declare <phrase> in a <emotion> voice
+Tell me <phrase> with <emotion> feeling
+Recite <phrase> in a <emotion> manner
+State <phrase> with <emotion> intensity
+Utter <phrase> in a <emotion> way
+Vocalize <phrase> with <emotion> feeling
+Voice <phrase> in a <emotion> tone
+Copy out loud <phrase> with <emotion> expression
+Articulate <phrase> in a <emotion> voice
+Present <phrase> with <emotion> feeling
+Deliver <phrase> in a <emotion> way
+Express <phrase> with <emotion> tone
+In a <emotion> voice, say <phrase>
+With <emotion> feeling, speak <phrase>
+Using a <emotion> tone, read <phrase>
+In your most <emotion> voice, say <phrase>
+Let me hear <phrase> in a <emotion> voice
+Speak <phrase> in your most <emotion> tone
+Read aloud <phrase> with <emotion> feeling
+Say <phrase> with <emotion> emphasis
+Let's hear <phrase> in a <emotion> voice
+Give me <phrase> in a <emotion> tone
+I want to hear <phrase> said <emotion>-ly
+Narrate <phrase> in a <emotion> voice
+Read out <phrase> with <emotion> feeling
+Let your voice carry <phrase> with <emotion> tone
+Speak forth <phrase> in a <emotion> manner
+Give voice to <phrase> with <emotion> feeling
+Say <phrase> in a <emotion> way
+Intonate <phrase> with <emotion> expression
+Convey <phrase> in a <emotion> voice
+Communicate <phrase> with <emotion> feeling
+Tell me <phrase> in a <emotion> tone
+Speak the following <phrase> with <emotion> emphasis
+Say out loud <phrase> in a <emotion> voice
+Repeat the following <phrase> with <emotion> feeling
+Relay <phrase> in a <emotion> manner
+Repeat <phrase> with <emotion> emphasis
+Say <phrase> in your most <emotion> tone
+With a <emotion> voice, tell me <phrase>
+In a <emotion> tone, recite <phrase>
+Using your most <emotion> voice, say <phrase>
+Speak out <phrase> in a <emotion> way
+Read <phrase> with your most <emotion> voice
+Tell <phrase> in a <emotion> manner
+Say aloud <phrase> with <emotion> feeling
+In a <emotion> manner, speak <phrase>
+Let your <emotion> voice speak <phrase>
+With <emotion> emphasis, say <phrase>
+Using <emotion> tones, speak <phrase>
+Voice <phrase> with <emotion> expression
+Say <phrase> using a <emotion> tone
+Speak <phrase> in a <emotion> manner
+Read <phrase> with a <emotion> voice
+Tell me <phrase> in your most <emotion> way
+With <emotion> tone, say <phrase>
+In a <emotion> style, speak <phrase>
+Using <emotion> style, say <phrase>
+Announce <phrase> in a <emotion> way
+Declare <phrase> with a <emotion> tone
+Let me hear <phrase> spoken <emotion>-ly
+Read <phrase> in your most <emotion> voice
+Say <phrase> with clear <emotion> feeling
+Speak <phrase> using <emotion> emphasis
+Voice <phrase> with clear <emotion> tone
+Tell <phrase> with <emotion> expression
+Recite <phrase> in your most <emotion> way
+Give me <phrase> with <emotion> emphasis
+Say <phrase> showing <emotion> feeling
+Speak <phrase> demonstrating <emotion> tone
+Read <phrase> expressing <emotion> feeling
+Tell me <phrase> showing <emotion> emphasis
+Voice <phrase> revealing <emotion> tone
+Speak <phrase> displaying <emotion> feeling
+Say <phrase> exhibiting <emotion> expression
+Read <phrase> conveying <emotion> tone
+Tell <phrase> manifesting <emotion> feeling
+Speak <phrase> projecting <emotion> emphasis
+Voice <phrase> reflecting <emotion> tone
+Say <phrase> in a <emotion> tone
+Read <phrase> embodying <emotion> expression
+Tell me <phrase> channeling <emotion> tone
+Speak <phrase> exuding <emotion> feeling
+Voice <phrase> portraying <emotion> emphasis
+Say <phrase> representing <emotion> tone
+Read <phrase> communicating <emotion> feeling
+Tell <phrase> transmitting <emotion> expression
+Speak <phrase> expressing <emotion> spirit
+Voice <phrase> conveying <emotion> character
+Say <phrase> projecting <emotion> mood
+Read <phrase> showing <emotion> attitude
+Tell me <phrase> with <emotion> inflection
+Speak <phrase> using <emotion> modulation
+Voice <phrase> with <emotion> intonation
+Say <phrase> through <emotion> articulation
+Read <phrase> with <emotion> enunciation
+Tell <phrase> using <emotion> pronunciation
+Speak <phrase> with <emotion> vocalization
