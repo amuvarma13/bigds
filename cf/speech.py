@@ -31,7 +31,7 @@ pad_token = tokeniser_length + 7
 
 audio_tokens_start = tokeniser_length + 10
 
-fac_order = ['facodec_1']
+fac_order = ['facodec_1',  'facodec_0', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5']
 
 
 def read_instructions(filename):
