@@ -4,14 +4,13 @@ import multiprocessing
 num_threads = multiprocessing.cpu_count()
 
 dsn = "eliasfiz/audio_2m_combined"
-push_name = "amuvarma/dev-fac-raw-1dups" 
+push_name = "amuvarma/2m-fac-raw-1dups" 
 ds = load_dataset(dsn, split='train')
 print(ds)
 
 
 consecutive_count = 0
 
-ds = ds.select(range(100))
 
 
 def remove_excess_consecutive_integers(dataset, column_name):
