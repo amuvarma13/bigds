@@ -14,7 +14,7 @@ push_name = "amuvarma/orcatext-dev-processed-1"
 ds_name = "amuvarma/combined-shuffled-text-orca-ds"
 ds = load_dataset(ds_name, split="train")
 
-ds = ds.select(range(1000))
+
  
 
 tokeniser_length = 128256
