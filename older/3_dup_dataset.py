@@ -3,8 +3,8 @@ import multiprocessing
 
 num_threads = multiprocessing.cpu_count()
 
-dsn = "eliasfiz/audio"
-push_name = "amuvarma/dev-fac-raw" 
+dsn = "eliasfiz/audio_2m_combined"
+push_name = "amuvarma/dev-fac-raw-1dups" 
 ds = load_dataset(dsn, split='train')
 print(ds)
 
