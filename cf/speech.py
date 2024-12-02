@@ -98,25 +98,22 @@ def create_input_ids(example):
 
 ds_3 = ds_2.map(create_input_ids)
 
-# max_length = 8192
-# def pad_and_create_mask(example):
-#     if len(example['input_ids']) > max_length:
-#         example['input_ids'] = example['input_ids'][:max_length]
-#         example['attention_mask'] = [1] * max_length
-#     else:
-#         padding_length = max_length - len(example['input_ids'])
-#         example['attention_mask'] = [1] * len(example['input_ids']) + [0] * padding_length
-#         example['input_ids'] = example['input_ids'] + [pad_token] * padding_length
+max_length = 8192
+def create_mask(example):
+    if len(example['input_ids']) > max_length:
+        example['attention_mask'] = [1] * max_length
+        example['input_ids'] = example['input_ids'][:max_length]
+    else:
+        example['attention_mask'] = [1] * len(example['input_ids'])
+    
+    return example
 
-#     return example
-# ds_4 = ds_3.map(pad_and_create_mask)
-
-# def preprocess_function(examples):
-#     examples['labels'] = [
-#         [(token_id if token_id != pad_token else -100) for token_id in input_ids]
-#         for input_ids in examples['input_ids']
-#     ]
-#     return examples
+def preprocess_function(examples):
+    examples['labels'] = [
+        [(token_id if token_id != pad_token else -100) for token_id in input_ids]
+        for input_ids in examples['input_ids']
+    ]
+    return examples
 
 
 # num_cpus = os.cpu_count()
@@ -130,10 +127,10 @@ ds_3 = ds_2.map(create_input_ids)
 #     desc="Preprocessing dataset"
 # )
 
-# columns_to_keep = ["input_ids", "attention_mask", "labels"]
-# all_columns = ds_5.column_names
-# columns_to_remove = [col for col in all_columns if col not in columns_to_keep]
-# dataset_to_upload = ds_5.remove_columns(columns_to_remove)
+columns_to_keep = ["input_ids", "attention_mask", "labels"]
+all_columns = ds_3.column_names
+columns_to_remove = [col for col in all_columns if col not in columns_to_keep]
+dataset_to_upload = ds_3.remove_columns(columns_to_remove)
 
 
 
