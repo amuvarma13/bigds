@@ -71,12 +71,4 @@ dataset = ds  # Assuming you want to process the 'train' split
 
 processed_dataset = remove_excess_consecutive_integers(dataset, 'facodec_1')
 
-
-processed_dataset_60k = processed_dataset.select(range(60000))
-processed_dataset_60k.push_to_hub("amuvarma/60k-fac-with-audio-1dups")
-
-processed_dataset_40k = processed_dataset.select(range(60000, 100000))
-processed_dataset_40k.push_to_hub("amuvarma/40k-fac-with-audio-1dups")
-
-
 processed_dataset.push_to_hub(push_name)
