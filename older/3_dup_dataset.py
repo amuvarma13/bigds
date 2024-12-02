@@ -3,14 +3,15 @@ import multiprocessing
 
 num_threads = multiprocessing.cpu_count()
 
-dsn = "eliasfiz/facodec-with-audio"
-push_name = "amuvarma/100k-fac-with-audio-1dups" 
+dsn = "eliasfiz/audio"
+push_name = "amuvarma/dev-fac-raw" 
 ds = load_dataset(dsn, split='train')
 print(ds)
 
+
 consecutive_count = 0
 
-ds = ds.select(range(100000))
+ds = ds.select(range(100))
 
 
 def remove_excess_consecutive_integers(dataset, column_name):
@@ -45,12 +46,11 @@ def remove_excess_consecutive_integers(dataset, column_name):
         
         # Update facodec columns
         new_row = row.copy()
-        # facodec_columns = ['facodec_0', 'facodec_1', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5']
-        facodec_columns = [column_name]
+        facodec_columns = ['facodec_0', 'facodec_1', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5']
         for col in facodec_columns:
             if col in row:
                 new_row[col] = [
-    x + 128266 if isinstance(x, int) else x 
+    x + 128266 + (i*1024) if isinstance(x, int) else x 
     for x in (row[col][i] for i in indices_to_keep if i < len(row[col]))
 ]
 
