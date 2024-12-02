@@ -10,9 +10,9 @@ import random
 tkn = "meta-llama/Llama-3.2-3B-Instruct"
 tokeniser = AutoTokenizer.from_pretrained(tkn)
 
-push_name = "amuvarma/2m-fac-raw-1dups-proc-train"
+push_name = "amuvarma/1m-fac-raw-1dups-proc-train-col-clean"
 
-ds_name = "amuvarma/1m-fac-raw-1dups-decol"
+ds_name = "amuvarma/2m-fac-raw-1dups"
 ds = load_dataset(ds_name)
 
 tokeniser_length = 128256
