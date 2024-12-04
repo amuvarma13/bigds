@@ -144,7 +144,7 @@ def tokenize_and_add_to_dataset(dataset):
     
     return tokenized_dataset
 
-ds_2 = tokenize_and_add_to_dataset(ds_1)
+ds_4 = tokenize_and_add_to_dataset(ds_4)
 
 system_message = "You are an AI assistant who will answer the user's questions and follow the user's instructions."
 
