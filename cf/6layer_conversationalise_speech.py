@@ -69,18 +69,21 @@ ds_3 = process_dataset(ds_2, ['ass3_facodec_1', 'ass3_facodec_0', 'ass3_facodec_
 def interleave_facodec_columns(dataset):
     def interleave(example):
         interleaved = []
-        for i in range(1, 6):
-            interleaved += example[f"ass1_facodec_{i}"]
+        for j in range(len(example["ass1_facodec_1"])): 
+            for i in range(1, 6):
+                interleaved.append(example[f"ass1_facodec_{i}"][j])
         example["ass1_facodec_interleaved"] = interleaved
 
         interleaved = []
-        for i in range(1, 6):
-            interleaved += example[f"ass2_facodec_{i}"]
+        for j in range(len(example["ass2_facodec_1"])):
+            for i in range(1, 6):
+                interleaved.append(example[f"ass2_facodec_{i}"][j])
         example["ass2_facodec_interleaved"] = interleaved
 
         interleaved = []
-        for i in range(1, 6):
-            interleaved += example[f"ass3_facodec_{i}"]
+        for j in range(len(example["ass3_facodec_1"])):
+            for i in range(1, 6):
+                interleaved.append(example[f"ass3_facodec_{i}"][j])
         example["ass3_facodec_interleaved"] = interleaved
 
         return example
