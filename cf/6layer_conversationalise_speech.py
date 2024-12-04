@@ -10,9 +10,9 @@ import random
 tkn = "meta-llama/Llama-3.2-3B-Instruct"
 tokeniser = AutoTokenizer.from_pretrained(tkn)
 
-push_name = "amuvarma/smoltalk-audio-speech-raw-1dups-proc"
+push_name = "amuvarma/smoltalk-audio-speech-raw-1dups-6rows-proc"
 
-ds_name = "amuvarma/smoltalk-audio-speech-raw-1dups"
+ds_name = "amuvarma/smoltalk-audio-speech-raw-1dups-6rows"
 ds = load_dataset(ds_name, split="train")
 # ds = ds['train'].select(range(0,500))
 
