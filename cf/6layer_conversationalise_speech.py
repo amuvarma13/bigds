@@ -46,25 +46,23 @@ def read_instructions(filename):
     return instructions
 
 
-def process_dataset(dataset, fac_order):
-
+def process_dataset(dataset, fac_order):    # Add fac_order as parameter
     def add_values(example, fac_order):
         for i, col in enumerate(fac_order):
             if example[col]:
-                example[col] = [x + (i*1024) +audio_tokens_start for x in example[col]]
+                example[col] = [x + (i*1024) + audio_tokens_start for x in example[col]]
         return example
     
     # Apply the transformations
     dataset = dataset.map(lambda x: {col: x[col] for col in fac_order})
-    dataset = dataset.map(add_values, fac_order=fac_order)
+    dataset = dataset.map(lambda x: add_values(x, fac_order=fac_order))
     
     return dataset
 
+# Then use it like this:
 ds_1 = process_dataset(ds, ['ass1_facodec_1', 'ass1_facodec_0', 'ass1_facodec_2', 'ass1_facodec_3', 'ass1_facodec_4', 'ass1_facodec_5'])
 ds_2 = process_dataset(ds_1, ['ass2_facodec_1', 'ass2_facodec_0', 'ass2_facodec_2', 'ass2_facodec_3', 'ass2_facodec_4', 'ass2_facodec_5'])
 ds_3 = process_dataset(ds_2, ['ass3_facodec_1', 'ass3_facodec_0', 'ass3_facodec_2', 'ass3_facodec_3', 'ass3_facodec_4', 'ass3_facodec_5'])
-
-
 #interleave the facodec columns in the order ass1_facodec_1, ass1_facodec_2... ass1_facodec_5 call the new columns ass1_facodec_interleaved
 #interleave the facodec columns in the order ass2_facodec_1, ass2_facodec_2... ass2_facodec_5 call the new columns ass2_facodec_interleaved
 #interleave the facodec columns in the order ass3_facodec_1, ass3_facodec_2... ass3_facodec_5 call the new columns ass3_facodec_interleaved
