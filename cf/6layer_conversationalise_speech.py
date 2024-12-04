@@ -68,28 +68,40 @@ ds_3 = process_dataset(ds_2, ['ass3_facodec_1', 'ass3_facodec_0', 'ass3_facodec_
 #interleave the facodec columns in the order ass3_facodec_1, ass3_facodec_2... ass3_facodec_5 call the new columns ass3_facodec_interleaved
 def interleave_facodec_columns(dataset):
     def interleave(example):
+        # Interleave ass1_facodec columns in order 1 to 5
         interleaved = []
-        for j in range(len(example["ass1_facodec_1"])): 
+        for j in range(len(example["ass1_facodec_1"])):
             for i in range(1, 6):
                 interleaved.append(example[f"ass1_facodec_{i}"][j])
         example["ass1_facodec_interleaved"] = interleaved
 
+        # Interleave ass2_facodec columns in order 1 to 5
         interleaved = []
         for j in range(len(example["ass2_facodec_1"])):
             for i in range(1, 6):
                 interleaved.append(example[f"ass2_facodec_{i}"][j])
         example["ass2_facodec_interleaved"] = interleaved
 
+        # Interleave ass3_facodec columns in the specific order 1, 0, 2, 3, 4, 5
         interleaved = []
         for j in range(len(example["ass3_facodec_1"])):
-            for i in range(1, 6):
-                interleaved.append(example[f"ass3_facodec_{i}"][j])
+            # Define the desired order for ass3_facodec columns
+            for i in [1, 0, 2, 3, 4, 5]:
+                # Ensure that the column exists before appending
+                key = f"ass3_facodec_{i}"
+                if key in example:
+                    interleaved.append(example[key][j])
+                else:
+                    # Handle missing columns if necessary
+                    interleaved.append(None)  # or some default value
         example["ass3_facodec_interleaved"] = interleaved
 
         return example
     
+    # Apply the interleave function to the entire dataset
     interleaved_dataset = dataset.map(interleave)
     return interleaved_dataset
+
 
 ds_4 = interleave_facodec_columns(ds_3)
 
