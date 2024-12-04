@@ -3,8 +3,8 @@ import multiprocessing
 
 num_threads = multiprocessing.cpu_count()
 
-dsn = "eliasfiz/audio_2m_combined"
-push_name = "amuvarma/2m-fac-raw-1dups" 
+dsn = "amuvarma/smoltalk-audio-speech-raw"
+push_name = "amuvarma/smoltalk-audio-speech-raw-1dups-6rows" 
 ds = load_dataset(dsn, split='train')
 print(ds)
 
@@ -13,7 +13,7 @@ consecutive_count = 0
 
 
 
-def remove_excess_consecutive_integers(dataset, column_name):
+def remove_excess_consecutive_integers(dataset, column_name, facodec_columns):
     
     def process_row(row):
         if row[column_name] is None:
@@ -45,7 +45,6 @@ def remove_excess_consecutive_integers(dataset, column_name):
         
         # Update facodec columns
         new_row = row.copy()
-        facodec_columns = ['facodec_1','facodec_0', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5']
         for idx, col in enumerate(facodec_columns):
             if col in row:
                 new_row[col] = [
@@ -69,6 +68,8 @@ def remove_excess_consecutive_integers(dataset, column_name):
 # Use the function
 dataset = ds  # Assuming you want to process the 'train' split
 
-processed_dataset = remove_excess_consecutive_integers(dataset, 'facodec_1')
+processed_dataset = remove_excess_consecutive_integers(dataset, 'facodec_1', ['ass1_facodec_1','ass1_facodec_0', 'ass1_facodec_2', 'ass1_facodec_3', 'ass1_facodec_4', 'ass1_facodec_5'])
+processed_dataset = remove_excess_consecutive_integers(processed_dataset, 'facodec_1', ['ass2_facodec_1','ass2_facodec_0', 'ass2_facodec_2', 'ass2_facodec_3', 'ass2_facodec_4', 'ass2_facodec_5'])
+processed_dataset = remove_excess_consecutive_integers(processed_dataset, 'facodec_1', ['ass3_facodec_1','ass3_facodec_0', 'ass3_facodec_2', 'ass3_facodec_3', 'ass3_facodec_4', 'ass3_facodec_5'])
 
 processed_dataset.push_to_hub(push_name)
