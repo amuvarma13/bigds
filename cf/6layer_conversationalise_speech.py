@@ -36,7 +36,7 @@ end_of_system = tokeniser_length + 9
 
 audio_tokens_start = tokeniser_length + 10
 
-fac_order = ['ass1_facodec_1', 'ass2_facodec_1', 'ass3_facodec_1']
+
 
 
 def read_instructions(filename):
@@ -46,12 +46,12 @@ def read_instructions(filename):
     return instructions
 
 
-def process_dataset(dataset):
+def process_dataset(dataset, fac_order):
 
     def add_values(example, fac_order):
         for i, col in enumerate(fac_order):
             if example[col]:
-                example[col] = [x + (i*1024)+audio_tokens_start for x in example[col]]
+                example[col] = [x + (i*1024) +audio_tokens_start for x in example[col]]
         return example
     
     # Apply the transformations
@@ -60,7 +60,39 @@ def process_dataset(dataset):
     
     return dataset
 
-ds_1 = process_dataset(ds)
+ds_1 = process_dataset(ds, ['ass1_facodec_1', 'ass1_facodec_0', 'ass1_facodec_2', 'ass1_facodec_3', 'ass1_facodec_4', 'ass1_facodec_5'])
+ds_2 = process_dataset(ds_1, ['ass2_facodec_1', 'ass2_facodec_0', 'ass2_facodec_2', 'ass2_facodec_3', 'ass2_facodec_4', 'ass2_facodec_5'])
+ds_3 = process_dataset(ds_2, ['ass3_facodec_1', 'ass3_facodec_0', 'ass3_facodec_2', 'ass3_facodec_3', 'ass3_facodec_4', 'ass3_facodec_5'])
+
+
+#interleave the facodec columns in the order ass1_facodec_1, ass1_facodec_2... ass1_facodec_5 call the new columns ass1_facodec_interleaved
+#interleave the facodec columns in the order ass2_facodec_1, ass2_facodec_2... ass2_facodec_5 call the new columns ass2_facodec_interleaved
+#interleave the facodec columns in the order ass3_facodec_1, ass3_facodec_2... ass3_facodec_5 call the new columns ass3_facodec_interleaved
+def interleave_facodec_columns(dataset):
+    def interleave(example):
+        interleaved = []
+        for i in range(1, 6):
+            interleaved += example[f"ass1_facodec_{i}"]
+        example["ass1_facodec_interleaved"] = interleaved
+
+        interleaved = []
+        for i in range(1, 6):
+            interleaved += example[f"ass2_facodec_{i}"]
+        example["ass2_facodec_interleaved"] = interleaved
+
+        interleaved = []
+        for i in range(1, 6):
+            interleaved += example[f"ass3_facodec_{i}"]
+        example["ass3_facodec_interleaved"] = interleaved
+
+        return example
+    
+    interleaved_dataset = dataset.map(interleave)
+    return interleaved_dataset
+
+ds_4 = interleave_facodec_columns(ds_3)
+
+
 
 def tokenize_and_add_to_dataset(dataset):
     def tokenize_transcript(example):
@@ -123,26 +155,26 @@ def create_input_ids(example):
     input_ids = [start_of_system] + tokeniser(system_message)["input_ids"] + [end_of_text, end_of_system]
 
     if example["ass_1_tokenized"]:
-        input_ids += [start_of_human] + example["human_1_tokenized"] + [end_of_human] + [start_of_ai] + example["ass_1_tokenized"] + [start_of_speech] + example["ass1_facodec_1"] + [end_of_speech, end_of_ai]
+        input_ids += [start_of_human] + example["human_1_tokenized"] + [end_of_human] + [start_of_ai] + example["ass_1_tokenized"] + [start_of_speech] + example["ass1_facodec_interleaved"] + [end_of_speech, end_of_ai]
     
     if example["ass_2_tokenized"]:
-        input_ids += [start_of_human] + example["human_2_tokenized"] + [end_of_human] + [start_of_ai] + example["ass_2_tokenized"] + [start_of_speech] + example["ass2_facodec_1"] + [end_of_speech, end_of_ai]
+        input_ids += [start_of_human] + example["human_2_tokenized"] + [end_of_human] + [start_of_ai] + example["ass_2_tokenized"] + [start_of_speech] + example["ass2_facodec_interleaved"] + [end_of_speech, end_of_ai]
 
     if example["ass_3_tokenized"]:
-        input_ids += [start_of_human] + example["human_3_tokenized"] + [end_of_human] + [start_of_ai] + example["ass_3_tokenized"] + [start_of_speech] + example["ass3_facodec_1"] + [end_of_speech, end_of_ai]
+        input_ids += [start_of_human] + example["human_3_tokenized"] + [end_of_human] + [start_of_ai] + example["ass_3_tokenized"] + [start_of_speech] + example["ass3_facodec_interleaved"] + [end_of_speech, end_of_ai]
 
 
     example['input_ids'] = input_ids
     return example
 
 
-ds_3 = ds_2.map(create_input_ids)
+ds_5 = ds_4.map(create_input_ids)
 
 def create_attention_mask(example):
     example['attention_mask'] = [1] * len(example['input_ids'])
     return example
 
-ds_4 = ds_3.map(create_attention_mask)
+ds_6 = ds_5.map(create_attention_mask)
 
 
 def preprocess_function(examples):
@@ -157,7 +189,7 @@ num_cpus = os.cpu_count()
 
 num_processes = max(1, int(num_cpus * 0.75))
 
-ds_5 = ds_4.map(
+ds_7 = ds_6.map(
     preprocess_function,
     batched=True,
     num_proc=num_processes,
@@ -167,12 +199,12 @@ ds_5 = ds_4.map(
 #leave only input_ids, attention_mask, and labels
 
 columns_to_keep = ["input_ids", "attention_mask", "labels"]
-all_columns = ds_5.column_names
+all_columns = ds_7.column_names
 # Identify columns to remove
 columns_to_remove = [col for col in all_columns if col not in columns_to_keep]
 
 # Remove unwanted columns
-dataset_to_upload = ds_5.remove_columns(columns_to_remove)
+dataset_to_upload = ds_7.remove_columns(columns_to_remove)
 
 
 
