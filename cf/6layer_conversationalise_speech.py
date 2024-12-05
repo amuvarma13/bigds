@@ -185,8 +185,8 @@ system_message = "You are an AI assistant who will answer the user's questions a
 def create_input_ids(example):
     input_ids = [start_of_system] + tokeniser(system_message)["input_ids"] + [end_of_text, end_of_system]
 
-    if example["ass_1_tokenized"]:
-        input_ids += [start_of_human] + example["human_1_tokenized"] + [end_of_human] + [start_of_ai] + example["ass_1_tokenized"] + [start_of_speech] + example["ass1_facodec_interleaved"] + [end_of_speech, end_of_ai]
+    # if example["ass_1_tokenized"]:
+    #     input_ids += [start_of_human] + example["human_1_tokenized"] + [end_of_human] + [start_of_ai] + example["ass_1_tokenized"] + [start_of_speech] + example["ass1_facodec_interleaved"] + [end_of_speech, end_of_ai]
     
     if example["ass_2_tokenized"]:
         input_ids += [start_of_human] + example["human_2_tokenized"] + [end_of_human] + [start_of_ai] + example["ass_2_tokenized"] + [start_of_speech] + example["ass2_facodec_interleaved"] + [end_of_speech, end_of_ai]
