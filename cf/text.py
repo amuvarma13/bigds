@@ -54,12 +54,11 @@ import random
 
 def process_batch(batch):
     input_ids = []
-    for messages_str in batch["messages"]:
+    for messages in batch["messages"]:
         sequence = []
         instruction = random.choice(instruction_list)
         sequence.extend([start_of_system] + tokeniser(instruction)["input_ids"] + [end_of_text, end_of_system])
         
-        messages = json.loads(messages_str)
         for msg in messages:
             if msg["role"] == "user":
                 sequence.extend([start_of_human] + tokeniser(msg["content"])["input_ids"] + [end_of_text, end_of_human])
