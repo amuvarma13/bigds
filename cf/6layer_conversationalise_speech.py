@@ -78,7 +78,7 @@ def interleave_facodec_columns(dataset):
             # Define the desired order for ass3_facodec columns
             for i in [1, 0, 2, 3, 4, 5]:
                 # Ensure that the column exists before appending
-                key = f"ass1_facodec_1{i}"
+                key = f"ass1_facodec_{i}"
                 if key in example:
                     interleaved.append(example[key][j])
                 else:
