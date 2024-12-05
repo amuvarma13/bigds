@@ -9,9 +9,9 @@ import string
 tkn = "meta-llama/Llama-3.2-3B-Instruct"
 tokeniser = AutoTokenizer.from_pretrained(tkn)
 
-push_name = "amuvarma/orcatext-dev-processed-1"
+push_name = "amuvarma/text-messages-6m-processed-1"
 
-ds_name = "amuvarma/combined-shuffled-text-orca-ds"
+ds_name = "amuvarma/text-messages-6m"
 ds = load_dataset(ds_name, split="train")
 ds = ds.select(range(1000000))
 
