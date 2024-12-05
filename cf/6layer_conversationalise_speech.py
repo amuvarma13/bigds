@@ -13,7 +13,7 @@ push_name = "amuvarma/dev-qa_large_0_4_speechqa-both-full-facodec-1dups-6rows-pr
 
 ds_name = "amuvarma/qa_large_0_4_speechqa-both-full-facodec-1dups-6rows"
 ds = load_dataset(ds_name, split="train")
-ds = ds.select(range(6))
+# ds = ds.select(range(6))
 
 tokeniser_length = 128256
 start_of_text = 128000
