@@ -19,7 +19,7 @@ tokeniser_length = 128256
 start_of_text = 128000
 end_of_text = 128009
 
-start_of_speech = tokeniser_length + 1
+start_of_speech = tokeniser_length + 1 
 end_of_speech = tokeniser_length + 2
 
 start_of_human = tokeniser_length + 3
