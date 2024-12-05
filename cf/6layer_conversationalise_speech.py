@@ -9,11 +9,11 @@ import random
 tkn = "meta-llama/Llama-3.2-3B-Instruct"
 tokeniser = AutoTokenizer.from_pretrained(tkn)
 
-push_name = "amuvarma/dev-qa_large_0_4_speechqa-both-full-facodec-1dups-6rows-proc"
+push_name = "amuvarma/smoltalk-audio-speech-raw-1dups-6rows-proc"
 
-ds_name = "amuvarma/qa_large_0_4_speechqa-both-full-facodec-1dups-6rows"
+ds_name = "amuvarma/smoltalk-audio-speech-raw-1dups-6rows"
 ds = load_dataset(ds_name, split="train")
-# ds = ds.select(range(6))
+# ds = ds['train'].select(range(0,500))
 
 tokeniser_length = 128256
 start_of_text = 128000
@@ -59,11 +59,12 @@ def process_dataset(dataset, fac_order):    # Add fac_order as parameter
 
 
 # Then use it like this:
-ds_1 = process_dataset(ds, ['facodec_1', 'facodec_0', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5'])
-# ds_2 = process_dataset(ds_1, ['ass2_facodec_1', 'ass2_facodec_0',
-#                        'ass2_facodec_2', 'ass2_facodec_3', 'ass2_facodec_4', 'ass2_facodec_5'])
-# ds_3 = process_dataset(ds_2, ['ass3_facodec_1', 'ass3_facodec_0',
-#                        'ass3_facodec_2', 'ass3_facodec_3', 'ass3_facodec_4', 'ass3_facodec_5'])
+ds_1 = process_dataset(ds, ['ass1_facodec_1', 'ass1_facodec_0',
+                       'ass1_facodec_2', 'ass1_facodec_3', 'ass1_facodec_4', 'ass1_facodec_5'])
+ds_2 = process_dataset(ds_1, ['ass2_facodec_1', 'ass2_facodec_0',
+                       'ass2_facodec_2', 'ass2_facodec_3', 'ass2_facodec_4', 'ass2_facodec_5'])
+ds_3 = process_dataset(ds_2, ['ass3_facodec_1', 'ass3_facodec_0',
+                       'ass3_facodec_2', 'ass3_facodec_3', 'ass3_facodec_4', 'ass3_facodec_5'])
 # interleave the facodec columns in the order ass1_facodec_1, ass1_facodec_2... ass1_facodec_5 call the new columns ass1_facodec_interleaved
 # interleave the facodec columns in the order ass2_facodec_1, ass2_facodec_2... ass2_facodec_5 call the new columns ass2_facodec_interleaved
 # interleave the facodec columns in the order ass3_facodec_1, ass3_facodec_2... ass3_facodec_5 call the new columns ass3_facodec_interleaved
@@ -73,45 +74,45 @@ def interleave_facodec_columns(dataset):
     def interleave(example):
         # Interleave ass1_facodec columns in order 1 to 5
         interleaved = []
-        for j in range(len(example["facodec_1"])):
+        for j in range(len(example["ass1_facodec_1"])):
             # Define the desired order for ass3_facodec columns
             for i in [1, 0, 2, 3, 4, 5]:
                 # Ensure that the column exists before appending
-                key = f"facodec_{i}"
+                key = f"ass3_facodec_{i}"
                 if key in example:
                     interleaved.append(example[key][j])
                 else:
                     # Handle missing columns if necessary
                     interleaved.append(None)  # or some default value
-        example["ass1_facodec_interleaved"] = interleaved
+        example["ass3_facodec_interleaved"] = interleaved
 
         # Interleave ass2_facodec columns in order 1 to 5
-        # interleaved = []
-        # for j in range(len(example["ass2_facodec_1"])):
-        #     # Define the desired order for ass3_facodec columns
-        #     for i in [1, 0, 2, 3, 4, 5]:
-        #         # Ensure that the column exists before appending
-        #         key = f"ass2_facodec_{i}"
-        #         if key in example:
-        #             interleaved.append(example[key][j])
-        #         else:
-        #             # Handle missing columns if necessary
-        #             interleaved.append(None)  # or some default value
-        # example["ass2_facodec_interleaved"] = interleaved
+        interleaved = []
+        for j in range(len(example["ass2_facodec_1"])):
+            # Define the desired order for ass3_facodec columns
+            for i in [1, 0, 2, 3, 4, 5]:
+                # Ensure that the column exists before appending
+                key = f"ass2_facodec_{i}"
+                if key in example:
+                    interleaved.append(example[key][j])
+                else:
+                    # Handle missing columns if necessary
+                    interleaved.append(None)  # or some default value
+        example["ass2_facodec_interleaved"] = interleaved
 
-        # # Interleave ass3_facodec columns in the specific order 1, 0, 2, 3, 4, 5
-        # interleaved = []
-        # for j in range(len(example["ass3_facodec_1"])):
-        #     # Define the desired order for ass3_facodec columns
-        #     for i in [1, 0, 2, 3, 4, 5]:
-        #         # Ensure that the column exists before appending
-        #         key = f"ass3_facodec_{i}"
-        #         if key in example:
-        #             interleaved.append(example[key][j])
-        #         else:
-        #             # Handle missing columns if necessary
-        #             interleaved.append(None)  # or some default value
-        # example["ass3_facodec_interleaved"] = interleaved
+        # Interleave ass3_facodec columns in the specific order 1, 0, 2, 3, 4, 5
+        interleaved = []
+        for j in range(len(example["ass3_facodec_1"])):
+            # Define the desired order for ass3_facodec columns
+            for i in [1, 0, 2, 3, 4, 5]:
+                # Ensure that the column exists before appending
+                key = f"ass3_facodec_{i}"
+                if key in example:
+                    interleaved.append(example[key][j])
+                else:
+                    # Handle missing columns if necessary
+                    interleaved.append(None)  # or some default value
+        example["ass3_facodec_interleaved"] = interleaved
 
         return example
     
@@ -120,52 +121,52 @@ def interleave_facodec_columns(dataset):
     return interleaved_dataset
 
 
-ds_4 = interleave_facodec_columns(ds_1)
+ds_4 = interleave_facodec_columns(ds_3)
 
 
 
 def tokenize_and_add_to_dataset(dataset):
     def tokenize_transcript(example):
 
-        if(example["answer"]):
-            ass_1_tokenized = tokeniser(example["answer"])['input_ids'] + [end_of_text]
+        if(example["assistant1"]):
+            ass_1_tokenized = tokeniser(example["assistant1"])['input_ids'] + [end_of_text]
             example["ass_1_tokenized"] = ass_1_tokenized
 
         else:
             example["ass_1_tokenized"] = None
 
-        # if(example["assistant2"]):
-        #     ass_2_tokenized = tokeniser(example["assistant2"])['input_ids'] + [end_of_text]
-        #     example["ass_2_tokenized"] = ass_2_tokenized
-        # else:
-        #     example["ass_2_tokenized"] = None
+        if(example["assistant2"]):
+            ass_2_tokenized = tokeniser(example["assistant2"])['input_ids'] + [end_of_text]
+            example["ass_2_tokenized"] = ass_2_tokenized
+        else:
+            example["ass_2_tokenized"] = None
 
 
-        # if(example["assistant3"]):
-        #     ass_3_tokenized = tokeniser(example["assistant3"])['input_ids'] + [end_of_text]
-        #     example["ass_3_tokenized"] = ass_3_tokenized
-        # else:
-        #     example["ass_3_tokenized"] = None
+        if(example["assistant3"]):
+            ass_3_tokenized = tokeniser(example["assistant3"])['input_ids'] + [end_of_text]
+            example["ass_3_tokenized"] = ass_3_tokenized
+        else:
+            example["ass_3_tokenized"] = None
 
-        if(example["question"]):
-            ass_1_tokenized = tokeniser(example["question"])['input_ids'] + [end_of_text]
+        if(example["human1"]):
+            ass_1_tokenized = tokeniser(example["human1"])['input_ids'] + [end_of_text]
             example["human_1_tokenized"] = ass_1_tokenized
 
         else:
             example["human_1_tokenized"] = None
 
-        # if(example["human2"]):
-        #     ass_2_tokenized = tokeniser(example["human2"])['input_ids'] + [end_of_text]
-        #     example["human_2_tokenized"] = ass_2_tokenized
-        # else:
-        #     example["human_2_tokenized"] = None
+        if(example["human2"]):
+            ass_2_tokenized = tokeniser(example["human2"])['input_ids'] + [end_of_text]
+            example["human_2_tokenized"] = ass_2_tokenized
+        else:
+            example["human_2_tokenized"] = None
 
 
-        # if(example["human3"]):
-        #     ass_3_tokenized = tokeniser(example["human3"])['input_ids'] + [end_of_text]
-        #     example["human_3_tokenized"] = ass_3_tokenized
-        # else:
-        #     example["human_3_tokenized"] = None
+        if(example["human3"]):
+            ass_3_tokenized = tokeniser(example["human3"])['input_ids'] + [end_of_text]
+            example["human_3_tokenized"] = ass_3_tokenized
+        else:
+            example["human_3_tokenized"] = None
         
 
         
@@ -187,11 +188,11 @@ def create_input_ids(example):
     if example["ass_1_tokenized"]:
         input_ids += [start_of_human] + example["human_1_tokenized"] + [end_of_human] + [start_of_ai] + example["ass_1_tokenized"] + [start_of_speech] + example["ass1_facodec_interleaved"] + [end_of_speech, end_of_ai]
     
-    # if example["ass_2_tokenized"]:
-    #     input_ids += [start_of_human] + example["human_2_tokenized"] + [end_of_human] + [start_of_ai] + example["ass_2_tokenized"] + [start_of_speech] + example["ass2_facodec_interleaved"] + [end_of_speech, end_of_ai]
+    if example["ass_2_tokenized"]:
+        input_ids += [start_of_human] + example["human_2_tokenized"] + [end_of_human] + [start_of_ai] + example["ass_2_tokenized"] + [start_of_speech] + example["ass2_facodec_interleaved"] + [end_of_speech, end_of_ai]
 
-    # if example["ass_3_tokenized"]:
-    #     input_ids += [start_of_human] + example["human_3_tokenized"] + [end_of_human] + [start_of_ai] + example["ass_3_tokenized"] + [start_of_speech] + example["ass3_facodec_interleaved"] + [end_of_speech, end_of_ai]
+    if example["ass_3_tokenized"]:
+        input_ids += [start_of_human] + example["human_3_tokenized"] + [end_of_human] + [start_of_ai] + example["ass_3_tokenized"] + [start_of_speech] + example["ass3_facodec_interleaved"] + [end_of_speech, end_of_ai]
 
 
     example['input_ids'] = input_ids
