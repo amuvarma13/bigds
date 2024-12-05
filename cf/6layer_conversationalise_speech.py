@@ -147,7 +147,7 @@ def tokenize_and_add_to_dataset(dataset):
         # else:
         #     example["ass_3_tokenized"] = None
 
-        if(example["human1"]):
+        if(example["question"]):
             ass_1_tokenized = tokeniser(example["question"])['input_ids'] + [end_of_text]
             example["human_1_tokenized"] = ass_1_tokenized
 
