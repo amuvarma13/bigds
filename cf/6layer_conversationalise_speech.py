@@ -127,7 +127,7 @@ ds_4 = interleave_facodec_columns(ds_1)
 def tokenize_and_add_to_dataset(dataset):
     def tokenize_transcript(example):
 
-        if(example["assistant1"]):
+        if(example["answer"]):
             ass_1_tokenized = tokeniser(example["answer"])['input_ids'] + [end_of_text]
             example["ass_1_tokenized"] = ass_1_tokenized
 
