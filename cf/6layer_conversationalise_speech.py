@@ -84,7 +84,7 @@ def interleave_facodec_columns(dataset):
                 else:
                     # Handle missing columns if necessary
                     interleaved.append(None)  # or some default value
-        example["ass3_facodec_interleaved"] = interleaved
+        example["ass1_facodec_interleaved"] = interleaved
 
         # Interleave ass2_facodec columns in order 1 to 5
         interleaved = []
