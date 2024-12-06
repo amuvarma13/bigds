@@ -1,7 +1,7 @@
 from datasets import load_dataset
 dsn = "gpt-omni/VoiceAssistant-400K"
 ds = load_dataset(dsn)
-ds = ds["train"].remove_columns(['question', 'question_audio', 'answer',])
+ds = ds["train"].remove_columns(['split_name', 'index', 'round', 'answer_snac'])
 ds = ds.shuffle(seed=42)
 dsnd = ds.select(range(10000))
 
