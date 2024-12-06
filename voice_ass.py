@@ -4,4 +4,5 @@ ds = load_dataset(dsn)
 
 dsnd = ds["train"].select(range(10000))
 
-dsnd.push_to_hub("amuvarma/voice-assistant-10k-processed-1")
+print(dsnd)
+# dsnd.push_to_hub("amuvarma/voice-assistant-10k-processed-1")
