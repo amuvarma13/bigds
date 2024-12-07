@@ -6,4 +6,4 @@ ds = ds.shuffle(seed=42)
 dsnd = ds.select(range(200000, 250000))
 
 # print(dsnd)
-dsnd.push_to_hub("amuvarma/voice-assistant-200-250k-processed-1")
+dsnd.push_to_hub("amuvarma/voice-assistant-200-250k-processed")
