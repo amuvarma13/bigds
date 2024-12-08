@@ -3,8 +3,8 @@ import multiprocessing
 
 num_threads = multiprocessing.cpu_count()
 
-dsn = "amuvarma/10k-stts-duplex-convos-raw-fac"
-push_name = "amuvarma/10k-stts-duplex-convos-raw-fac-1dups-contentonly" 
+dsn = "amuvarma/26k-stts-duplex-convos-raw-fac"
+push_name = "amuvarma/26k-stts-duplex-convos-raw-fac-1dups-contentonly" 
 ds = load_dataset(dsn, split='train')
 print(ds)
 
