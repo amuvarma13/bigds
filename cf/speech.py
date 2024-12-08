@@ -118,6 +118,6 @@ all_columns = ds_3.column_names
 columns_to_remove = [col for col in all_columns if col not in columns_to_keep]
 dataset_to_upload = ds_3.remove_columns(columns_to_remove)
 
-dataset_to_upload.select(range(0,1000000))
+# dataset_to_upload.select(range(0,1000000))
 
 dataset_to_upload.push_to_hub(push_name)
