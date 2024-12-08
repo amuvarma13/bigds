@@ -3,8 +3,8 @@ import multiprocessing
 
 num_threads = multiprocessing.cpu_count()
 
-dsn = "amuvarma/26k-stts-duplex-convos-raw-fac"
-push_name = "amuvarma/26k-stts-duplex-convos-raw-fac-1dups-contentonly" 
+dsn = "CanopyLabs/audio_pretrain_10m-facodec"
+push_name = "CanopyLabs/audio_pretrain_10m-facodec-1dups" 
 ds = load_dataset(dsn, split='train')
 print(ds)
 
