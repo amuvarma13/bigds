@@ -5,7 +5,7 @@ num_threads = multiprocessing.cpu_count()
 
 dsn = "eliasfiz/audio_pretrain_10m-facodec"
 push_name = "amuvarma/eliasfiz-audio_pretrain_10m-facodec-1dups" 
-ds = load_dataset(dsn, split='train')
+ds = load_dataset(dsn)
 print(ds)
 
 
