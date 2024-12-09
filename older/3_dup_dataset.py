@@ -4,7 +4,7 @@ import multiprocessing
 num_threads = multiprocessing.cpu_count()
 
 dsn = "CanopyLabs/audio_pretrain_10m-facodec"
-push_name = "CanopyLabs/audio_pretrain_10m-facodec-1dups" 
+push_name = "amuvarma/CanopyLabs-audio_pretrain_10m-facodec-1dups" 
 ds = load_dataset(dsn, split='train')
 print(ds)
 
@@ -72,4 +72,5 @@ processed_dataset = remove_excess_consecutive_integers(dataset, 'facodec_1', ['f
 # processed_dataset = remove_excess_consecutive_integers(processed_dataset, 'ass1_facodec_2', ['ass2_facodec_1','ass2_facodec_0', 'ass2_facodec_2', 'ass2_facodec_3', 'ass2_facodec_4', 'ass2_facodec_5'])
 # processed_dataset = remove_excess_consecutive_integers(processed_dataset, 'ass3_facodec_1', ['ass3_facodec_1','ass3_facodec_0', 'ass3_facodec_2', 'ass3_facodec_3', 'ass3_facodec_4', 'ass3_facodec_5'])
 
+processed_dataset = processed_dataset.remove_columns(['audio'])
 processed_dataset.push_to_hub(push_name)
