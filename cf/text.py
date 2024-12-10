@@ -13,7 +13,6 @@ push_name = "amuvarma/text-messages-6m-processed-1"
 
 ds_name = "amuvarma/text-messages-6m"
 ds = load_dataset(ds_name, split="train")
-ds = ds.select(range(1000000))
 
  
 
