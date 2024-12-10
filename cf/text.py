@@ -86,7 +86,7 @@ def create_mask(example):
     
     return example
 
-ds_2 = ds1.map(create_mask)
+ds_2 = ds1.map(create_mask, num_proc=num_processes)
 
 print(ds_2)
 
