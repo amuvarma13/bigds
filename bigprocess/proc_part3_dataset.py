@@ -33,7 +33,7 @@ audio_tokens_start = tokeniser_length + 10
 
 fac_order = ['facodec_1',  'facodec_0', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5']
 
-num_threads = os.cpu_count()
+num_threads = os.cpu_count() - 2
 def read_instructions(filename):
     instructions = []
     with open(filename, 'r') as file:
@@ -98,7 +98,7 @@ def create_input_ids(example):
     return example
 
 
-ds_3 = ds_2.map(create_input_ids,num_proc=num_threads)
+ds_3 = ds_2.map(create_input_ids, num_proc=num_threads)
 
 
 
