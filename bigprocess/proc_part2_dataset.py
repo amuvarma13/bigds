@@ -62,7 +62,7 @@ def tokenize_and_add_to_dataset(dataset):
 
         random_instruction = random.choice(instruction_list)
         tokenized = tokeniser(
-           random_instruction+ " "+example["answer"])
+           random_instruction+ " "+example["transcript"])
         
 
         tokenized_text = tokenized['input_ids'] + [end_of_text]
