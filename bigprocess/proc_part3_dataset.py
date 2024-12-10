@@ -73,13 +73,11 @@ def tokenize_and_add_to_dataset(dataset):
         return example
 
     # Apply the tokenization to the dataset
-    tokenized_dataset = dataset.map(tokenize_transcript)
+    tokenized_dataset = dataset.map(tokenize_transcript, num_proc=num_threads,)
     
     return tokenized_dataset
 
-ds_2 = tokenize_and_add_to_dataset(ds_1, 
-                                   num_proc=num_threads,
-                )
+ds_2 = tokenize_and_add_to_dataset(ds_1)
 
 
 
