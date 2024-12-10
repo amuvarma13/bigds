@@ -98,9 +98,7 @@ def create_input_ids(example):
     return example
 
 
-ds_3 = ds_2.map(create_input_ids, 
-    num_proc=num_threads,
-                )
+ds_3 = ds_2.map(create_input_ids,num_proc=num_threads)
 
 
 
