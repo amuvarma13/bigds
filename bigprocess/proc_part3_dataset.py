@@ -33,7 +33,7 @@ audio_tokens_start = tokeniser_length + 10
 
 fac_order = ['facodec_1',  'facodec_0', 'facodec_2', 'facodec_3', 'facodec_4', 'facodec_5']
 
-
+num_threads = os.cpu_count()
 def read_instructions(filename):
     instructions = []
     with open(filename, 'r') as file:
@@ -77,7 +77,11 @@ def tokenize_and_add_to_dataset(dataset):
     
     return tokenized_dataset
 
-ds_2 = tokenize_and_add_to_dataset(ds_1)
+ds_2 = tokenize_and_add_to_dataset(ds_1, 
+                                   num_proc=num_threads,
+                )
+
+
 
 def create_input_ids(example):
     input_ids = [start_of_human] + example['tokenised_text'] + [end_of_human, start_of_ai, start_of_speech]
@@ -96,7 +100,9 @@ def create_input_ids(example):
     return example
 
 
-ds_3 = ds_2.map(create_input_ids)
+ds_3 = ds_2.map(create_input_ids, 
+    num_proc=num_threads,
+                )
 
 
 
