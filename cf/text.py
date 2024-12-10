@@ -14,7 +14,9 @@ push_name = "amuvarma/text-messages-6m-processed-1"
 ds_name = "amuvarma/text-messages-6m"
 ds = load_dataset(ds_name, split="train")
 
- 
+num_cpus = os.cpu_count()
+
+num_processes = max(1, int(num_cpus * 0.75))
 
 tokeniser_length = 128256
 start_of_text = 128000
@@ -69,7 +71,8 @@ def process_batch(batch):
 ds1 = ds.map(
     process_batch,
     batched=True,
-    batch_size=1000
+    batch_size=1000, 
+    num_proc=num_processes,
 )
 
 
@@ -95,9 +98,7 @@ def preprocess_function(examples):
     return examples
 
 
-num_cpus = os.cpu_count()
 
-num_processes = max(1, int(num_cpus * 0.75))
 
 ds_3 = ds_2.map(
     preprocess_function,
