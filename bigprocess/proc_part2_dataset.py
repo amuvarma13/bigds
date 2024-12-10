@@ -85,6 +85,11 @@ def create_input_ids(example):
     # Interleave the facodec lists
     max_len = max(len(example[facodec]) for facodec in fac_order)
     
+    # set max len to 8192//6
+
+    if max_len > 1365:
+        max_len = 1365
+    
     for i in range(max_len):
         for facodec in fac_order:
             if i < len(example[facodec]):
