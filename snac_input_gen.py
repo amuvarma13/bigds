@@ -57,7 +57,7 @@ def create_input_ids(example):
 #map the dataset
 ds = ds.map(create_input_ids, num_proc=num_threads)
 
-ds = ds.remove_columns_(['transcript', 'codes'])
+ds = ds.remove_columns(['transcript', 'codes'])
 
 #push to the hub
 ds.push_to_hub(push_name)   
