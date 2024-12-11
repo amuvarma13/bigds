@@ -1,5 +1,4 @@
 dsn = "amuvarma/snac-2m-raw"
-
 push_name = "amuvarma/snac-2m-tts"
 
 from datasets import load_dataset
@@ -33,6 +32,7 @@ end_of_system = tokeniser_length + 9
 audio_tokens_start = tokeniser_length + 10
 
 num_threads = os.cpu_count() - 2
+
 def read_instructions(filename):
     instructions = []
     with open(filename, 'r') as file:
@@ -42,23 +42,46 @@ def read_instructions(filename):
 instruction_list = read_instructions('read_out.txt')
 
 def create_input_ids(example):
-    input_ids = []
-
     random_instruction = random.choice(instruction_list)
-    tokenized = tokeniser(random_instruction+ " "+example["transcript"])
+    tokenized = tokeniser(random_instruction + " " + example["transcript"])
     tokenized_text = tokenized['input_ids'] + [end_of_text]
     codes = example["codes"]
 
-    input_ids = [start_of_human]+tokenized_text + [end_of_human]+[start_of_ai] + [start_of_speech] + codes + [end_of_speech] + [end_of_ai]
+    input_ids = (
+        [start_of_human]
+        + tokenized_text
+        + [end_of_human]
+        + [start_of_ai]
+        + [start_of_speech]
+        + codes
+        + [end_of_speech]
+        + [end_of_ai]
+    )
 
     return {"input_ids": input_ids}
 
-
-#map the dataset
 ds = ds.map(create_input_ids, num_proc=num_threads)
-
 ds = ds.remove_columns(['transcript', 'codes'])
 
-#push to the hub
-ds.push_to_hub(push_name)   
-    
+def pad_crop(example, max_length=1680):
+    arr = example["input_ids"]
+    # Crop if too long
+    if len(arr) > max_length:
+        arr = arr[:max_length]
+    # Pad if too short
+    if len(arr) < max_length:
+        arr = arr + [pad_token]*(max_length - len(arr))
+        
+    attention_mask = [1 if token != pad_token else 0 for token in arr]
+    labels = [token if token != pad_token else -100 for token in arr]
+
+    return {
+        "input_ids": arr,
+        "attention_mask": attention_mask,
+        "labels": labels
+    }
+
+ds = ds.map(pad_crop, num_proc=num_threads)
+
+# Push to the hub
+ds.push_to_hub(push_name)
