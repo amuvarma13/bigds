@@ -51,7 +51,7 @@ def create_input_ids(example):
 
     input_ids = [start_of_human]+tokenized_text + [end_of_human]+[start_of_ai] + [start_of_speech] + codes + [end_of_speech] + [end_of_ai]
 
-    return input_ids
+    return {"input_ids": input_ids}
 
 
 #map the dataset
