@@ -6,6 +6,7 @@ from transformers import AutoTokenizer
 ds = load_dataset(dsn, split='train')
 
 
+push_name = "amuvarma/va-0-10k-snac-tttts"
 
 tokeniser_length = 128256
 start_of_text = 128000
@@ -83,4 +84,16 @@ def create_input_ids(example):
         + [end_of_ai]
     )
     example["input_ids"] = input_ids
+    example["labels"] = input_ids
+    example["attention_mask"] = [1] * len(input_ids)
     return example
+
+ds = ds.map(create_input_ids, num_proc=num_proc)
+
+
+
+
+columns_to_remove = ["question", "answer", "answer_snac", "user_tokens", "answer_tokens", "snac_tokens"]
+
+ds = ds.remove_columns(columns_to_remove)
+print(ds.column_names)
