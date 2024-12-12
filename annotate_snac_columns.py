@@ -58,4 +58,29 @@ import os
 num_proc = os.cpu_count()
 ds = ds.map(tokenize_fn, num_proc=num_proc)
 
-print(ds)
+def create_snac_tokens(example):
+    result = []
+    for sublist in example["snac_lols"]:
+        for i, val in enumerate(sublist):
+            result.append(128266)
+            result.append(val + i * 4096)
+    example["snac_tokens"] = result
+    return example
+
+ds = ds.map(create_snac_tokens, num_proc=num_proc)
+
+
+def create_input_ids(example):
+    input_ids = (
+        [start_of_human]
+        + example["user_tokens"]
+        + [end_of_human]
+        + [start_of_ai]
+        + example["answer_tokens"]
+        + [start_of_speech]
+        + example["snac_tokens"]
+        + [end_of_speech]
+        + [end_of_ai]
+    )
+    example["input_ids"] = input_ids
+    return example
