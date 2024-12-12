@@ -57,3 +57,5 @@ def tokenize_fn(example):
 import os
 num_proc = os.cpu_count()
 ds = ds.map(tokenize_fn, num_proc=num_proc)
+
+print(ds)
