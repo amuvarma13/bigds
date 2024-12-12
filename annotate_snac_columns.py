@@ -23,6 +23,9 @@ pad_token = tokeniser_length + 7
 
 audio_tokens_start = tokeniser_length + 10
 
+tokenizer_name = "meta-llama/Llama-3.2-3B-Instruct"
+tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
+
 
 # Remove all columns except "answer_snac"
 # columns_to_remove = [col for col in ds.column_names if col != "answer_snac"]
@@ -42,4 +45,15 @@ num_proc = os.cpu_count()
 # Map the function in parallel
 ds = ds.map(convert_string_to_codes, num_proc=num_proc)
 
-print(ds)
+def tokenize_fn(example):
+    user_ids = tokenizer.encode(example["question"], add_special_tokens=False)
+    answer_ids = tokenizer.encode(example["answer"], add_special_tokens=False)
+    user_ids.append(end_of_text)
+    answer_ids.append(end_of_text)
+    example["user_tokens"] = user_ids
+    example["answer_tokens"] = answer_ids
+    return example
+
+import os
+num_proc = os.cpu_count()
+ds = ds.map(tokenize_fn, num_proc=num_proc)
