@@ -68,7 +68,7 @@ from datasets import Dataset
 from tqdm import tqdm
 
 print("Combining token lists...")
-def combine_token_lists(dataset, num_threads=None):
+def combine_token_lists(dataset):
     usable_length = (len(dataset) // 5) * 5
     if usable_length < len(dataset):
         print(f"Warning: Dataset length ({len(dataset)}) is not divisible by 5. Using first {usable_length} rows.")
@@ -91,7 +91,7 @@ def combine_token_lists(dataset, num_threads=None):
         num_proc=num_threads,
         desc="Combining tokens",
         remove_columns=dataset.column_names, 
-        
+
     )
 ds = combine_token_lists(ds)
 
