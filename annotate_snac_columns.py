@@ -97,3 +97,6 @@ columns_to_remove = ["question", "answer", "answer_snac", "user_tokens", "answer
 
 ds = ds.remove_columns(columns_to_remove)
 print(ds.column_names)
+
+
+ds.push_to_hub(push_name)
