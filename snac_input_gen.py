@@ -68,22 +68,31 @@ from datasets import Dataset
 from tqdm import tqdm
 
 print("Combining token lists...")
-def combine_token_lists(dataset):
+def combine_token_lists(dataset, num_threads=None):
     usable_length = (len(dataset) // 5) * 5
     if usable_length < len(dataset):
         print(f"Warning: Dataset length ({len(dataset)}) is not divisible by 5. Using first {usable_length} rows.")
     
     dataset = dataset.select(range(usable_length))
-    return dataset.map(
-        lambda examples, idx: {
-            'input_ids': sum([dataset[idx + i]['input_ids'] for i in range(5)], [])
-        },
-        with_indices=True,
-        stride=5,
-        desc="Combining tokens", 
-        num_proc=num_threads
-    )
+    
+    def combine_batch(examples, indices):
+        combined_ids = []
+        for i in range(0, len(indices), 5):
+            if i + 5 <= len(indices):
+                combined = sum([examples['input_ids'][i + j] for j in range(5)], [])
+                combined_ids.append(combined)
+        return {'input_ids': combined_ids}
 
+    return dataset.map(
+        combine_batch,
+        batched=True,
+        with_indices=True,
+        batch_size=1000,
+        num_proc=num_threads,
+        desc="Combining tokens",
+        remove_columns=dataset.column_names, 
+        
+    )
 ds = combine_token_lists(ds)
 
 def pad_crop(example, max_length=8192):
