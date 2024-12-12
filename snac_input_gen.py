@@ -1,5 +1,5 @@
 dsn = "amuvarma/snac-2m-raw"
-push_name = "amuvarma/snac-2m-tts-unpadded"
+push_name = "amuvarma/snac-2m-tts-combined"
 
 from datasets import load_dataset
 from transformers import AutoTokenizer
@@ -85,7 +85,7 @@ def combine_token_lists(dataset):
 
 ds = combine_token_lists(ds)
 
-def pad_crop(example, max_length=1680):
+def pad_crop(example, max_length=8192):
     arr = example["input_ids"]
     # Crop if too long
     if len(arr) > max_length:
