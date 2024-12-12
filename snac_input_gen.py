@@ -1,5 +1,5 @@
 dsn = "amuvarma/snac-2m-raw"
-push_name = "amuvarma/snac-2m-tts"
+push_name = "amuvarma/snac-2m-tts-unpadded"
 
 from datasets import load_dataset
 from transformers import AutoTokenizer
@@ -62,6 +62,28 @@ def create_input_ids(example):
 
 ds = ds.map(create_input_ids, num_proc=num_threads)
 ds = ds.remove_columns(['transcript', 'codes'])
+
+
+from datasets import Dataset
+from tqdm import tqdm
+
+print("Combining token lists...")
+def combine_token_lists(dataset):
+    usable_length = (len(dataset) // 5) * 5
+    if usable_length < len(dataset):
+        print(f"Warning: Dataset length ({len(dataset)}) is not divisible by 5. Using first {usable_length} rows.")
+    
+    combined_input_ids = []
+    for i in tqdm(range(0, usable_length, 5), desc="Combining token lists"):
+        combined_list = []
+        for j in range(5):
+            combined_list.extend(dataset[i + j]['input_ids'])
+        combined_input_ids.append({'input_ids': combined_list})
+    
+    return Dataset.from_list(combined_input_ids)
+
+
+ds = combine_token_lists(ds)
 
 def pad_crop(example, max_length=1680):
     arr = example["input_ids"]
