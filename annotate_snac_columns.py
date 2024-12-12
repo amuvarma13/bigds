@@ -93,7 +93,7 @@ ds = ds.map(create_input_ids, num_proc=num_proc)
 
 
 
-columns_to_remove = ["question", "answer", "answer_snac", "user_tokens", "answer_tokens", "snac_tokens"]
+columns_to_remove = ["question", "answer", "answer_snac", "user_tokens", "answer_tokens", "snac_tokens", "snac_lols", "split_name", "index", "round", "question_audio"]
 
 ds = ds.remove_columns(columns_to_remove)
 print(ds.column_names)
