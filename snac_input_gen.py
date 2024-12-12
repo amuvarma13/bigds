@@ -73,24 +73,23 @@ def combine_token_lists(dataset):
     if usable_length < len(dataset):
         print(f"Warning: Dataset length ({len(dataset)}) is not divisible by 5. Using first {usable_length} rows.")
     
-    combined_input_ids = []
-    for i in tqdm(range(0, usable_length, 5), desc="Combining token lists"):
-        combined_list = []
-        for j in range(5):
-            combined_list.extend(dataset[i + j]['input_ids'])
-        combined_input_ids.append({'input_ids': combined_list})
-    
-    return Dataset.from_list(combined_input_ids)
-
+    dataset = dataset.select(range(usable_length))
+    return dataset.map(
+        lambda examples, idx: {
+            'input_ids': sum([dataset[idx + i]['input_ids'] for i in range(5)], [])
+        },
+        with_indices=True,
+        stride=5,
+        desc="Combining tokens", 
+        num_proc=num_threads
+    )
 
 ds = combine_token_lists(ds)
 
 def pad_crop(example, max_length=8192):
     arr = example["input_ids"]
-    # Crop if too long
     if len(arr) > max_length:
         arr = arr[:max_length]
-    # Pad if too short
     if len(arr) < max_length:
         arr = arr + [pad_token]*(max_length - len(arr))
         
