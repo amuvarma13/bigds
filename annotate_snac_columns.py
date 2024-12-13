@@ -63,8 +63,7 @@ def create_snac_tokens(example):
     result = []
     for sublist in example["snac_lols"]:
         for i, val in enumerate(sublist):
-            result.append(128266)
-            result.append(val + i * 4096)
+            result.append(val + (i * 4096) + 128266)
     example["snac_tokens"] = result
     return example
 
