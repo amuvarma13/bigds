@@ -6,7 +6,7 @@ from transformers import AutoTokenizer
 ds = load_dataset(dsn, split='train')
 
 
-push_name = "amuvarma/va-310k-320k-snac-tttts"
+push_name = "amuvarma/va-310k-320k-snac-StTtS"
 
 tokeniser_length = 128256
 start_of_text = 128000
@@ -68,29 +68,29 @@ def create_snac_tokens(example):
 ds = ds.map(create_snac_tokens, num_proc=num_proc)
 
 
-def create_input_ids(example):
-    input_ids = (
-        [start_of_human]
-        + example["user_tokens"]
-        + [end_of_human]
-        + [start_of_ai]
-        + example["answer_tokens"]
-        + [start_of_speech]
-        + example["snac_tokens"]
-        + [end_of_speech]
-        + [end_of_ai]
-    )
-    example["input_ids"] = input_ids
-    example["labels"] = input_ids
-    example["attention_mask"] = [1] * len(input_ids)
-    return example
+# def create_input_ids(example):
+#     input_ids = (
+#         [start_of_human]
+#         + example["user_tokens"]
+#         + [end_of_human]
+#         + [start_of_ai]
+#         + example["answer_tokens"]
+#         + [start_of_speech]
+#         + example["snac_tokens"]
+#         + [end_of_speech]
+#         + [end_of_ai]
+#     )
+#     example["input_ids"] = input_ids
+#     example["labels"] = input_ids
+#     example["attention_mask"] = [1] * len(input_ids)
+#     return example
 
-ds = ds.map(create_input_ids, num_proc=num_proc)
-
-
+# ds = ds.map(create_input_ids, num_proc=num_proc)
 
 
-columns_to_remove = ["question", "answer", "answer_snac", "user_tokens", "answer_tokens", "snac_tokens", "snac_lols", "split_name", "index", "round", "question_audio"]
+
+
+columns_to_remove = ["question", "answer",  "snac_tokens", "question_audio"]
 
 ds = ds.remove_columns(columns_to_remove)
 print(ds.column_names)
