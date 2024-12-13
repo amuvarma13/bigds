@@ -47,8 +47,8 @@ num_proc = os.cpu_count()
 ds = ds.map(convert_string_to_codes, num_proc=num_proc)
 
 def tokenize_fn(example):
-    user_ids = tokenizer.encode(example["question"], add_special_tokens=False)
-    answer_ids = tokenizer.encode(example["answer"], add_special_tokens=False)
+    user_ids = tokenizer.encode(example["question"], add_special_tokens=True)
+    answer_ids = tokenizer.encode(example["answer"], add_special_tokens=True)
     user_ids.append(end_of_text)
     answer_ids.append(end_of_text)
     example["user_tokens"] = user_ids
