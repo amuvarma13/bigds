@@ -90,7 +90,8 @@ ds = ds.map(create_snac_tokens, num_proc=num_proc)
 
 
 
-columns_to_remove = ["question", "answer",  "snac_tokens", "question_audio"]
+columns_to_keep = ["question", "answer",  "snac_tokens", "question_audio"]
+columns_to_remove = [col for col in ds.column_names if col not in columns_to_keep]
 
 ds = ds.remove_columns(columns_to_remove)
 print(ds.column_names)
