@@ -1,4 +1,4 @@
-dsn = "amuvarma/snac-10m-raw"
+dsn = "amuvarma/snac-raw-10m"
 push_name = "amuvarma/snac-10m-tts-combined"
 
 from datasets import load_dataset
