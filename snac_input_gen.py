@@ -1,5 +1,5 @@
-dsn = "amuvarma/snac-2m-raw"
-push_name = "amuvarma/snac-2m-tts-combined"
+dsn = "amuvarma/snac-10m-raw"
+push_name = "amuvarma/snac-10m-tts-combined"
 
 from datasets import load_dataset
 from transformers import AutoTokenizer
