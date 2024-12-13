@@ -1,4 +1,4 @@
-dsn = "amuvarma/va-310k-320k-snac"
+dsn = "amuvarma/va-330k-380k-snac"
 
 from datasets import load_dataset
 import os
@@ -6,7 +6,7 @@ from transformers import AutoTokenizer
 ds = load_dataset(dsn, split='train')
 
 
-push_name = "amuvarma/va-310k-320k-snac-StTtS"
+push_name = "amuvarma/va-330k-380k-snac-StTtS"
 
 tokeniser_length = 128256
 start_of_text = 128000
