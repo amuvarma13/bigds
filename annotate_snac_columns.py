@@ -41,7 +41,7 @@ def convert_string_to_codes(example):
     return example
 
 # Determine number of processes based on CPU count
-num_proc = os.cpu_count()
+num_proc = os.cpu_count() - 2
 
 # Map the function in parallel
 ds = ds.map(convert_string_to_codes, num_proc=num_proc)
@@ -55,8 +55,6 @@ def tokenize_fn(example):
     example["answer_tokens"] = answer_ids
     return example
 
-import os
-num_proc = os.cpu_count()
 ds = ds.map(tokenize_fn, num_proc=num_proc)
 
 def create_snac_tokens(example):
