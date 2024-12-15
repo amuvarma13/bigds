@@ -44,7 +44,7 @@ instruction_list = read_instructions('read_out.txt')
 def tokenize_fn(example):
 
     random_instruction = random.choice(instruction_list)
-    user_ids = tokenizer.encode(random_instruction.slice(-1) + " " + "in a" + example["emotion"] + " voice:" + example["text"],  add_special_tokens=True)
+    user_ids = tokenizer.encode(random_instruction[:-1] + " " + "in a" + example["emotion"] + " voice:" + example["text"],  add_special_tokens=True)
     answer_ids = tokenizer.encode(example["text"], add_special_tokens=True)
     user_ids.append(end_of_text)
     answer_ids.append(end_of_text)
