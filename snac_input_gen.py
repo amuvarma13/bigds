@@ -1,5 +1,5 @@
-dsn = "amuvarma/zuck-3-snacced"
-push_name = "amuvarma/zuck-3-snacced-tts-combined"
+dsn = "amuvarma/zuck-l-snacced"
+push_name = "amuvarma/zuck-l-snacced-tts-combined"
 
 from datasets import load_dataset
 from transformers import AutoTokenizer
