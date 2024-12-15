@@ -7,7 +7,7 @@ import random
 ds = load_dataset(dsn, split='train')
 
 
-push_name = "amuvarma/va-330k-380k-snac-StTtS"
+push_name = "amuvarma/luna-snacced-ds-StTtS-combined"
 
 tokeniser_length = 128256
 start_of_text = 128000
