@@ -93,14 +93,15 @@ def combine_token_lists(dataset):
         remove_columns=dataset.column_names, 
 
     )
-ds = combine_token_lists(ds)
+# ds = combine_token_lists(ds)
 
 def pad_crop(example, max_length=8192):
     arr = example["input_ids"]
-    if len(arr) > max_length:
-        arr = arr[:max_length]
-    if len(arr) < max_length:
-        arr = arr + [pad_token]*(max_length - len(arr))
+    # arr = example["input_ids"]
+    # if len(arr) > max_length:
+    #     arr = arr[:max_length]
+    # if len(arr) < max_length:
+    #     arr = arr + [pad_token]*(max_length - len(arr))
         
     attention_mask = [1 if token != pad_token else 0 for token in arr]
     labels = [token if token != pad_token else -100 for token in arr]
