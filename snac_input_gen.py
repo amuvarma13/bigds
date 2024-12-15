@@ -1,5 +1,5 @@
-dsn = "amuvarma/snac-raw-10m"
-push_name = "amuvarma/snac-10m-tts-combined"
+dsn = "amuvarma/zuck-3-snacced"
+push_name = "amuvarma/zuck-3-snacced-tts-combined"
 
 from datasets import load_dataset
 from transformers import AutoTokenizer
@@ -45,7 +45,7 @@ def create_input_ids(example):
     random_instruction = random.choice(instruction_list)
     tokenized = tokeniser(random_instruction + " " + example["transcript"])
     tokenized_text = tokenized['input_ids'] + [end_of_text]
-    codes = example["codes"]
+    codes = example["codes_list"]
 
     input_ids = (
         [start_of_human]
@@ -61,7 +61,7 @@ def create_input_ids(example):
     return {"input_ids": input_ids}
 
 ds = ds.map(create_input_ids, num_proc=num_threads)
-ds = ds.remove_columns(['transcript', 'codes'])
+ds = ds.remove_columns(['transcript', 'codes_list'])
 
 
 from datasets import Dataset
