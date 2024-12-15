@@ -43,7 +43,8 @@ instruction_list = read_instructions('read_out.txt')
 
 def create_input_ids(example):
     random_instruction = random.choice(instruction_list)
-    tokenized = tokeniser(random_instruction + " " + example["transcript"])
+    cleaned = example["transcript"].translate(str.maketrans("", "", string.punctuation)).lower()
+    tokenized = tokeniser(random_instruction + " " + cleaned)
     tokenized_text = tokenized['input_ids'] + [end_of_text]
     codes = example["codes_list"]
 
