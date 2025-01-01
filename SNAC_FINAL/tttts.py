@@ -41,7 +41,7 @@ num_proc = os.cpu_count() - 2
 ds = ds.filter(lambda x: x['question'] and x['answer'] and x['codes_list'])
 
 #filter out all rows with codeslist length over 12000
-ds = ds.filter(lambda x: len(x['codes_list']) < 12000)
+ds = ds.filter(lambda x: len(x['codes_list']) < 8192)
 
 # Map the function in parallel
 def tokenize_fn(example):
@@ -54,9 +54,6 @@ def tokenize_fn(example):
     return example
 
 ds = ds.map(tokenize_fn, num_proc=num_proc)
-
-
-
 
 def create_input_ids(example):
     input_ids = (
