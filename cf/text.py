@@ -9,9 +9,9 @@ import string
 tkn = "meta-llama/Llama-3.2-3B-Instruct"
 tokeniser = AutoTokenizer.from_pretrained(tkn)
 
-push_name = "amuvarma/text-messages-6m-processed-1"
+push_name = "amuvarma/va-320k-330k-snac-processed"
 
-ds_name = "amuvarma/text-messages-6m"
+ds_name = "amuvarma/va-320k-330k-snac"
 ds = load_dataset(ds_name, split="train")
 
 num_cpus = os.cpu_count()

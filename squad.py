@@ -5,7 +5,8 @@ from datasets import concatenate_datasets
 import random
 
 tkn = "meta-llama/Llama-3.2-3B-Instruct"
-dsn = "rajpurkar/squad"
+dsn = "amuvarma/va-320k-330k-snac"
+pushname = "amuvarma/va-320k-330k-snac-QA_TTTTS"
 
 tokenizer = AutoTokenizer.from_pretrained(tkn)
 
@@ -38,16 +39,7 @@ ds = load_dataset(dsn, split='train')
 
 
 
-def create_context_tokens(example):
-    text_tokens = tokenizer.encode(example['context'], add_special_tokens=True)
-    text_tokens.append(end_of_text)  # Append token 1 to the end
-    return {'context_text': text_tokens}
 
-ds_txt = ds.map(
-    create_context_tokens,
-    num_proc=num_threads,
-    desc="Creating text_tokens column"
-)
 
 def create_question_tokens(example):
     
@@ -55,7 +47,7 @@ def create_question_tokens(example):
     text_tokens.append(end_of_text)  # Append token 1 to the end
     return {'question_text': text_tokens}
 
-ds_txt = ds_txt.map(
+ds_txt = ds.map(
     create_question_tokens,
     num_proc=num_threads,
     desc="Creating text_tokens column"
@@ -74,25 +66,21 @@ ds_txt = ds_txt.map(
     desc="Creating text_tokens column"
 )
 
-
 tts_dataset = ds_txt
-
-
 
 def create_input_ids(example):
     input_ids = (
-        [start_of_system] +
-        example['context_text'] +
-        [end_of_system]+
+
         [start_of_human] +
         example['question_text'] +
         [end_of_human] +
         [start_of_ai] +
-        example['answer_text'] +
-        [end_of_ai] 
+        example['answer_text']
     )
 
     example['input_ids'] = input_ids
+    example["attention_mask"] = [1] * len(input_ids)
+    example["labels"] = input_ids
     return example
 
 tts_dataset = tts_dataset.map(
@@ -104,46 +92,14 @@ tts_dataset = tts_dataset.map(
 
 max_length = 8192
 
-
-def pad_and_create_mask(example):
-    # Pad or truncate input_ids
-    if len(example['input_ids']) > max_length:
-        example['input_ids'] = example['input_ids'][:max_length]
-        example['attention_mask'] = [1] * max_length
-    else:
-        padding_length = max_length - len(example['input_ids'])
-        example['attention_mask'] = [1] * len(example['input_ids']) + [0] * padding_length
-        example['input_ids'] = example['input_ids'] + [pad_token] * padding_length
-
-    return example
-
-
-full_processed_padded = tts_dataset.map(
-    pad_and_create_mask,
-    num_proc=88 
-)
-
-def preprocess_function(examples, ):
-    examples['labels'] = [
-        (token_id if token_id != pad_token else -100) for token_id in examples['input_ids']
-    ]
-    return examples
-
-full_processed_padded = full_processed_padded.map(
-    preprocess_function,
-    num_proc=88
-)
-
-all_columns = full_processed_padded.column_names
-
-# Specify the columns we want to keep
 columns_to_keep = ["input_ids", "attention_mask", "labels"]
 
 # Identify columns to remove
+all_columns = tts_dataset.column_names
 columns_to_remove = [col for col in all_columns if col not in columns_to_keep]
 
 # Remove unwanted columns
-dataset_to_upload = full_processed_padded.remove_columns(columns_to_remove)
+dataset_to_upload = tts_dataset.remove_columns(columns_to_remove)
 
 # Now upload the dataset with only the desired columns
-dataset_to_upload.push_to_hub("amuvarma/squad-150k")
+dataset_to_upload.push_to_hub(pushname)
