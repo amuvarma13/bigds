@@ -90,6 +90,8 @@ for convo in mylists:
     all_input_ids.append(input_ids)
     
         
+print(len(all_input_ids))
+
 def convert_to_hf_dataset(all_input_ids):
     flat_input_ids = [msg for convo in all_input_ids for msg in convo]
     ds = Dataset.from_dict({"input_ids": flat_input_ids})
