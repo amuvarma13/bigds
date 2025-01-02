@@ -69,6 +69,8 @@ def dataset_to_list_of_lists(dataset):
 
 mylists = dataset_to_list_of_lists(ds)
 
+print(len(mylists))
+
 
 
 
