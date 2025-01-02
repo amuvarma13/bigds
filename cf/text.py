@@ -9,9 +9,9 @@ import string
 tkn = "meta-llama/Llama-3.2-3B-Instruct"
 tokeniser = AutoTokenizer.from_pretrained(tkn)
 
-push_name = "amuvarma/va-320k-330k-snac-processed"
+push_name = "amuvarma/qa_pairs_regulars-processed"
 
-ds_name = "amuvarma/va-320k-330k-snac"
+ds_name = "amuvarma/qa_pairs_regular"
 ds = load_dataset(ds_name, split="train")
 
 num_cpus = os.cpu_count()
@@ -57,7 +57,7 @@ def process_batch(batch):
     input_ids = []
     for messages in batch["messages"]:
         sequence = []
-        instruction = random.choice(instruction_list)
+        instruction = random.choice("You are an AI assistant role playing Mark Zuckerberg. Keep your tone casual and conversational.")
         sequence.extend([start_of_system] + tokeniser(instruction)["input_ids"] + [end_of_text, end_of_system])
         
         for msg in messages:

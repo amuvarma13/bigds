@@ -5,8 +5,8 @@ from datasets import concatenate_datasets
 import random
 
 tkn = "meta-llama/Llama-3.2-3B-Instruct"
-dsn = "amuvarma/va-320k-330k-snac"
-pushname = "amuvarma/va-320k-330k-snac-QA_TTTTS"
+dspush_name = "amuvarma/qa_pairs_regulars"
+pushname = "amuvarma/qa_pairs_regulars-QA_TTTTS"
 
 tokenizer = AutoTokenizer.from_pretrained(tkn)
 
