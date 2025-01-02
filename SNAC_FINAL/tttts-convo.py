@@ -83,7 +83,7 @@ for convo in mylists:
         tokenised_answer = tokenizer.encode(answer, add_special_tokens=True)
         tokenised_question.append(end_of_text)
         tokenised_answer.append(end_of_text)
-        input_ids.append([start_of_human] + tokenised_question + [end_of_human] + [start_of_ai] + tokenised_answer + [start_of_speech] + codes_list + [end_of_speech] + [end_of_ai])
+        input_ids.extend([start_of_human] + tokenised_question + [end_of_human] + [start_of_ai] + tokenised_answer + [start_of_speech] + codes_list + [end_of_speech] + [end_of_ai])
 
     all_input_ids.append(input_ids)
     
