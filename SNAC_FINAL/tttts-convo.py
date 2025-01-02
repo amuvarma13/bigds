@@ -2,7 +2,7 @@
 
 dsn = "amuvarma/snacced-flat-zuck-convo"
 
-from datasets import load_dataset
+from datasets import load_dataset, Dataset
 import os
 from transformers import AutoTokenizer
 ds = load_dataset(dsn, split='train')
@@ -71,6 +71,61 @@ mylists = dataset_to_list_of_lists(ds)
 
 print(len(mylists))
 print(mylists[0])
+
+
+all_input_ids = []
+for convo in mylists:
+    input_ids = []
+    for message in convo:
+        question = message["question"]
+        answer = message["answer"]
+        codes_list = message["codes_list"]
+        tokenised_question = tokenizer.encode(question, add_special_tokens=True)
+        tokenised_answer = tokenizer.encode(answer, add_special_tokens=True)
+        tokenised_question.append(end_of_text)
+        tokenised_answer.append(end_of_text)
+        input_ids.append([start_of_human] + tokenised_question + [end_of_human] + [start_of_ai] + tokenised_answer + [start_of_speech] + codes_list + [end_of_speech] + [end_of_ai])
+
+    all_input_ids.append(input_ids)
+    
+        
+def convert_to_hf_dataset(all_input_ids):
+    flat_input_ids = [msg for convo in all_input_ids for msg in convo]
+    ds = Dataset.from_dict({"input_ids": flat_input_ids})
+    return ds
+
+ds = convert_to_hf_dataset(all_input_ids)
+
+print(ds)
+
+#add the labels and attention mask
+
+def create_mask_and_labels(example):
+    max_length = 8192
+
+    if len(example['input_ids']) > max_length:
+        example['attention_mask'] = [1] * max_length
+        example['input_ids'] = example['input_ids'][:max_length]
+    else:
+        example['attention_mask'] = [1] * len(example['input_ids'])
+
+    example['labels'] = example['input_ids']
+    
+    return example
+
+ds = ds.map(create_mask_and_labels, num_proc=num_proc)
+
+
+columns_to_keep = ["input_ids", "labels",   "attention_mask"]
+
+columns_to_remove = [col for col in ds.column_names if col not in columns_to_keep]
+
+ds = ds.remove_columns(columns_to_remove)
+
+ds.push_to_hub(push_name)   
+
+
+
 
 
 # # Map the function in parallel
