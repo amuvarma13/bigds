@@ -66,3 +66,4 @@ tds = concatenate_datasets([cds1, cds2, cds3])
 
 tds = tds.cast_column("question_audio", Audio(sampling_rate=16000))
 tds = tds.cast_column("answer_audio", Audio(sampling_rate=24000))
+tds.push_to_hub("amu-zucktts-with-qaudio-total-cast")
