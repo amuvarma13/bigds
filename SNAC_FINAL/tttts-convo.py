@@ -93,7 +93,7 @@ for convo in mylists:
         tokenised_question.append(end_of_text)
         tokenised_answer.append(end_of_text)
         input_ids.extend([start_of_human] + tokenised_question + [end_of_human] + [start_of_ai] + tokenised_answer + [start_of_speech] + codes_list + [end_of_speech] + [end_of_ai])
-        audios.append(message["question_audio"]["array"])
+        audios.append(message["answer_audio"]["array"])
 
     all_input_ids.append(input_ids)
     all_audios.append(audios)
