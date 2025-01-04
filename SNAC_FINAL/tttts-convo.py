@@ -1,6 +1,8 @@
 ## TAKES IN DATASET WITH COLUMNS codes_list, question, answer
 
-dsn = "amuvarma/snacced-flat-zuck-convo"
+dsn = "amuvarma/snacced-flat-zuck-convo-sttsed"
+push_name = "amuvarma/snacced-flat-zuck-convo-sttsed-proc"
+
 
 from datasets import load_dataset, Dataset
 import os
@@ -8,7 +10,6 @@ from transformers import AutoTokenizer
 ds = load_dataset(dsn, split='train')
 from collections import defaultdict
 
-push_name = "amuvarma/snacced-flat-zuck-convo-StTtS"
 
 tokeniser_length = 128256
 start_of_text = 128000
@@ -28,6 +29,11 @@ audio_tokens_start = tokeniser_length + 10
 
 tokenizer_name = "meta-llama/Llama-3.2-3B-Instruct"
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
+
+number_add_tokens = 7 * 4096 + 10
+new_tokens = [f"<custom_token_{i}>" for i in range(0, number_add_tokens + 1)]
+tokenizer.add_tokens(new_tokens)
+tokenizer.add_special_tokens({'additional_special_tokens': ['<|audio|>']})
 
 
 # Remove all columns except "answer_snac"
@@ -61,7 +67,6 @@ def dataset_to_list_of_lists(dataset):
     # Sort each conversation by messages_index, then collect into a list
     result = []
     for conv_index in sorted(conv_dict.keys()):
-        # Sort the messages in each conversation by messages_index
         messages_sorted = sorted(conv_dict[conv_index], key=lambda x: x["messages_index"])
         result.append(messages_sorted)
     
@@ -75,10 +80,12 @@ print(len(mylists))
 
 
 all_input_ids = []
+all_audios = []
 for convo in mylists:
     input_ids = []
+    audios = []
     for message in convo:
-        question = message["question"]
+        question = "<|audio|>"
         answer = message["answer"]
         codes_list = message["codes_list"]
         tokenised_question = tokenizer.encode(question, add_special_tokens=True)
@@ -86,15 +93,17 @@ for convo in mylists:
         tokenised_question.append(end_of_text)
         tokenised_answer.append(end_of_text)
         input_ids.extend([start_of_human] + tokenised_question + [end_of_human] + [start_of_ai] + tokenised_answer + [start_of_speech] + codes_list + [end_of_speech] + [end_of_ai])
+        audios.push(message["question_audio"]["array"])
 
     all_input_ids.append(input_ids)
+    all_audios.append(audios)
     
         
-print(len(all_input_ids))
+print(len(all_input_ids), len(all_audios))
 
 def convert_to_hf_dataset(all_input_ids):
     flat_input_ids = [iids for iids in all_input_ids]
-    ds = Dataset.from_dict({"input_ids": flat_input_ids})
+    ds = Dataset.from_dict({"input_ids": flat_input_ids, "audios": all_audios})
     return ds
 
 ds = convert_to_hf_dataset(all_input_ids)
@@ -119,7 +128,7 @@ def create_mask_and_labels(example):
 ds = ds.map(create_mask_and_labels, num_proc=num_proc)
 
 
-columns_to_keep = ["input_ids", "labels",   "attention_mask"]
+columns_to_keep = ["input_ids", "labels",   "attention_mask", "audios"]
 
 columns_to_remove = [col for col in ds.column_names if col not in columns_to_keep]
 
