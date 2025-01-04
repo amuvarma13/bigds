@@ -62,6 +62,7 @@ def dataset_to_list_of_lists(dataset):
             "question": row["question"],
             "answer": row["answer"],
             "codes_list": row["codes_list"],
+            "answer_audio": row["answer_audio"]
         })
     
     # Sort each conversation by messages_index, then collect into a list
