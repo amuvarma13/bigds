@@ -65,3 +65,5 @@ dataset_no_discrepancies = dataset.filter(no_discrepancy)
 
 print("Original dataset size:", len(dataset))
 print("Dataset size without discrepancies:", len(dataset_no_discrepancies))
+
+dataset_no_discrepancies.push_to_hub("amuvarma/snacced-zuck-convo-sttsed-proc-no-discrepancies")
