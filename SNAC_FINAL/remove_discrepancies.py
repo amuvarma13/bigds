@@ -4,7 +4,6 @@ dataset = load_dataset(dsn, split="train")
 
 from datasets import load_dataset
 import pandas as pd
-import matplotlib.pyplot as plt
 
 # 2) Define the target token:
 target_token = 128266 + (7 * 4096) + 1  # 156939
