@@ -1,6 +1,6 @@
 ## TAKES IN DATASET WITH COLUMNS codes_list, question, answer
 
-dsn = "amuvarma/zuck-qa-ds-no-identity"
+dsn = "amuvarma/snacced-flat-zuck-convo-sttsed"
 
 from datasets import load_dataset
 import os
@@ -8,7 +8,7 @@ from transformers import AutoTokenizer
 ds = load_dataset(dsn, split='train')
 
 
-push_name = "amuvarma/zuck-qa-ds-no-identity-TTTTS"
+push_name = "amuvarma/snacced-flat-zuck-convo-sttsed-TTTTS"
 
 tokeniser_length = 128256
 start_of_text = 128000
