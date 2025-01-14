@@ -4,7 +4,7 @@ import os
 num_proc = os.cpu_count() -2
 
 dsn = "amuvarma/text-messages-6m-processed-1"
-push_name = "amuvarma/text-messages-6m-processed-combined-trunc"
+push_name = "amuvarma/text-messages-6m-processed-combinedfor10m-trunc"
 
 dataset = load_dataset(dsn, split='train')
 
