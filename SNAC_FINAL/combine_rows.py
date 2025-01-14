@@ -1,4 +1,7 @@
 from datasets import Dataset, load_dataset
+import os
+
+num_proc = os.cpu_count() -2
 
 dsn = "amuvarma/text-messages-6m-processed-1"
 push_name = "amuvarma/text-messages-6m-processed-combined"
@@ -30,9 +33,11 @@ merged_dataset = dataset.map(
     merge_4_samples,
     batched=True,
     batch_size=8,
+    num_proc=4,
 
 )
 
+merged_dataset = merged_dataset.shuffle(seed=42)
 print(merged_dataset)
 
 # Save the merged dataset
