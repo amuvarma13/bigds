@@ -33,7 +33,7 @@ merged_dataset = dataset.map(
     merge_4_samples,
     batched=True,
     batch_size=8,
-    num_proc=4,
+    num_proc=num_proc,
 
 )
 
