@@ -32,7 +32,7 @@ def merge_4_samples(examples):
 merged_dataset = dataset.map(
     merge_4_samples,
     batched=True,
-    batch_size=8,
+    batch_size=3,
     num_proc=num_proc,
 
 )
