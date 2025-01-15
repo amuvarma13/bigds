@@ -4,7 +4,7 @@ import os
 num_proc = os.cpu_count() -2
 
 dsn = "amuvarma/snac-2m-tts"
-push_name = "amuvarma/snac-2m-tts"
+push_name = "amuvarma/snac-2m-tts-3g-4096l"
 
 dataset = load_dataset(dsn, split='train')
 
