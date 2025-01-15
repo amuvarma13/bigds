@@ -40,7 +40,7 @@ merged_dataset = dataset.map(
 merged_dataset = merged_dataset.shuffle(seed=42)
 print(merged_dataset)
 
-def truncate_sequences(dataset, max_length=8192):
+def truncate_sequences(dataset, max_length=4096):
     def truncate_row(example):
         if len(example['input_ids']) > max_length:
             example['input_ids'] = example['input_ids'][:max_length]
