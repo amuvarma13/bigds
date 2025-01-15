@@ -23,8 +23,9 @@ def pad_and_create_mask(example):
     else:
         padding_length = max_length - len(example['input_ids'])
         example['attention_mask'] = [1] * len(example['input_ids']) + [0] * padding_length
-        example['input_ids'] = example['input_ids'] + [pad_token] * padding_length
         example["labels"] = example["input_ids"] + [-100] * padding_length
+        example['input_ids'] = example['input_ids'] + [pad_token] * padding_length
+        
 
     return example
 ds_1 = ds.map(pad_and_create_mask, num_proc=num_processes)
