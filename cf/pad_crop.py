@@ -1,6 +1,6 @@
 from datasets import load_dataset
 dsn = "amuvarma/snac-2m-tts-2g"
-push_name = "amuvarma/snac-2m-tts-2g-4096l"
+push_name = "amuvarma/snac-2m-tts-2g-3328l"
 import os
 
 ds = load_dataset(dsn, split='train')
