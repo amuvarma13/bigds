@@ -3,8 +3,8 @@ import os
 
 num_proc = os.cpu_count() -2
 
-dsn = "amuvarma/snac-2m-tts"
-push_name = "amuvarma/snac-2m-tts-2g"
+dsn = "amuvarma/text-messages-6m-processed-1"
+push_name = "amuvarma/text-messages-6m-processed-1-5g"
 
 dataset = load_dataset(dsn, split='train')
 
