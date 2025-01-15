@@ -4,10 +4,9 @@ import os
 
 ds = load_dataset(dsn, split='train')
 
-max_length = 8192
+max_length = 4096
 pad_token = 128263
 
-max_length = 8192
 def pad_and_create_mask(example):
     if len(example['input_ids']) > max_length:
         example['input_ids'] = example['input_ids'][:max_length]
