@@ -38,6 +38,7 @@ merged_dataset = dataset.map(
 )
 
 merged_dataset = merged_dataset.shuffle(seed=42)
+merged_dataset = merged_dataset.remove_columns([col for col in dataset.column_names if col not in ['input_ids']])
 
 # Save the merged dataset
 merged_dataset.push_to_hub(push_name)
