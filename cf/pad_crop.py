@@ -5,7 +5,7 @@ import os
 
 ds = load_dataset(dsn, split='train')
 
-max_length = 4096
+max_length = 3328
 pad_token = 128263
 
 def pad_and_create_mask(example):
