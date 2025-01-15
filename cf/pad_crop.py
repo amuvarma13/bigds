@@ -2,13 +2,13 @@ from datasets import load_dataset
 import os
 
 
-dsn = "amuvarma/text-messages-6m-processed-1-2g"
-push_name = "amuvarma/text-messages-6m-processed-1-2g-8192l"
+dsn = "amuvarma/text-messages-6m-processed-1-4g"
+push_name = "amuvarma/text-messages-6m-processed-1-4g-3328l"
 
 
 ds = load_dataset(dsn, split='train')
 
-max_length = 8192
+max_length = 3328
 
 num_cpus = os.cpu_count()
 
