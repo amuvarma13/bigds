@@ -27,6 +27,6 @@ def pad_and_create_mask(example):
         example["labels"] = example["labels"] + [-100] * padding_length
 
     return example
-ds_1 = ds.map(pad_and_create_mask, num_processes=num_processes)
+ds_1 = ds.map(pad_and_create_mask, num_proc=num_processes)
 
 ds_1.push_to_hub(push_name)
