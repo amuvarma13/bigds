@@ -1,5 +1,6 @@
 from datasets import load_dataset
-dsn = "amuvarma/contentonly-proc-train-200k-1dups-concat"
+dsn = "amuvarma/snac-2m-tts-2g"
+push_name = "amuvarma/snac-2m-tts-2g-4096l"
 import os
 
 ds = load_dataset(dsn, split='train')
@@ -38,5 +39,5 @@ ds_2 = ds_1.map(
 )
 
 # Save the dataset
-push_name = "amuvarma/contentonly-proc-train-125k-1dups-concat-pad"
+
 ds_2.push_to_hub(push_name)
