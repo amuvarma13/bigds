@@ -129,7 +129,7 @@ def create_mask_and_labels(example):
 ds = ds.map(create_mask_and_labels, num_proc=num_proc)
 
 
-columns_to_keep = ["input_ids", "labels",   "attention_mask", "audios"]
+columns_to_keep = ["input_ids", "labels",   "attention_mask"]
 
 columns_to_remove = [col for col in ds.column_names if col not in columns_to_keep]
 
