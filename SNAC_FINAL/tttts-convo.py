@@ -114,7 +114,7 @@ print(ds)
 #add the labels and attention mask
 
 def create_mask_and_labels(example):
-    max_length = 8192
+    max_length = 16184
 
     if len(example['input_ids']) > max_length:
         example['attention_mask'] = [1] * max_length
