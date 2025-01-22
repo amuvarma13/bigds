@@ -86,7 +86,7 @@ for convo in mylists:
     input_ids = []
     audios = []
     for message in convo:
-        question = "<|audio|>"
+        question = message["question"]
         answer = message["answer"]
         codes_list = message["codes_list"]
         tokenised_question = tokenizer.encode(question, add_special_tokens=True)
