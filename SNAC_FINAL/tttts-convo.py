@@ -27,7 +27,7 @@ pad_token = tokeniser_length + 7
 
 audio_tokens_start = tokeniser_length + 10
 
-tokenizer_name = "meta-llama/Llama-3.2-3B-Instruct"
+tokenizer_name = "meta-llama/Llama-3.1-8B-Instruct"
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 
 number_add_tokens = 7 * 4096 + 10
