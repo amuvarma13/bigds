@@ -1,6 +1,6 @@
 ## TAKES IN DATASET WITH COLUMNS codes_list, question, answer
 
-dsn = "amuvarma/flattened-convos-regzuck"
+dsn = "amuvarma/flattened-convos-regzuck-ttsed"
 push_name = "amuvarma/flattened-convos-regzuck-ttsed-proc"
 
 
