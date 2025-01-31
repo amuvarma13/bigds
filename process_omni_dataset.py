@@ -1,4 +1,5 @@
 from datasets import load_dataset
+from huggingface_hub import snapshot_download
 def _load_dataset(dataset_name):
     snapshot_download(
         repo_id=dataset_name,
