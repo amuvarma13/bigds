@@ -1,6 +1,6 @@
 ## TAKES IN DATASET WITH COLUMNS codes_list, question, answer
 
-dsn = "amuvarma/sm-template-audio-snacced-0"
+dsn = "amuvarma/sm-template-audio-snacced-1"
 
 from datasets import load_dataset
 import os
@@ -8,7 +8,7 @@ from transformers import AutoTokenizer
 ds = load_dataset(dsn, split='train')
 
 
-push_name = "amuvarma/sm-template-audio-snacced-TTTTMS-speech"
+push_name = "amuvarma/sm-template-audio-snacced-TTTTMS-motion"
 
 tokeniser_length = 128256
 start_of_text = 128000
@@ -68,14 +68,14 @@ ds = ds.map(offset_vq, num_proc=num_proc)
 def get_labels(input_ids):
     labels = [-100] * len(input_ids)
     try:
-        start_idx = input_ids.index(start_of_speech)
-        end_idx = input_ids.index(end_of_speech, start_idx)
+        start_idx = input_ids.index(start_of_motion)
+        end_idx = input_ids.index(end_of_motion, start_idx)
     except ValueError:
         return labels
-
     for i in range(start_idx, end_idx + 1):
         labels[i] = input_ids[i]
     return labels
+
 
 def create_input_ids(example):
     input_ids = (
