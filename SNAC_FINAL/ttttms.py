@@ -1,6 +1,6 @@
 ## TAKES IN DATASET WITH COLUMNS codes_list, question, answer
 
-dsn = "amuvarma/sm-template-audio-snacced-1"
+dsn = "amuvarma/sm-template-audio-snacced-2"
 
 from datasets import load_dataset
 import os
@@ -8,7 +8,7 @@ from transformers import AutoTokenizer
 ds = load_dataset(dsn, split='train')
 
 
-push_name = "amuvarma/sm-template-audio-snacced-TTTTMS-motion"
+push_name = "amuvarma/sm-template-audio-snacced-TTTTMS-text"
 
 tokeniser_length = 128256
 start_of_text = 128000
@@ -65,14 +65,14 @@ def offset_vq(example):
 
 ds = ds.map(offset_vq, num_proc=num_proc)
 
-def get_labels(input_ids):
+def get_answer_labels(input_ids):
     labels = [-100] * len(input_ids)
     try:
-        start_idx = input_ids.index(start_of_motion)
-        end_idx = input_ids.index(end_of_motion, start_idx)
+        start_idx = input_ids.index(start_of_ai)
+        end_idx = input_ids.index(start_of_motion, start_idx)
     except ValueError:
         return labels
-    for i in range(start_idx, end_idx + 1):
+    for i in range(start_idx, end_idx):
         labels[i] = input_ids[i]
     return labels
 
@@ -93,7 +93,7 @@ def create_input_ids(example):
         + [end_of_ai]
     )
     example["input_ids"] = input_ids
-    example["labels"] = get_labels(input_ids)
+    example["labels"] = get_answer_labels(input_ids)
     example["attention_mask"] = [1] * len(input_ids)
     return example
 
