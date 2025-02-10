@@ -93,7 +93,7 @@ def create_input_ids(example):
         + [end_of_ai]
     )
     example["input_ids"] = input_ids
-    example["labels"] = input_ids
+    example["labels"] = get_labels(input_ids)
     example["attention_mask"] = [1] * len(input_ids)
     return example
 
