@@ -1,6 +1,6 @@
 ## TAKES IN DATASET WITH COLUMNS codes_list, question, answer
 
-dsn = "amuvarma/sm-template-audio-snacced"
+dsn = "amuvarma/sm-template-audio-snacced-0"
 
 from datasets import load_dataset
 import os
@@ -8,7 +8,7 @@ from transformers import AutoTokenizer
 ds = load_dataset(dsn, split='train')
 
 
-push_name = "amuvarma/sm-template-audio-snacced-TTTTMS"
+push_name = "amuvarma/sm-template-audio-snacced-TTTTMS-speech"
 
 tokeniser_length = 128256
 start_of_text = 128000
