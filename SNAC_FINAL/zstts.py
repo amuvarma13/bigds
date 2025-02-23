@@ -41,13 +41,15 @@ num_proc = os.cpu_count() - 2
 # Tokenize function: remove punctuation, lowercase, and prepend/append special tokens
 def tokenize_fn(example):
     # Remove punctuation and lowercase prompt and response texts
+
+    random_instruction = random.choice(instruction_list)
     prompt_text = example["text_prompt"].translate(str.maketrans('', '', string.punctuation)).lower()
     response_text = example["text_response"].translate(str.maketrans('', '', string.punctuation)).lower()
     
     # Here we simply tokenize without adding extra instructions.
     # Prepend start_of_text and append end_of_text for both sequences.
-    prompt_ids = [start_of_text] + tokenizer.encode(prompt_text, add_special_tokens=True) + [end_of_text]
-    response_ids = [start_of_text] + tokenizer.encode(response_text, add_special_tokens=True) + [end_of_text]
+    prompt_ids = [start_of_text] + tokenizer.encode(random_instruction + " " + prompt_text, add_special_tokens=True) + [end_of_text]
+    response_ids = [start_of_text] + tokenizer.encode(random_instruction + " " + response_text, add_special_tokens=True) + [end_of_text]
     
     example["prompt_tokens"] = prompt_ids
     example["response_tokens"] = response_ids
