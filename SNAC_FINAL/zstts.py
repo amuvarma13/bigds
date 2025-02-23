@@ -109,7 +109,7 @@ def create_input_ids(example):
     example["attention_mask"] = [1] * len(input_ids)
     return example
 
-ds = ds.map(create_input_ids, num_proc=num_proc)
+ds = ds.map(create_input_ids, num_proc=num_proc, desc="Creating input IDs")
 
 # Keep only the desired columns for pushing
 columns_to_keep = ["input_ids", "labels", "attention_mask"]
