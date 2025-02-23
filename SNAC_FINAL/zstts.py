@@ -34,7 +34,7 @@ def read_instructions(filename):
 
 instruction_list = read_instructions('read_out.txt')
 
-# Load dataset and filter rows
+# Load dataset (filtering is commented out for now)
 ds = load_dataset(dsn, split='train')
 # ds = ds.filter(lambda x: x['question'] and x['answer'] and x['codes_list'])
 # ds = ds.filter(lambda x: len(x['codes_list']) < 8192)
@@ -64,6 +64,10 @@ ds = ds.map(tokenize_fn, num_proc=num_proc, desc="Tokenizing")
 
 # Create input_ids and compute labels only on the second sample’s codes list.
 def create_input_ids(example):
+    # Skip rows with missing codes list segments
+    if (example.get("codes_list_prompt") is None) or (example.get("codes_list_response") is None):
+        return None
+
     # Build input_ids by concatenating several segments
     input_ids = (
         [start_of_human]
@@ -87,16 +91,15 @@ def create_input_ids(example):
     # Initialize all labels to ignore index (-100)
     labels = [-100] * len(input_ids)
 
-    # Calculate segment lengths
-    segment0_len = 1 + len(example["prompt_tokens"]) + 1
-    segment1_len = 1 + 1 + len(example["codes_list_prompt"]) + 1 + 1
-    segment2_len = 1 + len(example["response_tokens"]) + 1
+    # Calculate segment lengths for each part
+    segment0_len = 1 + len(example["prompt_tokens"]) + 1  # start_of_human + prompt_tokens + end_of_human
+    segment1_len = 1 + 1 + len(example["codes_list_prompt"]) + 1 + 1  # start_of_ai + start_of_speech + codes_list_prompt + end_of_speech + end_of_ai
+    segment2_len = 1 + len(example["response_tokens"]) + 1  # start_of_human + response_tokens + end_of_human
 
     # Segment3: tokens corresponding to codes_list_response
     # Segment3 structure: [start_of_ai] + [start_of_speech] + codes_list_response + [end_of_speech]
-    # We want to compute loss only on codes_list_response tokens.
     segment3_start = segment0_len + segment1_len + segment2_len
-    # The first two tokens of segment3 (start_of_ai, start_of_speech) are not labeled.
+    # Skip the first two tokens (start_of_ai and start_of_speech) in segment3
     codes_start = segment3_start + 2
     codes_length = len(example["codes_list_response"])
     codes_end = codes_start + codes_length
