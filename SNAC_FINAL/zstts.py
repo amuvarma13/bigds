@@ -34,10 +34,8 @@ def read_instructions(filename):
 
 instruction_list = read_instructions('read_out.txt')
 
-# Load dataset (filtering is commented out for now)
+# Load dataset
 ds = load_dataset(dsn, split='train')
-# ds = ds.filter(lambda x: x['question'] and x['answer'] and x['codes_list'])
-# ds = ds.filter(lambda x: len(x['codes_list']) < 8192)
 
 num_proc = os.cpu_count() - 2
 
@@ -62,13 +60,11 @@ def tokenize_fn(example):
 
 ds = ds.map(tokenize_fn, num_proc=num_proc, desc="Tokenizing")
 
+# Filter out rows missing required codes list fields
+ds = ds.filter(lambda x: x.get("codes_list_prompt") is not None and x.get("codes_list_response") is not None)
+
 # Create input_ids and compute labels only on the second sample’s codes list.
 def create_input_ids(example):
-    # Skip rows with missing codes list segments
-    if (example.get("codes_list_prompt") is None) or (example.get("codes_list_response") is None):
-        return None
-
-    # Build input_ids by concatenating several segments
     input_ids = (
         [start_of_human]
         + example["prompt_tokens"]
@@ -88,23 +84,21 @@ def create_input_ids(example):
     )
     example["input_ids"] = input_ids
 
-    # Initialize all labels to ignore index (-100)
+    # Initialize labels with ignore index (-100)
     labels = [-100] * len(input_ids)
 
-    # Calculate segment lengths for each part
-    segment0_len = 1 + len(example["prompt_tokens"]) + 1  # start_of_human + prompt_tokens + end_of_human
-    segment1_len = 1 + 1 + len(example["codes_list_prompt"]) + 1 + 1  # start_of_ai + start_of_speech + codes_list_prompt + end_of_speech + end_of_ai
-    segment2_len = 1 + len(example["response_tokens"]) + 1  # start_of_human + response_tokens + end_of_human
+    # Compute lengths of segments
+    segment0_len = 1 + len(example["prompt_tokens"]) + 1  # [start_of_human] + prompt_tokens + [end_of_human]
+    segment1_len = 1 + 1 + len(example["codes_list_prompt"]) + 1 + 1  # [start_of_ai] + [start_of_speech] + codes_list_prompt + [end_of_speech] + [end_of_ai]
+    segment2_len = 1 + len(example["response_tokens"]) + 1  # [start_of_human] + response_tokens + [end_of_human]
 
-    # Segment3: tokens corresponding to codes_list_response
-    # Segment3 structure: [start_of_ai] + [start_of_speech] + codes_list_response + [end_of_speech]
+    # Segment3: corresponds to [start_of_ai] + [start_of_speech] + codes_list_response + [end_of_speech]
     segment3_start = segment0_len + segment1_len + segment2_len
-    # Skip the first two tokens (start_of_ai and start_of_speech) in segment3
-    codes_start = segment3_start + 2
+    codes_start = segment3_start + 2  # Skip the [start_of_ai] and [start_of_speech] tokens
     codes_length = len(example["codes_list_response"])
     codes_end = codes_start + codes_length
 
-    # Copy the token IDs for the codes_list_response portion into labels
+    # Only label tokens in the codes_list_response segment
     for i in range(codes_start, codes_end):
         labels[i] = input_ids[i]
 
