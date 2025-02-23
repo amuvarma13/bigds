@@ -60,7 +60,7 @@ def tokenize_fn(example):
     example["response_tokens"] = response_ids
     return example
 
-ds = ds.map(tokenize_fn, num_proc=num_proc)
+ds = ds.map(tokenize_fn, num_proc=num_proc, desc="Tokenizing")
 
 # Create input_ids and compute labels only on the second sample’s codes list.
 def create_input_ids(example):
