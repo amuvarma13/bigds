@@ -49,8 +49,8 @@ def tokenize_fn(example):
     
     # Here we simply tokenize without adding extra instructions.
     # Prepend start_of_text and append end_of_text for both sequences.
-    prompt_ids = [start_of_text] + tokenizer.encode(random_instruction_1 + " " + prompt_text, add_special_tokens=True) + [end_of_text]
-    response_ids = [start_of_text] + tokenizer.encode(random_instruction_2 + " " + response_text, add_special_tokens=True) + [end_of_text]
+    prompt_ids = [start_of_text] + tokenizer.encode(random_instruction_1 + " " + prompt_text, add_special_tokens=False) + [end_of_text]
+    response_ids = [start_of_text] + tokenizer.encode(random_instruction_2 + " " + response_text, add_special_tokens=False) + [end_of_text]
     
     example["prompt_tokens"] = prompt_ids
     example["response_tokens"] = response_ids
