@@ -36,8 +36,8 @@ instruction_list = read_instructions('read_out.txt')
 
 # Load dataset and filter rows
 ds = load_dataset(dsn, split='train')
-ds = ds.filter(lambda x: x['question'] and x['answer'] and x['codes_list'])
-ds = ds.filter(lambda x: len(x['codes_list']) < 8192)
+# ds = ds.filter(lambda x: x['question'] and x['answer'] and x['codes_list'])
+# ds = ds.filter(lambda x: len(x['codes_list']) < 8192)
 
 num_proc = os.cpu_count() - 2
 
