@@ -48,8 +48,11 @@ def tokenize_fn(example):
     random_instruction_prompt = random.choice(instruction_list)
     random_instruction_response = random.choice(instruction_list)
     
-    prompt_ids = tokenizer.encode(random_instruction_prompt + " " + prompt_text, add_special_tokens=True)
-    response_ids = tokenizer.encode(random_instruction_response + " " + response_text, add_special_tokens=True)
+    # prompt_ids = tokenizer.encode(random_instruction_prompt + " " + prompt_text, add_special_tokens=True)
+    # response_ids = tokenizer.encode(random_instruction_response + " " + response_text, add_special_tokens=True)
+
+    prompt_ids = tokenizer.encode(prompt_text, add_special_tokens=True)
+    response_ids = tokenizer.encode(response_text, add_special_tokens=True)
     
     prompt_ids.append(end_of_text)
     response_ids.append(end_of_text)
