@@ -39,7 +39,7 @@ ds = ds.filter(lambda x: len(x['codes_list']) < 8192)
 
 # Map the function in parallel
 def tokenize_fn(example):
-    text_ids = tokenizer.encode(example["text"], add_special_tokens=True)
+    text_ids = tokenizer.encode(example["text"] + f" <{example["emotion"]}>", add_special_tokens=True)
     text_ids.append(end_of_text)
     example["text_tokens"] = text_ids
     return example
