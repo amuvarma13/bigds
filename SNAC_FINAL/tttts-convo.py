@@ -47,7 +47,7 @@ num_proc = os.cpu_count() - 2
 ds = ds.filter(lambda x: x['question'] and x['answer'] and x['codes_list'])
 
 #filter out all rows with codeslist length over 12000
-ds = ds.filter(lambda x: len(x['codes_list']) < 8192)
+# ds = ds.filter(lambda x: len(x['codes_list']) < 8192)
 
 def dataset_to_list_of_lists(dataset):
     
