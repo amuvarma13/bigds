@@ -22,6 +22,8 @@ def merge_4_samples(examples):
     # Return them each as a *list of length 1* so map creates 1 new row, not 4.
     return {
         "input_ids": [merged_input_ids],
+        "labels": [merged_input_ids],
+        "attention_mask": [1] * len(merged_input_ids)
     }
 
 # Map the dataset using a batch size of 4
