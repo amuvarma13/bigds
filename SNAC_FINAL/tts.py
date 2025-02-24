@@ -8,7 +8,7 @@ from transformers import AutoTokenizer
 ds = load_dataset(dsn, split='train')
 
 
-push_name = "amuvarma/amuvarma/luna-all-raw-snacced-TTS"
+push_name = "amuvarma/luna-all-raw-snacced-TTS"
 
 tokeniser_length = 128256
 start_of_text = 128000
