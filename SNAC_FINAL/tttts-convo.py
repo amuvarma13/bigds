@@ -89,6 +89,7 @@ for convo in mylists:
         question = message["question"]
         answer = message["answer"]
         codes_list = message["codes_list"]
+        codes_list = [i + 128266 for i in codes_list]
         tokenised_question = tokenizer.encode(question, add_special_tokens=True)
         tokenised_answer = tokenizer.encode(answer, add_special_tokens=True)
         tokenised_question.append(end_of_text)
