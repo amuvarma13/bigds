@@ -1,7 +1,7 @@
 ## TAKES IN DATASET WITH COLUMNS codes_list, question, answer
 
-dsn = "amuvarma/luna-tags_tts_convos"
-push_name = "amuvarma/luna-tags_tts_convos-ttsed-proc"
+dsn = "amuvarma/luna-tags_tts_convos-coll"
+push_name = "amuvarma/luna-tags_tts_convos-coll-ttsed-proc"
 
 
 from datasets import load_dataset, Dataset
