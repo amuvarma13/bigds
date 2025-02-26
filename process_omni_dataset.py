@@ -16,9 +16,9 @@ myds = _load_dataset(dsn)
 
 print(myds)
 
-columns_to_keep = ["question_audio", "answer"]
-columns_to_remove = [col for col in myds.column_names if col not in columns_to_keep]
-myds = myds.remove_columns(columns_to_remove)
+# columns_to_keep = ["question_audio", "answer"]
+# columns_to_remove = [col for col in myds.column_names if col not in columns_to_keep]
+# myds = myds.remove_columns(columns_to_remove)
 
-myds.push_to_hub("voice-assistant-adapted")
+# myds.push_to_hub("voice-assistant-adapted")
 
