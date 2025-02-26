@@ -3,8 +3,8 @@ import os
 
 num_proc = os.cpu_count() -2
 
-dsn = "amuvarma/10k-qa-proc"
-push_name = "amuvarma/10k-qa-proc-3g"
+dsn = "amuvarma/va-180k-kok-TTS"
+push_name = "amuvarma/va-180k-kok-TTS-3g"
 
 dataset = load_dataset(dsn, split='train')
 
