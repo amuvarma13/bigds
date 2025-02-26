@@ -34,10 +34,14 @@ myds = myds.remove_columns(columns_to_remove)
 
 myds = myds.shuffle(seed=42)
 
-myds_k = myds.select(range(2000))
+myds1= myds.select(range(0, 100000))
+myds2= myds.select(range(100000, 200000))
+myds3= myds.select(range(200000, 300000))
 
+myds1.push_to_hub("voice-assistant-adapted-1-100k")
+myds2.push_to_hub("voice-assistant-adapted-2-100k")
+myds3.push_to_hub("voice-assistant-adapted-3-100k")
 
-myds_k.push_to_hub("voice-assistant-texts-only_1k")
 
 print(myds)
 
