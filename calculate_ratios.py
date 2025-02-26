@@ -2,8 +2,8 @@ from datasets import load_dataset
 import os
 
 # Load your dataset
-dsn = "amuvarma/voice-assistant-adapted-3-100k-snacced"
-push_name = "amuvarma/voice-assistant-adapted-3-100k-snacced-ratio"
+dsn = "amuvarma/regconvos-kokoro"
+push_name = "amuvarma/regconvos-kokoro-ratio"
 
 ds = load_dataset(dsn, split="train")
 
