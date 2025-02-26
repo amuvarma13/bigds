@@ -1,6 +1,6 @@
 ## TAKES IN DATASET WITH COLUMNS codes_list, question, answer
 
-dsn = "amuvarma/luna-all-raw-concatted_emos-snacced"
+dsn = "amuvarma/general-wellformatted-convs-audio-debug"
 
 from datasets import load_dataset
 import os
@@ -8,7 +8,7 @@ from transformers import AutoTokenizer
 ds = load_dataset(dsn, split='train')
 
 
-push_name = "amuvarma/luna-all-raw-concatted_emos-snacced-TTS"
+push_name = "amuvarma/general-wellformatted-convs-audio-debug-TTS"
 
 tokeniser_length = 128256
 start_of_text = 128000
@@ -39,7 +39,7 @@ ds = ds.filter(lambda x: len(x['codes_list']) < 8192)
 
 # Map the function in parallel
 def tokenize_fn(example):
-    text_ids = tokenizer.encode(example["text"] + f" <{example['emotion']}>", add_special_tokens=True)
+    text_ids = tokenizer.encode(example["text"], add_special_tokens=True)
     text_ids.append(end_of_text)
     example["text_tokens"] = text_ids
     return example
