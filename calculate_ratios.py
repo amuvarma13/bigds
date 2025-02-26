@@ -12,7 +12,7 @@ num_proc = os.cpu_count() - 2
 # Define a function to compute the ratio
 def compute_ratio(example):
     # Calculate the length of the text and the length of the codes_list
-    text_length = len(example['text'])
+    text_length = len(example['answer'])
     codes_length = len(example['codes_list'])
     # Avoid division by zero if codes_length is 0
     ratio = text_length / codes_length if codes_length > 0 else None
