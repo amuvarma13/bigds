@@ -32,8 +32,12 @@ columns_to_remove = [col for col in myds.column_names if col not in columns_to_k
 
 myds = myds.remove_columns(columns_to_remove)
 
+myds = myds.shuffle(seed=42)
 
-myds.push_to_hub("voice-assistant-texts-only")
+myds_k = myds.select(range(1000))
+
+
+myds_k.push_to_hub("voice-assistant-texts-only_1k")
 
 print(myds)
 
