@@ -14,6 +14,14 @@ dsn= "gpt-omni/VoiceAssistant-400K"
 
 myds = _load_dataset(dsn)
 
+columns_to_keep = ["answer"]
+
+columns_to_remove = [col for col in myds.column_names if col not in columns_to_keep]
+
+myds = myds.remove_columns(columns_to_remove)
+
+myds.push_to_hub("voice-assistant-texts-only")
+
 print(myds)
 
 # columns_to_keep = ["question_audio", "answer"]
