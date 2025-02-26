@@ -5,7 +5,8 @@ import os
 dsn = "amuvarma/voice-assistant-adapted-1-100k-snacced"
 ds = load_dataset(dsn, split="train")
 
-num_proc = os.cpu_count() -2
+num_proc = os.cpu_count() - 2
+
 # Define a function to compute the ratio
 def compute_ratio(example):
     # Calculate the length of the text and the length of the codes_list
@@ -17,6 +18,9 @@ def compute_ratio(example):
 
 # Map the function to add the new column
 ds = ds.map(compute_ratio, num_proc=num_proc)
+
+# Filter out examples with ratio bigger than 0.3 (and ensure ratio is not None)
+ds = ds.filter(lambda x: x['ratio'] is not None and x['ratio'] <= 0.3)
 
 # (Optional) Push the updated dataset to the hub
 push_name = "amuvarma/voice-assistant-adapted-1-100k-snacced-ratio"
