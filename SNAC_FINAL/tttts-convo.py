@@ -1,7 +1,7 @@
 ## TAKES IN DATASET WITH COLUMNS codes_list, question, answer
 
-dsn = "amuvarma/general-wellformatted-convs-audio-snacced"
-push_name = "amuvarma/general-wellformatted-convs-audio-snacced-proc"
+dsn = "amuvarma/regconvos-kokoro-ratio"
+push_name = "amuvarma/regconvos-kokoro-proc"
 
 
 from datasets import load_dataset, Dataset
