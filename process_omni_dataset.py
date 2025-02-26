@@ -34,7 +34,7 @@ myds = myds.remove_columns(columns_to_remove)
 
 myds = myds.shuffle(seed=42)
 
-myds_k = myds.select(range(1000))
+myds_k = myds.select(range(2000))
 
 
 myds_k.push_to_hub("voice-assistant-texts-only_1k")
