@@ -3,8 +3,8 @@ import os
 
 num_proc = os.cpu_count() -2
 
-dsn = "amuvarma/va-180k-kok-TTS"
-push_name = "amuvarma/va-180k-kok-TTS-3g"
+dsn = "amuvarma/text-messages-6m-processed-1-2g-8192l"
+push_name = "amuvarma/text-messages-6m-processed-1-4g-8192l"
 
 dataset = load_dataset(dsn, split='train')
 
@@ -17,6 +17,9 @@ def merge_4_samples(examples):
 
     
     merged_input_ids = sum(examples["input_ids"], [])
+    
+    if merged_input_ids > 8192:
+        merged_input_ids = merged_input_ids[:8192]
 
 
     # Return them each as a *list of length 1* so map creates 1 new row, not 4.
