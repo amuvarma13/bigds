@@ -2,7 +2,9 @@ from datasets import load_dataset
 import os
 
 # Load your dataset
-dsn = "amuvarma/voice-assistant-adapted-1-100k-snacced"
+dsn = "amuvarma/voice-assistant-adapted-2-100k-snacced"
+push_name = "amuvarma/voice-assistant-adapted-2-100k-snacced-ratio"
+
 ds = load_dataset(dsn, split="train")
 
 num_proc = os.cpu_count() - 2
@@ -23,5 +25,4 @@ ds = ds.map(compute_ratio, num_proc=num_proc)
 ds = ds.filter(lambda x: x['ratio'] is not None and x['ratio'] <= 0.3)
 
 # (Optional) Push the updated dataset to the hub
-push_name = "amuvarma/voice-assistant-adapted-1-100k-snacced-ratio"
 ds.push_to_hub(push_name)
