@@ -33,7 +33,8 @@ def transform_dataset(example):
     # Return a new structure with just text and audio
     return {
         "text": text,
-        "audio": example["mp3"]  # Keep the original audio structure
+        "audio": {"array":example["mp3"]["array"], 
+                  "sampling_rate": 24000}  # Keep the original audio structure
     }
 
 # Usage:
