@@ -39,4 +39,4 @@ def transform_dataset(example):
 # Usage:
 transformed_dataset = subdataset.map(transform_dataset, remove_columns=subdataset.column_names, num_proc=64)
 
-print(transformed_dataset)
+transformed_dataset = transformed_dataset.push_to_hub("amuvarma/Emilia-Dataset-Text-Audio")
