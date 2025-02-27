@@ -17,6 +17,6 @@ path = "Emilia/EN/*.tar"
 dataset = load_dataset("amphion/Emilia-Dataset", data_files={"en": path}, split="en")
 print(dataset)
 
-subds = dataset.select(range(20))
+subds = dataset.select(range(100))
 
-subds.push_to_hub("amuvarma/Emilia-Dataset-EN-20")
+subds.push_to_hub("amuvarma/Emilia-Dataset-EN-200")
