@@ -7,7 +7,7 @@ repo_id = "amphion/Emilia-Dataset"
 path = "Emilia/EN/*.tar"
 dataset = load_dataset("amphion/Emilia-Dataset", data_files={"en": path}, split="en")
 
-subdataset = dataset.select(range(10))
+subdataset = dataset.select(range(1000000))
 
 import json
 
