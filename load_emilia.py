@@ -7,6 +7,8 @@ repo_id = "amphion/Emilia-Dataset"
 path = "Emilia/EN/*.tar"
 dataset = load_dataset("amphion/Emilia-Dataset", data_files={"en": path}, split="en")
 
+
+
 dataset = dataset.select(range(10))
 print(dataset[0]["json"]["speaker"])
 
@@ -15,45 +17,53 @@ from datasets import Dataset, Audio
 import datasets
 
 from collections import defaultdict
-def combine_same_speakers(examples):
+from datasets import Dataset
+
+def combine_same_speakers(dataset):
     """
-    Map function that combines pairs of rows with the same speaker ID.
+    Process a dataset to combine rows with the same speaker ID.
     
     Args:
-        examples: A batch of examples from the dataset
+        dataset: A HuggingFace dataset
         
     Returns:
-        Dictionary with combined examples
+        A new Dataset with the combined pairs
     """
-    # Initialize result dictionary with new structure
-    result = {
-        "mp3_1": [],
-        "mp3_2": [],
-        "json": []
-    }
+    # Convert to standard Python lists/dicts for easier processing
+    all_examples = list(dataset)
     
-    # Group examples by speaker ID
+    # Group by speaker
     speaker_groups = {}
-    for i in range(len(examples["json"])):
-        speaker = examples["json"][i]["speaker"]
+    for i, example in enumerate(all_examples):
+        speaker = example["json"]["speaker"]
         if speaker not in speaker_groups:
             speaker_groups[speaker] = []
         speaker_groups[speaker].append(i)
     
-    # Combine rows that have exactly 2 examples with the same speaker
+    # Prepare new data structure
+    combined_data = {
+        "mp3_1": [],
+        "mp3_2": [],
+        "text_1": [],
+        "text_2": [],
+        "speaker": []
+    }
+    
+    # Only process speakers with exactly 2 examples
     for speaker, indices in speaker_groups.items():
         if len(indices) == 2:
             idx1, idx2 = indices
-            result["mp3_1"].append(examples["mp3"][idx1])
-            result["mp3_2"].append(examples["mp3"][idx2])
-            result["json"].append({
-                "speaker": speaker,
-                "text_1": examples["json"][idx1]["text"],
-                "text_2": examples["json"][idx2]["text"]
-            })
+            combined_data["mp3_1"].append(all_examples[idx1]["mp3"])
+            combined_data["mp3_2"].append(all_examples[idx2]["mp3"])
+            combined_data["text_1"].append(all_examples[idx1]["json"]["text"])
+            combined_data["text_2"].append(all_examples[idx2]["json"]["text"])
+            combined_data["speaker"].append(speaker)
     
-    return result
-# Process the entire dataset as a single batch
+    # Create a new Dataset
+    return Dataset.from_dict(combined_data)
+
+# Usage:
+# combined_dataset = combine_same_speakers(dataset)
 combined_dataset = dataset.map(
     combine_same_speakers, 
     batched=True,
