@@ -18,6 +18,16 @@ dataset = load_dataset("amphion/Emilia-Dataset", data_files={"en": path}, split=
 print(dataset)
 
 
-sample =  dataset[0]["json"]["speaker"]
-print(sample)
+# Define a mapping function to extract the speaker ID
+def extract_speaker(example):
+    # Assumes the speaker ID is located at example["json"]["speaker"]
+    return {"speaker": example["json"]["speaker"]}
 
+# Apply the mapping function to the dataset
+speaker_dataset = dataset.map(extract_speaker)
+
+# Create a set of unique speaker IDs from the new "speaker" column
+unique_speakers = set(speaker_dataset["speaker"])
+
+# Print the number of unique speaker IDs
+print("Number of unique speakers:", len(unique_speakers))
