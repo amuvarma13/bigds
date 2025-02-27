@@ -35,31 +35,36 @@ print(dataset[0]["json"])
 dataset = dataset.select(range(1000))
 
 
-from datasets import Dataset, Audio
-from tqdm import tqdm
 
-# Initialize the Audio feature.
-# You can specify parameters such as sampling_rate if needed, e.g., Audio(sampling_rate=16000)
-audio_feature = Audio()
+from datasets import Dataset, Audio
+from tqdm import tqdm  # optional, for progress indication
 
 def pair_generator(dataset):
+    # Dictionary to store one unmatched sample per speaker
     unmatched = {}
-    # Iterate over the dataset in a memory-efficient manner.
+    # Iterate over the dataset; if possible, use streaming mode to avoid loading all data
     for row in tqdm(dataset, total=len(dataset)):
         speaker = row["json"]["speaker"]
         if speaker in unmatched:
+            # We've seen this speaker before: yield a paired example and remove the stored sample.
             prev_row = unmatched.pop(speaker)
-            # Decode the audio file using the Audio feature's decoding.
             yield {
-                "audio_1": audio_feature.decode_example(prev_row["mp3"]),
+                "audio_1": prev_row["mp3"],
                 "text_1": prev_row["json"]["text"],
-                "audio_2": audio_feature.decode_example(row["mp3"]),
+                "audio_2": row["mp3"],
                 "text_2": row["json"]["text"]
             }
         else:
+            # Store the row for later pairing.
             unmatched[speaker] = row
 
 # Create the new dataset from the generator.
 paired_dataset = Dataset.from_generator(lambda: pair_generator(dataset))
 
+# Cast the audio columns to the Audio feature.
+paired_dataset = paired_dataset.cast_column("audio_1", Audio())
+paired_dataset = paired_dataset.cast_column("audio_2", Audio())
+
 print(paired_dataset)
+
+paired_dataset = paired_dataset.push_to_hub("amuvarma/Emilia-Dataset-p2", use_temp_dir=True)
