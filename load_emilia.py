@@ -15,4 +15,4 @@ snapshot_download(
 
 path = "Emilia/EN/*.tar"
 dataset = load_dataset("amphion/Emilia-Dataset", data_files={"en": path}, split="en", streaming=True)
-print(dataset)
+print(next(iter(dataset['train'])))
