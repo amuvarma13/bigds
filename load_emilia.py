@@ -16,3 +16,7 @@ snapshot_download(
 path = "Emilia/EN/*.tar"
 dataset = load_dataset("amphion/Emilia-Dataset", data_files={"en": path}, split="en")
 print(dataset)
+
+subds = dataset.select(range(20))
+
+subds.push_to_hub("amuvarma/Emilia-Dataset-EN-20")
