@@ -61,3 +61,4 @@ def pair_generator(dataset):
 paired_dataset = Dataset.from_generator(lambda: pair_generator(dataset))
 
 print(paired_dataset)
+paired_dataset.push_to_hub("amphion/Emilia-Dataset-paired")
