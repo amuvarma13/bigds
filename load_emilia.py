@@ -32,6 +32,7 @@ def transform_dataset(example):
     
     # Return a new structure with just text and audio
     return {
+        "speaker": json_data["speaker"],
         "text": text,
         "audio": {"array":example["mp3"]["array"], 
                   "sampling_rate": 24000}  # Keep the original audio structure
@@ -53,4 +54,4 @@ transformed_dataset = subdataset.map(
     features=features
 )
 
-transformed_dataset = transformed_dataset.push_to_hub("amuvarma/Emilia-Dataset-Text-Audio")
+transformed_dataset = transformed_dataset.push_to_hub("amuvarma/Emilia-Dataset-1m")
