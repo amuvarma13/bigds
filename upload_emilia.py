@@ -42,7 +42,8 @@ def transform_dataset(example):
 # Define the new features schema, casting 'audio' as an Audio feature.
 features = Features({
     "text": Value("string"),
-    "audio": Audio(sampling_rate=24000)
+    "audio": Audio(sampling_rate=24000), 
+    "speaker": Value("string")
 })
 subdataset = subdataset.shuffle(seed=42)
 # Apply the map with the features argument.
