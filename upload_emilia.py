@@ -42,7 +42,7 @@ subdataset = subdataset.shuffle(seed=42)
 transformed_dataset = subdataset.map(
     transform_dataset,
     remove_columns=subdataset.column_names,
-    num_proc=50,
+    num_proc=32,
     features=features
 )
 
