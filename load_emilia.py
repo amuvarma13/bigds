@@ -24,7 +24,7 @@ def extract_speaker(example):
     return {"speaker": example["json"]["speaker"]}
 
 # Apply the mapping function to the dataset
-speaker_dataset = dataset.map(extract_speaker, num_proc=64)
+speaker_dataset = dataset.map(extract_speaker, num_proc=64, remove_columns=dataset.column_names)
 
 # Create a set of unique speaker IDs from the new "speaker" column
 unique_speakers = set(speaker_dataset["speaker"])
