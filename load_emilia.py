@@ -37,6 +37,6 @@ def transform_dataset(example):
     }
 
 # Usage:
-transformed_dataset = dataset.map(transform_dataset)
+transformed_dataset = subdataset.map(transform_dataset)
 
 print(transformed_dataset)
