@@ -17,15 +17,7 @@ from tqdm import tqdm
 audio_feature = Audio()
 
 def decode_audio(file_val):
-    """
-    Decodes an audio file value.
-    
-    - If file_val is a dict and already has "array" and "sampling_rate", it's assumed
-      to be pre-decoded and returned directly.
-    - If file_val is a dict with a "path", it is wrapped (adding "bytes": None if missing)
-      and passed to the Audio feature for decoding.
-    - If file_val is a string, it is assumed to be a file path.
-    """
+
     if isinstance(file_val, dict):
         # Use pre-decoded audio if available.
         if "array" in file_val and "sampling_rate" in file_val:
@@ -49,13 +41,7 @@ def decode_audio(file_val):
         raise ValueError("Unsupported type for audio file")
 
 def pair_generator(dataset):
-    """
-    Iterates over the dataset and yields paired examples for speakers that have at least
-    two valid samples. Each yielded example contains:
-      - audio_1, text_1 from the first sample,
-      - audio_2, text_2 from the second sample.
-    Samples with missing or non-decodable audio are skipped.
-    """
+
     unmatched = {}
     for row in tqdm(dataset, total=len(dataset)):
         speaker = row["json"]["speaker"]
@@ -85,3 +71,5 @@ def pair_generator(dataset):
 paired_dataset = Dataset.from_generator(lambda: pair_generator(dataset))
 
 print(paired_dataset)
+
+paired_dataset = paired_dataset.push_to_hub("amuvarma/Emilia-Dataset-paired-2", use_temp_dir=True)
