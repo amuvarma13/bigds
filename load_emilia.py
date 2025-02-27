@@ -3,12 +3,10 @@ from datasets import load_dataset
 from huggingface_hub import snapshot_download
 from datasets import load_dataset
 
+repo_id = "amphion/Emilia-Dataset"
+path = "Emilia/EN/*.tar"
 dataset = load_dataset("amphion/Emilia-Dataset", data_files={"en": path}, split="en")
 print(dataset[0]["json"])
-
-
-dataset = dataset.select(range(1000))
-
 from datasets import Dataset, Audio
 from tqdm import tqdm
 
