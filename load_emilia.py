@@ -17,7 +17,7 @@ path = "Emilia/EN/*.tar"
 dataset = load_dataset("amphion/Emilia-Dataset", data_files={"en": path}, split="en")
 print(dataset)
 
-
+dataset = dataset.select(range(1000))
 # Define a mapping function to extract the speaker ID
 def extract_speaker(example):
     # Assumes the speaker ID is located at example["json"]["speaker"]
