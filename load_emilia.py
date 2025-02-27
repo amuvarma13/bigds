@@ -18,5 +18,6 @@ dataset = load_dataset("amphion/Emilia-Dataset", data_files={"en": path}, split=
 print(dataset)
 
 
-dataset = dataset[0]["json"]["speaker"]
+sample =  dataset[0]["json"]["speaker"]
+print(sample)
 
