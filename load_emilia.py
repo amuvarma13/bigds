@@ -15,18 +15,18 @@ snapshot_download(
 
 path = "Emilia/EN/*.tar"
 dataset = load_dataset("amphion/Emilia-Dataset", data_files={"en": path}, split="en")
-print(dataset)
+print(dataset[0]["json"])
 
 # Define a mapping function to extract the speaker ID
-def extract_speaker(example):
-    # Assumes the speaker ID is located at example["json"]["speaker"]
-    return {"speaker": example["json"]["speaker"]}
+# def extract_speaker(example):
+#     # Assumes the speaker ID is located at example["json"]["speaker"]
+#     return {"speaker": example["json"]["speaker"]}
 
-# Apply the mapping function to the dataset
-speaker_dataset = dataset.map(extract_speaker, num_proc=64, remove_columns=dataset.column_names)
+# # Apply the mapping function to the dataset
+# speaker_dataset = dataset.map(extract_speaker, num_proc=64, remove_columns=dataset.column_names)
 
-# Create a set of unique speaker IDs from the new "speaker" column
-unique_speakers = set(speaker_dataset["speaker"])
+# # Create a set of unique speaker IDs from the new "speaker" column
+# unique_speakers = set(speaker_dataset["speaker"])
 
-# Print the number of unique speaker IDs
-print("Number of unique speakers:", len(unique_speakers))
+# # Print the number of unique speaker IDs
+# print("Number of unique speakers:", len(unique_speakers))
