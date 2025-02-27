@@ -9,22 +9,21 @@ dataset = load_dataset("amphion/Emilia-Dataset", data_files={"en": path}, split=
 
 dataset = dataset.select(range(10))
 
-
-print(dataset[0]["json"])
 import os
 from datasets import Dataset, Audio
 import datasets
 
-# Initialize the Audio feature (adjust parameters as needed)
+# Initialize the Audio feature (adjust parameters if needed)
 audio_feature = Audio()
 
 def process_audio(file_val):
     """
     Processes an audio file value and casts it into an Audio element.
-    - If file_val is a dict containing "array" and "sampling_rate", it's already decoded.
-    - Otherwise, if it's a string or dict with a "path", we decode it.
-    In both cases, the decoded audio is passed through encode_example.
+    - If file_val is a dict with "array" and "sampling_rate", it is assumed to be pre-decoded.
+    - Otherwise, if file_val is a string or dict with a "path", it is decoded via the Audio feature.
+    The decoded audio is then encoded to an Audio element.
     """
+    # Use pre-decoded audio if available.
     if isinstance(file_val, dict) and "array" in file_val and "sampling_rate" in file_val:
         decoded = file_val
     else:
@@ -38,66 +37,56 @@ def process_audio(file_val):
         if not os.path.exists(file_dict["path"]):
             raise FileNotFoundError(f"File {file_dict['path']} not found.")
         decoded = audio_feature.decode_example(file_dict)
-    # Cast to Audio element
+    # Encode the decoded audio into an Audio element.
     return audio_feature.encode_example(decoded)
 
-# -------------------------------
-# Step 1. Add a top-level "speaker" column.
-# (Assuming each row's json field has a key "speaker".)
-dataset = dataset.map(lambda row: {"speaker": row["json"]["speaker"]})
-
-# -------------------------------
-# Step 2. Sort the dataset by speaker.
-# This helps ensure that samples for a speaker are adjacent.
-dataset = dataset.sort("speaker")
-
-# -------------------------------
-# Step 3. Use a batched map to create pairs.
 def pair_samples(batch):
     """
-    Expects a batch (a dict of lists) from the sorted dataset.
-    Iterates through the batch and for any two consecutive rows with the same speaker,
-    it creates one paired example.
+    Expects a batch (a dict of lists) from a sorted dataset.
+    Iterates through the batch and for any two consecutive examples with the same speaker,
+    creates a paired example. Returns a list of dictionaries (each dict is one new example).
     
-    Returns a dict with four lists: audio_1, text_1, audio_2, text_2.
+    Note: This approach will only pair examples that occur consecutively within the batch.
     """
-    audio1, text1, audio2, text2 = [], [], [], []
-    # We'll use these to remember the previous sample for a given speaker.
-    current_speaker = None
-    saved_sample = None
-    
-    # Loop over the batch
-    for i in range(len(batch["speaker"])):
-        speaker = batch["speaker"][i]
-        current_audio = batch["mp3"][i]
-        current_text = batch["json"][i]["text"]
-        
-        if speaker != current_speaker:
-            # New speaker encountered: save this sample as the first sample.
-            current_speaker = speaker
-            saved_sample = (current_audio, current_text)
-        else:
-            # Same speaker as previous sample, so create a pair.
+    pairs = []
+    # Loop over indices in the batch (stop before the last element)
+    i = 0
+    while i < len(batch["speaker"]) - 1:
+        # Check if the current and next example belong to the same speaker.
+        if batch["speaker"][i] == batch["speaker"][i + 1]:
             try:
-                processed_audio1 = process_audio(saved_sample[0])
-                processed_audio2 = process_audio(current_audio)
+                audio_1 = process_audio(batch["mp3"][i])
+                audio_2 = process_audio(batch["mp3"][i + 1])
             except Exception as e:
-                print(f"Skipping speaker {speaker} due to audio processing error: {e}")
-                # Reset to avoid reusing this speaker.
-                current_speaker = None
-                saved_sample = None
+                print(f"Skipping speaker {batch['speaker'][i]} due to audio processing error: {e}")
+                i += 1
                 continue
-            audio1.append(processed_audio1)
-            text1.append(saved_sample[1])
-            audio2.append(processed_audio2)
-            text2.append(current_text)
-            # Reset after forming a pair so each speaker is used only once.
-            current_speaker = None
-            saved_sample = None
-    return {"audio_1": audio1, "text_1": text1, "audio_2": audio2, "text_2": text2}
+            pair = {
+                "audio_1": audio_1,
+                "text_1": batch["json"][i]["text"],
+                "audio_2": audio_2,
+                "text_2": batch["json"][i + 1]["text"]
+            }
+            pairs.append(pair)
+            # Skip the next example since it's been paired
+            i += 2
+        else:
+            i += 1
+    return pairs
 
-# Use batched mapping; adjust batch_size if needed to ensure speakers aren’t split across batches.
+# Assume your original dataset is loaded as `dataset`
+# For example: dataset = load_dataset("your_dataset_name", split="train")
+
+# Step 1: Add a top-level "speaker" column (extracted from the nested json field)
+dataset = dataset.map(lambda row: {"speaker": row["json"]["speaker"]})
+
+# Step 2: Sort the dataset by "speaker" to help group same-speaker examples together.
+dataset = dataset.sort("speaker")
+
+# Step 3: Use a batched map to create pairs.
+# Here we return a list of new examples (each as a dict), so the output length can vary.
 paired_dataset = dataset.map(pair_samples, batched=True, batch_size=10000)
 
-# The resulting dataset will have columns "audio_1", "text_1", "audio_2", "text_2"
+# At this point, paired_dataset contains the new examples with columns:
+# "audio_1", "text_1", "audio_2", "text_2"
 print(paired_dataset)
