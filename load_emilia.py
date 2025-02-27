@@ -1,5 +1,5 @@
 from datasets import load_dataset
-
+from datasets import Audio, Features, Value
 from huggingface_hub import snapshot_download
 from datasets import load_dataset
 
@@ -37,7 +37,20 @@ def transform_dataset(example):
                   "sampling_rate": 24000}  # Keep the original audio structure
     }
 
-# Usage:
-transformed_dataset = subdataset.map(transform_dataset, remove_columns=subdataset.column_names, num_proc=64)
+
+
+# Define the new features schema, casting 'audio' as an Audio feature.
+features = Features({
+    "text": Value("string"),
+    "audio": Audio(sampling_rate=24000)
+})
+
+# Apply the map with the features argument.
+transformed_dataset = subdataset.map(
+    transform_dataset,
+    remove_columns=subdataset.column_names,
+    num_proc=64,
+    features=features
+)
 
 transformed_dataset = transformed_dataset.push_to_hub("amuvarma/Emilia-Dataset-Text-Audio")
