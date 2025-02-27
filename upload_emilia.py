@@ -7,20 +7,12 @@ repo_id = "amphion/Emilia-Dataset"
 path = "Emilia/EN/*.tar"
 dataset = load_dataset("amphion/Emilia-Dataset", data_files={"en": path}, split="en")
 
-subdataset = dataset.select(range(100000))
+subdataset = dataset.select(range(40000))
 
 import json
 
 def transform_dataset(example):
-    """
-    Transform a dataset example to have text and audio columns.
-    
-    Args:
-        example: Dictionary with mp3 and json fields
-        
-    Returns:
-        Dictionary with text and audio fields
-    """
+
     # Parse the JSON field if it's a string
     if isinstance(example["json"], str):
         json_data = json.loads(example["json"])
