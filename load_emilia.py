@@ -14,10 +14,5 @@ snapshot_download(
 )
 
 path = "Emilia/EN/*.tar"
-dataset = load_dataset("amphion/Emilia-Dataset", data_files={"en": path}, split="en", streaming=True)
-from datasets import Dataset
-
-# Suppose `iterable_dataset` yields dictionaries for each example.
-data = list(dataset)  # Convert iterator to list of examples
-hf_dataset = Dataset.from_list(data)
-print(hf_dataset)
+dataset = load_dataset("amphion/Emilia-Dataset", data_files={"en": path}, split="en")
+print(dara)
