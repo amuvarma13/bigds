@@ -90,4 +90,4 @@ print(paired_dataset)
 
 
 
-paired_dataset = paired_dataset.push_to_hub("amuvarma/Emilia-Dataset-p2", use_temp_dir=True)
+paired_dataset = paired_dataset.push_to_hub("amuvarma/Emilia-Dataset-p2")
