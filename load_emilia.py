@@ -45,7 +45,7 @@ features = Features({
     "text": Value("string"),
     "audio": Audio(sampling_rate=24000)
 })
-
+subdataset = subdataset.shuffle(seed=42)
 # Apply the map with the features argument.
 transformed_dataset = subdataset.map(
     transform_dataset,
