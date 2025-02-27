@@ -11,7 +11,7 @@ dataset = dataset.select(range(10))
 
 
 
-print(dataset[0]["json"])
+print(dataset[0]["mp3"])
 from datasets import Dataset, Audio
 from tqdm import tqdm
 
