@@ -13,4 +13,5 @@ snapshot_download(
     allow_patterns=["Emilia/EN/*.tar"],       
 )
 
-load_dataset(repo_id, split="train")
+path = "Emilia/EN/*.tar"
+dataset = load_dataset("amphion/Emilia-Dataset", data_files={"en": path}, split="en", streaming=True)
