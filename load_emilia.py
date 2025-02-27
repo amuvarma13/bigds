@@ -8,7 +8,7 @@ path = "Emilia/EN/*.tar"
 dataset = load_dataset("amphion/Emilia-Dataset", data_files={"en": path}, split="en")
 
 dataset = dataset.select(range(10))
-print(dataset[0]["json"])
+print(dataset[0]["json"]["speaker"])
 
 import os
 from datasets import Dataset, Audio
