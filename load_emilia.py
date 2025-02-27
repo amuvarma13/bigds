@@ -30,6 +30,12 @@ print(dataset[0]["json"])
 
 # # Print the number of unique speaker IDs
 # print("Number of unique speakers:", len(unique_speakers))
+
+
+dataset = dataset.select(range(1000))
+
+
+
 from datasets import Dataset, Audio
 from tqdm import tqdm  # optional, for progress indication
 
