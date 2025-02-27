@@ -5,8 +5,8 @@ from datasets import load_dataset
 from transformers import AutoTokenizer
 
 # Dataset and tokenizer settings
-dsn = "amuvarma/zst-snacced"
-push_name = "amuvarma/zst-snacced-proc"
+dsn = "amuvarma/tdt"
+push_name = "amuvarma/tdt-proc"
 tokeniser_length = 128256
 start_of_text = 128000
 end_of_text = 128009
