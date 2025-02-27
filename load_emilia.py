@@ -50,7 +50,7 @@ features = Features({
 transformed_dataset = subdataset.map(
     transform_dataset,
     remove_columns=subdataset.column_names,
-    num_proc=64,
+    num_proc=50,
     features=features
 )
 
