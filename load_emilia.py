@@ -30,10 +30,9 @@ print(dataset[0]["json"])
 
 # # Print the number of unique speaker IDs
 # print("Number of unique speakers:", len(unique_speakers))
-from datasets import Dataset
+from datasets import Dataset, Audio
 from tqdm import tqdm  # optional, for progress indication
 
-dataset = dataset.select(range(100))
 def pair_generator(dataset):
     # Dictionary to store one unmatched sample per speaker
     unmatched = {}
@@ -53,12 +52,11 @@ def pair_generator(dataset):
             # Store the row for later pairing.
             unmatched[speaker] = row
 
-# If your dataset supports streaming, consider loading it as such:
-# dataset = load_dataset("your_dataset_name", split="train", streaming=True)
-
 # Create the new dataset from the generator.
-# This will only build rows for speakers with at least 2 samples and will yield one pair per speaker.
 paired_dataset = Dataset.from_generator(lambda: pair_generator(dataset))
 
+# Cast the audio columns to the Audio feature.
+paired_dataset = paired_dataset.cast_column("audio_1", Audio())
+paired_dataset = paired_dataset.cast_column("audio_2", Audio())
+
 print(paired_dataset)
-paired_dataset.push_to_hub("amuvarma/Emilia-Dataset-paired")
