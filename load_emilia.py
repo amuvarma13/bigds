@@ -33,7 +33,7 @@ print(dataset[0]["json"])
 from datasets import Dataset
 from tqdm import tqdm  # optional, for progress indication
 
-dataset = dataset.select(100)
+dataset = dataset.select(range(100))
 def pair_generator(dataset):
     # Dictionary to store one unmatched sample per speaker
     unmatched = {}
