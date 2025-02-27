@@ -15,39 +15,47 @@ from datasets import Dataset, Audio
 import datasets
 
 from collections import defaultdict
-
-def combine_by_speaker(batch):
+def combine_same_speakers(examples):
     """
-    Expects a batch with keys:
-      - "mp3": a list of dictionaries, each with keys like "path", "array", "sampling_rate"
-      - "json": a dictionary with keys "text" and "speaker", where each value is a list.
+    Map function that combines pairs of rows with the same speaker ID.
     
-    For each speaker that appears exactly twice in the batch, this function outputs a new row
-    with two mp3 entries, under keys "mp3_1" and "mp3_2".
+    Args:
+        examples: A batch of examples from the dataset
+        
+    Returns:
+        Dictionary with combined examples
     """
-    # Create a mapping from speaker to the indices where it appears
-    speaker_to_indices = defaultdict(list)
-    for idx, speaker in enumerate(batch["json"]["speaker"]):
-        speaker_to_indices[speaker].append(idx)
+    # Initialize result dictionary with new structure
+    result = {
+        "mp3_1": [],
+        "mp3_2": [],
+        "json": []
+    }
     
-    # Prepare output lists
-    new_mp3_1, new_mp3_2 = [], []
+    # Group examples by speaker ID
+    speaker_groups = {}
+    for i in range(len(examples["json"])):
+        speaker = examples["json"][i]["speaker"]
+        if speaker not in speaker_groups:
+            speaker_groups[speaker] = []
+        speaker_groups[speaker].append(i)
     
-    # For each speaker with exactly 2 entries, combine the corresponding mp3s.
-    for speaker, indices in speaker_to_indices.items():
+    # Combine rows that have exactly 2 examples with the same speaker
+    for speaker, indices in speaker_groups.items():
         if len(indices) == 2:
-            i1, i2 = indices
-            new_mp3_1.append(batch["mp3"][i1])
-            new_mp3_2.append(batch["mp3"][i2])
+            idx1, idx2 = indices
+            result["mp3_1"].append(examples["mp3"][idx1])
+            result["mp3_2"].append(examples["mp3"][idx2])
+            result["json"].append({
+                "speaker": speaker,
+                "text_1": examples["json"][idx1]["text"],
+                "text_2": examples["json"][idx2]["text"]
+            })
     
-    return {"mp3_1": new_mp3_1, "mp3_2": new_mp3_2}
-
-# Apply the map function over the entire dataset.
-# (Using batch_size=len(dataset) ensures that all rows are in one batch,
-#  which is important if rows for the same speaker might be in different batches.)
-new_dataset = dataset.map(combine_by_speaker, batched=True, batch_size=len(dataset))
-
-print(new_dataset)
-
-
-
+    return result
+# Process the entire dataset as a single batch
+combined_dataset = dataset.map(
+    combine_same_speakers, 
+    batched=True,
+    batch_size=len(dataset)  # Important: use the full dataset size as batch size
+)
