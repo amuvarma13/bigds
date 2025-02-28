@@ -12,7 +12,7 @@ dataset = dataset.remove_columns([col for col in dataset.column_names if col not
 
 all_tokens = list(chain.from_iterable(dataset["input_ids"]))
 
-chunk_size = 8192
+chunk_size = 4096
 num_chunks = len(all_tokens) // chunk_size  # This drops any leftover tokens
 chunks = [all_tokens[i*chunk_size:(i+1)*chunk_size] for i in range(num_chunks)]
 
