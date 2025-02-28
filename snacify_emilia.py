@@ -7,7 +7,7 @@ import random
 
 repo_id = "amphion/Emilia-Dataset"
 
-path = "Emilia/EN/*.tar"
+path = "Emilia/EN/EN-B000000.tar"
 dataset = load_dataset("amphion/Emilia-Dataset", data_files={"en": path}, split="en")
 ds = dataset.select(range(1000))
 
