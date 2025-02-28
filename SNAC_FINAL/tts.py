@@ -5,7 +5,7 @@ dsn = "amuvarma/emilia-30k"
 from datasets import load_dataset
 import os
 from transformers import AutoTokenizer
-ds = load_dataset(dsn, split='train')
+ds = load_dataset(dsn, split='en')
 
 
 push_name = "amuvarma/emilia-30k-TTS"
