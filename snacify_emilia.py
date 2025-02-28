@@ -7,18 +7,17 @@ import random
 
 repo_id = "amphion/Emilia-Dataset"
 
-path = "Emilia/EN/EN-B000000.tar"
-dataset = load_dataset("amphion/Emilia-Dataset", data_files={"en": path}, split="en")
-ds = dataset.select(range(1000))
-
 from snac import SNAC
 
 model = SNAC.from_pretrained("hubertsiuzdak/snac_24khz")
 model = model.to("cuda")
-
 import torchaudio.transforms as T
 
-sr__ = 24000
+
+
+
+
+
 def tokenise_audio(waveform):
   waveform = torch.from_numpy(waveform).unsqueeze(0)
   waveform = waveform.to(dtype=torch.float32)
@@ -64,6 +63,9 @@ def add_codes(example):
 
     return example
 
+path = "Emilia/EN/EN-B000000.tar"
+ds = load_dataset("amphion/Emilia-Dataset", data_files={"en": path}, split="en")
+sr__ = 24000
 ds = ds.map(add_codes, remove_columns=ds.column_names)
 
 
