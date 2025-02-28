@@ -7,7 +7,7 @@ repo_id = "amphion/Emilia-Dataset"
 path = "Emilia/EN/*.tar"
 dataset = load_dataset("amphion/Emilia-Dataset", data_files={"en": path}, split="en")
 
-subdataset = dataset.select(range(10000))
+subdataset = dataset.select(range(30000))
 
 import json
 
@@ -50,7 +50,7 @@ subdataset = subdataset.shuffle(seed=42)
 transformed_dataset = subdataset.map(
     transform_dataset,
     remove_columns=subdataset.column_names,
-    num_proc=32,
+    num_proc=84,
     features=features
 )
 
