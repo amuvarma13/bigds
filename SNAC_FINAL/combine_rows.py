@@ -3,8 +3,8 @@ import os
 
 num_proc = os.cpu_count() -2
 
-dsn = "amuvarma/text-messages-6m-processed-1-2g-8192l"
-push_name = "amuvarma/text-messages-6m-processed-1-6g-8192l"
+dsn = "amuvarma/emilia-30k-TTS"
+push_name = "amuvarma/emilia-30k-TTS-5g"
 
 dataset = load_dataset(dsn, split='train')
 
@@ -31,7 +31,7 @@ def merge_4_samples(examples):
 merged_dataset = dataset.map(
     merge_4_samples,
     batched=True,
-    batch_size=3,
+    batch_size=5,
     num_proc=num_proc,
 
 )
