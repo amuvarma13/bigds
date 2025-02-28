@@ -8,8 +8,13 @@ dsn = "amuvarma/emilia-30k-TTS"
 dataset = load_dataset(dsn, split='train')
 
 #get length of dataset
+start_time = time.time()
+print("Getting length of dataset")
 dataset_length = len(dataset)
-print(f"Length of dataset: {dataset_length}")
+
+end_time = time.time()
+
+print(f"Length of dataset: {dataset_length}, Time taken: {end_time - start_time}")
 
 dataset_length = 30000
 partition_size = 10000
