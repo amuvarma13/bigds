@@ -3,21 +3,17 @@ from itertools import chain
 import os
 import time
 
-
 dsn = "amuvarma/emilia-30k-TTS"
+
 dataset = load_dataset(dsn, split='train')
-
-#get length of dataset
-start_time = time.time()
-print("Getting length of dataset")
-dataset_length = len(dataset)
-
-end_time = time.time()
-
-print(f"Length of dataset: {dataset_length}, Time taken: {end_time - start_time}")
-
 dataset_length = 30000
 partition_size = 10000
+
+
+
+dataset_length = len(dataset)
+
+
 
 num_partitions = dataset_length // partition_size
 print(f"Number of partitions: {num_partitions}")
@@ -48,4 +44,4 @@ for i in range(num_partitions):
 
 
 combined_dataset = concatenate_datasets(processed_partitions)
-combined_dataset.push_to_hub(f"amuvarma/{dsn}-full-grouped")
+combined_dataset.push_to_hub(f"{dsn}-full-grouped")
