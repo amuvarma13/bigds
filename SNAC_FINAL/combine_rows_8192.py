@@ -6,10 +6,12 @@ import time
 
 dsn = "amuvarma/emilia-30k-TTS"
 dataset = load_dataset(dsn, split='train')
-print(dataset)
 
-dataset = dataset.select(range(30000))
+dataset_length = 30000
+partition_size = 10000
 
+for i in range(dataset_length//partition_size):
+    print(f"Partition {i}")
 start_time = time.time()
 dataset = dataset.remove_columns([col for col in dataset.column_names if col not in ['input_ids']])
 
