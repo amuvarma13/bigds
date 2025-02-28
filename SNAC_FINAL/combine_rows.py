@@ -18,7 +18,7 @@ def merge_4_samples(examples):
     
     merged_input_ids = sum(examples["input_ids"], [])
     
-    if merged_input_ids > 8192:
+    if len(merged_input_ids) > 8192:
         merged_input_ids = merged_input_ids[:8192]
 
 
