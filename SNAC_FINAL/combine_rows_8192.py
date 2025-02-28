@@ -8,6 +8,8 @@ dsn = "amuvarma/emilia-30k-TTS"
 dataset = load_dataset(dsn, split='train')
 print(dataset)
 
+dataset = dataset.select(range(1000))
+
 start_time = time.time()
 dataset = dataset.remove_columns([col for col in dataset.column_names if col not in ['input_ids']])
 
