@@ -60,10 +60,11 @@ def add_codes(example):
 
 
     example["codes_list"] = codes_list
+    example["text"] = example["json"]["text"]
 
     return example
 
-ds = ds.map(add_codes, remove_columns=["mp3"])
+ds = ds.map(add_codes, remove_columns=ds.column_names)
 
 
 ds.push_to_hub("amuvarma/emilia-snac-1k")
