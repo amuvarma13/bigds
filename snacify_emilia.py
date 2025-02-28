@@ -48,7 +48,7 @@ def add_codes(example):
     codes_list = None
 
     try:
-        answer_audio = example.get("audio")
+        answer_audio = example.get("mp3")
         # If there's a valid audio array, tokenise it
         if answer_audio and "array" in answer_audio:
             audio_array = answer_audio["array"]
