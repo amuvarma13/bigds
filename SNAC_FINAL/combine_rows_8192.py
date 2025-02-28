@@ -13,6 +13,7 @@ partition_size = 10000
 
 dataset_length = len(dataset)
 
+dataset = dataset.remove_columns([col for col in dataset.column_names if col not in ['input_ids']])
 
 
 num_partitions = dataset_length // partition_size
@@ -25,10 +26,9 @@ for i in range(num_partitions):
     end = (i + 1) * partition_size
     partition = dataset.select(range(start, end))
     start_time = time.time()
-    dataset = dataset.remove_columns([col for col in dataset.column_names if col not in ['input_ids']])
 
 
-    all_tokens = list(chain.from_iterable(dataset["input_ids"]))
+    all_tokens = list(chain.from_iterable(partition["input_ids"]))
 
     chunk_size = 4096
     num_chunks = len(all_tokens) // chunk_size  # This drops any leftover tokens
