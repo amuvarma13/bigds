@@ -63,7 +63,7 @@ def add_codes(example):
 
     return example
 
-ds = ds.map(add_codes, remove_columns=["audio"])
+ds = ds.map(add_codes, remove_columns=["mp3"])
 
 
 ds.push_to_hub("amuvarma/emilia-snac-1k")
