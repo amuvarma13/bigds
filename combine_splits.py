@@ -10,5 +10,5 @@ snapshot_download(
     max_workers=64,     
 )
 
-load_dataset(repo_id, split="train")
+load_dataset(repo_id)
  
