@@ -51,7 +51,6 @@ def tokenize_fn(example):
 
     return example
 
-ds = ds.map(tokenize_fn, num_proc=32)
 
 def create_input_ids(example):
     text_ids = tokenizer.encode(example["text"], add_special_tokens=True)
