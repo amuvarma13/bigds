@@ -24,7 +24,7 @@ processed_partitions = []
 for i in range(num_partitions):
     print(f"Partition {i}")
     start = i * partition_size
-    end = (i + 1) * partition_size
+    end = (i + 1) * partition_size 
     partition = dataset.select(range(start, end))
     start_time = time.time()
 
