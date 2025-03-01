@@ -1,7 +1,7 @@
 from huggingface_hub import snapshot_download
 from datasets import load_dataset, concatenate_datasets
 
-repo_id = "CanopyLabs/emilia-snac"
+repo_id = "eliasfiz/emilia-snac"
 
 # snapshot_download(
 #     repo_id=repo_id,
@@ -19,6 +19,6 @@ merged_dataset = concatenate_datasets(all_split_datasets)
 
 print(merged_dataset)
 
-merged_dataset.push_to_hub(f"{repo_id}-merged-CanopyLabs")
+merged_dataset.push_to_hub(f"{repo_id}-merged-eliasfiz")
 
  
