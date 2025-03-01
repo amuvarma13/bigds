@@ -1,7 +1,7 @@
 from datasets import load_dataset, concatenate_datasets
 from huggingface_hub import snapshot_download
 
-def load_dataset(dsn):
+def _load_dataset(dsn):
     snapshot_download(
         repo_id=dsn,
         repo_type="dataset",   
@@ -14,7 +14,7 @@ accs = ["amuvarma", "CanopyLabs", "CanopyLabsElias", "eliasfiz", "CanopyElias", 
 
 dsns = [f"amuvarma/emilia-snac-merged-{acc}-TTS-grouped-8192" for acc in accs]
 
-datasets = [load_dataset(dsn) for dsn in dsns]
+datasets = [_load_dataset(dsn) for dsn in dsns]
 
 combined_dataset = concatenate_datasets(datasets)
 
