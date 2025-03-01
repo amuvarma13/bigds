@@ -3,12 +3,12 @@ from datasets import load_dataset, concatenate_datasets
 repo_name = "eliasfiz"
 repo_id = f"{repo_name}/emilia-snac"
 
-# snapshot_download(
-#     repo_id=repo_id,
-#     repo_type="dataset",   
-#     revision="main",        
-#     max_workers=64,     
-# )
+snapshot_download(
+    repo_id=repo_id,
+    repo_type="dataset",   
+    revision="main",        
+    max_workers=64,     
+)
 
 ds = load_dataset(repo_id)
 
