@@ -1,7 +1,7 @@
 from huggingface_hub import snapshot_download
 from datasets import load_dataset, concatenate_datasets
 
-repo_id = "amuvarma/emilia-snac"
+repo_id = "CanopyLabs/emilia-snac"
 
 # snapshot_download(
 #     repo_id=repo_id,
