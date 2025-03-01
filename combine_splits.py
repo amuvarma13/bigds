@@ -19,6 +19,6 @@ merged_dataset = concatenate_datasets(all_split_datasets)
 
 print(merged_dataset)
 
-merged_dataset.push_to_hub(f"{repo_id}-merged-amuvarma")
+merged_dataset.push_to_hub(f"{repo_id}-merged-CanopyLabs")
 
  
