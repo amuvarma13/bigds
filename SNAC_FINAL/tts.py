@@ -2,10 +2,7 @@ dsn = "amuvarma/emilia-snac-merged-amuvarma"
 
 from datasets import load_dataset
 import os
-from transformers import AutoTokenizer
-ds = load_dataset(dsn, split='en')
-from huggingface_hub import snapshot_download
-
+from transformers import AutoTokenizer\
 
 snapshot_download(
     repo_id=dsn,
@@ -13,6 +10,10 @@ snapshot_download(
     revision="main",        
     max_workers=64,     
 )
+
+ds = load_dataset(dsn, split='train')
+from huggingface_hub import snapshot_download
+
 
 
 push_name = "amuvarma/emilia-snac-merged-amuvarma-TTS"
