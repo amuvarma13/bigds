@@ -3,7 +3,7 @@ from itertools import chain
 import os
 import time
 
-account_name = "CanopyLabs"
+account_name = "eliasfiz"
 dsn = f"amuvarma/emilia-snac-merged-{account_name}-TTS"
 
 dataset = load_dataset(dsn, split='train')
