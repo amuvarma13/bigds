@@ -3,12 +3,12 @@ from itertools import chain
 import os
 import time
 
-account_name = "CanopyElias"
+account_name = "akv13"
 dsn = f"amuvarma/emilia-snac-merged-{account_name}-TTS"
 
 dataset = load_dataset(dsn, split='train')
-dataset_length = 2985592
-partition_size = 420000
+dataset_length = 2228318
+partition_size = 550000
 chunk_size = 8192
 
 
