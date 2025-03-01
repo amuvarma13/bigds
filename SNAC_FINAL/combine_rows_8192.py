@@ -7,8 +7,8 @@ account_name = "CanopyElias"
 dsn = f"amuvarma/emilia-snac-merged-{account_name}-TTS"
 
 dataset = load_dataset(dsn, split='train')
-dataset_length = 30000
-partition_size = 10000
+dataset_length = 2985592
+partition_size = 420000
 chunk_size = 8192
 
 
