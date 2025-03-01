@@ -8,7 +8,7 @@ dsn = "amuvarma/emilia-30k-TTS"
 dataset = load_dataset(dsn, split='train')
 dataset_length = 30000
 partition_size = 10000
-chunk_size = 3072
+chunk_size = 6144
 
 
 dataset_length = len(dataset)
