@@ -58,13 +58,13 @@ def create_input_ids(example):
         + [end_of_ai]
     )
     example["input_ids"] = input_ids
-    example["labels"] = input_ids
-    example["attention_mask"] = [1] * len(input_ids)
+    # example["labels"] = input_ids
+    # example["attention_mask"] = [1] * len(input_ids)
     return example
 
 ds = ds.map(create_input_ids, num_proc=num_proc)
 
-columns_to_keep = ["input_ids", "labels",   "attention_mask"]
+columns_to_keep = ["input_ids"]
 columns_to_remove = [col for col in ds.column_names if col not in columns_to_keep]
 
 ds = ds.remove_columns(columns_to_remove)
