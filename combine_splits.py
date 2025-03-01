@@ -1,16 +1,22 @@
 from huggingface_hub import snapshot_download
-from datasets import load_dataset
+from datasets import load_dataset, concatenate_datasets
 
 repo_id = "amuvarma/emilia-snac"
 
-snapshot_download(
-    repo_id=repo_id,
-    repo_type="dataset",   
-    revision="main",        
-    max_workers=64,     
-)
+# snapshot_download(
+#     repo_id=repo_id,
+#     repo_type="dataset",   
+#     revision="main",        
+#     max_workers=64,     
+# )
 
 ds = load_dataset(repo_id)
 
-print(ds)
+all_split_datasets = [ds[split_name] for split_name in ds.keys()]
+
+# Merge them into a single Dataset
+merged_dataset = concatenate_datasets(all_split_datasets)
+
+print(merged_dataset)
+
  
