@@ -8,7 +8,7 @@ dsn = "amuvarma/emilia-30k-TTS"
 dataset = load_dataset(dsn, split='train')
 dataset_length = 30000
 partition_size = 10000
-
+chunk_size = 2048
 
 
 dataset_length = len(dataset)
@@ -30,7 +30,7 @@ for i in range(num_partitions):
 
     all_tokens = list(chain.from_iterable(partition["input_ids"]))
 
-    chunk_size = 2048
+
     num_chunks = len(all_tokens) // chunk_size  # This drops any leftover tokens
     chunks = [all_tokens[i*chunk_size:(i+1)*chunk_size] for i in range(num_chunks)]
 
@@ -44,4 +44,4 @@ for i in range(num_partitions):
 
 
 combined_dataset = concatenate_datasets(processed_partitions)
-combined_dataset.push_to_hub(f"{dsn}-full-grouped")
+combined_dataset.push_to_hub(f"{dsn}-grouped-{chunk_size}")
