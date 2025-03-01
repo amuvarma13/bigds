@@ -1,4 +1,4 @@
-dsn = "amuvarma/emilia-snac-merged-akv13"
+dsn = "amuvarma/emilia-snac-merged-CanopyLabsElias"
 
 from datasets import load_dataset
 import os
@@ -17,7 +17,7 @@ ds = load_dataset(dsn, split='train')
 
 
 
-push_name = "amuvarma/emilia-snac-merged-akv13-TTS"
+push_name = "amuvarma/emilia-snac-merged-CanopyLabsElias-TTS"
 
 tokeniser_length = 128256
 start_of_text = 128000
