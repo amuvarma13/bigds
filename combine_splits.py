@@ -1,6 +1,6 @@
 from huggingface_hub import snapshot_download
 from datasets import load_dataset, concatenate_datasets
-repo_name = "CanopyElias"
+repo_name = "akv13"
 repo_id = f"{repo_name}/emilia-snac"
 
 snapshot_download(
