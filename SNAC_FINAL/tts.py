@@ -6,6 +6,15 @@ from datasets import load_dataset
 import os
 from transformers import AutoTokenizer
 ds = load_dataset(dsn, split='en')
+from huggingface_hub import snapshot_download
+
+
+snapshot_download(
+    repo_id=dsn,
+    repo_type="dataset",   
+    revision="main",        
+    max_workers=64,     
+)
 
 
 push_name = "amuvarma/emilia-snac-merged-amuvarma-TTS"
