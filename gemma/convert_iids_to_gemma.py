@@ -14,12 +14,17 @@ dataset = _load_dataset(dsn)
 print(dataset)
 
 amount_to_add = 127744
+import numpy as np
+
 def add_offset(batch):
-    # batch["codes"] is a list of lists; add 127744 to each integer
-    batch["codes"] = [[code + amount_to_add for code in codes_list] for codes_list in batch["codes"]]
+    # Convert to a NumPy array (only works efficiently if the inner lists have the same length)
+    codes_array = np.array(batch["codes"])
+    # Vectorized addition
+    codes_array += 127744
+    # Convert back to a list of lists
+    batch["codes"] = codes_array.tolist()
     return batch
 
 # Apply the function with batched=True for efficiency
 dataset = dataset.map(add_offset, batched=True)
-
 dataset.push_to_hub(f"{dsn}-gemma")
