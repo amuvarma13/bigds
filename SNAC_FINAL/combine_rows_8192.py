@@ -30,7 +30,7 @@ for i in range(num_partitions):
 
     all_tokens = list(chain.from_iterable(partition["input_ids"]))
 
-    chunk_size = 4096
+    chunk_size = 2048
     num_chunks = len(all_tokens) // chunk_size  # This drops any leftover tokens
     chunks = [all_tokens[i*chunk_size:(i+1)*chunk_size] for i in range(num_chunks)]
 
