@@ -1,5 +1,3 @@
-## TAKES IN DATASET WITH COLUMNS codes_list, question, answer
-
 dsn = "amuvarma/emilia-snac-merged-amuvarma"
 
 from datasets import load_dataset
