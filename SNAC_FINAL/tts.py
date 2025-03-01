@@ -2,7 +2,8 @@ dsn = "amuvarma/emilia-snac-merged-amuvarma"
 
 from datasets import load_dataset
 import os
-from transformers import AutoTokenizer\
+from transformers import AutoTokenizer
+from huggingface_hub import snapshot_download
 
 snapshot_download(
     repo_id=dsn,
@@ -12,7 +13,7 @@ snapshot_download(
 )
 
 ds = load_dataset(dsn, split='train')
-from huggingface_hub import snapshot_download
+
 
 
 
