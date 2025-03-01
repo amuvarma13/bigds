@@ -10,5 +10,7 @@ snapshot_download(
     max_workers=64,     
 )
 
-load_dataset(repo_id)
+ds = load_dataset(repo_id)
+
+print(ds)
  
