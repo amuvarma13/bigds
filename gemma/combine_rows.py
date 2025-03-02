@@ -4,7 +4,7 @@ import os
 import time
 
 
-user_name = "CanopyLabs"
+user_name = "amuvarma"
 dsn = f"amuvarma/emilia-snac-merged-{user_name}-gemma-TTS"
 
 dataset = load_dataset(dsn, split='train')
