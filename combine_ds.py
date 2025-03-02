@@ -12,11 +12,12 @@ def _load_dataset(dsn):
 
 accs = ["amuvarma", "CanopyLabs", "CanopyLabsElias", "eliasfiz", "CanopyElias", "akv13"]
 
-dsns = [f"amuvarma/emilia-snac-merged-{acc}-TTS-grouped-8192" for acc in accs]
+dsns = [f"amuvarma/emilia-snac-merged-{acc}-gemma-TTS-grouped-2656" for acc in accs]
 
 datasets = [_load_dataset(dsn) for dsn in dsns]
 
 combined_dataset = concatenate_datasets(datasets)
 combined_dataset = combined_dataset.shuffle(seed=42)
+combined_dataset = combined_dataset.shuffle(seed=42)
 
-combined_dataset.push_to_hub(f"amuvarma/emilia-snac-merged-all-TTS-grouped-8192")
+combined_dataset.push_to_hub(f"amuvarma/emilia-snac-merged-all-gemma-TTS-grouped-2656")
