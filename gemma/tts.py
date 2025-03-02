@@ -3,7 +3,7 @@ import os
 from transformers import AutoTokenizer
 from huggingface_hub import snapshot_download
 
-user_name = "CanopyElias"
+user_name = "CanopyLabs"
 dsn = f"amuvarma/emilia-snac-merged-{user_name}-gemma"
 
 snapshot_download(
