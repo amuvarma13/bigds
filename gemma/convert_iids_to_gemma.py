@@ -18,7 +18,7 @@ print(dataset)
 amount_to_add = 127744
 def add_offset(batch):
     # batch["codes"] is a list of lists; add 127744 to each integer
-    batch["codes"] = [[code + amount_to_add for code in codes_list] for codes_list in batch["codes"]]
+    batch["codes_list"] = [[code + amount_to_add for code in codes_list] for codes_list in batch["codes"]]
     return batch
 
 # Apply the function with batched=True for efficiency
