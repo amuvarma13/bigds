@@ -13,8 +13,8 @@ snapshot_download(
     allow_patterns=["20231101.en"],       
   
 )
-
-ds = load_dataset(dsn, split='20231101.en')
+ 
+ds = load_dataset(dsn, "20231101.en", split="train")
 ds = ds.shuffle(seed=42).shuffle(42)
 ds.remove_columns_(["url", "id", "title"])
 filtered_ds = ds.filter(
