@@ -4,8 +4,7 @@ import os
 import time
 
 
-user_name = "akv13"
-dsn = f"amuvarma/emilia-snac-merged-{user_name}-gemma-TTS"
+dsn = f"amuvarma/text-messages-6m-iids"
 
 dataset = load_dataset(dsn, split='train')
 print(dataset)
