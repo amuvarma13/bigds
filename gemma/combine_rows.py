@@ -6,7 +6,7 @@ import os
 import time
 
 
-dsn = f"amuvarma/wikipedia-unfiltered-en-tokenised"
+dsn = f"amuvarma/facebook-natural-reasoning-TTT"
 snapshot_download(
     repo_id=dsn,
     repo_type="dataset",   
@@ -16,8 +16,8 @@ snapshot_download(
 
 dataset = load_dataset(dsn, split='train')
 print(dataset)
-dataset_length = 6407814
-partition_size = 533984
+dataset_length = 1145824
+partition_size = 572911
 chunk_size = 2048
 
 
