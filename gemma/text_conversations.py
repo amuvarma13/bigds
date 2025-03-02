@@ -13,7 +13,6 @@ snapshot_download(
 
 ds = load_dataset(dsn, split='train')
 ds = ds.shuffle(seed=42).shuffle(42)
-ds = ds.select(range(10000))
 
 tokeniser_length = 256000
 start_of_text = 2
@@ -57,4 +56,4 @@ def create_input_ids(example):
 
 ds = ds.map(create_input_ids, num_proc=20, remove_columns=ds.column_names)
 
-ds.push_to_hub(f"{dsn}-iids-30k")
+ds.push_to_hub(f"{dsn}-iids")
