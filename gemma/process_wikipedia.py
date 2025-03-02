@@ -17,16 +17,16 @@ snapshot_download(
 ds = load_dataset(dsn, "20231101.en", split="train")
 ds = ds.shuffle(seed=42).shuffle(42)
 ds.remove_columns(["url", "id", "title"])
-filtered_ds = ds.filter(
-    lambda x: len(x["text"]) < 35000 and len(x["text"]) > 1000,
-    num_proc=60  # Adjust based on your CPU cores
-) 
+# filtered_ds = ds.filter(
+#     lambda x: len(x["text"]) < 35000 and len(x["text"]) > 1000,
+#     num_proc=60  # Adjust based on your CPU cores
+# ) 
 
 def tokenise(example):
     example["input_ids"] = tokenizer.encode(example["text"], add_special_tokens=True)
     return example
 
-filtered_ds = filtered_ds.map(tokenise, num_proc=60, remove_columns=filtered_ds.column_names)
+filtered_ds = ds.map(tokenise, num_proc=60, remove_columns=ds.column_names)
 
 
-filtered_ds.push_to_hub(f"amuvarma/wikipedia-filtered-en-tokenised")
+filtered_ds.push_to_hub(f"amuvarma/wikipedia-unfiltered-en-tokenised")
