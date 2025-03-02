@@ -16,7 +16,7 @@ snapshot_download(
  
 ds = load_dataset(dsn, "20231101.en", split="train")
 ds = ds.shuffle(seed=42).shuffle(42)
-ds.remove_columns_(["url", "id", "title"])
+ds.remove_columns(["url", "id", "title"])
 filtered_ds = ds.filter(
     lambda x: len(x["text"]) < 35000 and len(x["text"]) > 1000,
     num_proc=60  # Adjust based on your CPU cores
