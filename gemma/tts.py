@@ -3,7 +3,7 @@ import os
 from transformers import AutoTokenizer
 from huggingface_hub import snapshot_download
 
-user_name = "amuvarma"
+user_name = "CanopyLabsElias"
 dsn = f"amuvarma/emilia-snac-merged-{user_name}-gemma"
 
 snapshot_download(
@@ -54,8 +54,6 @@ def create_input_ids(example):
         + [end_of_ai]
     )
     example["input_ids"] = input_ids
-    # example["labels"] = input_ids
-    # example["attention_mask"] = [1] * len(input_ids)
     return example
 
 ds = ds.map(create_input_ids, num_proc=num_proc, remove_columns=["text", "codes_list"], batched=True)
