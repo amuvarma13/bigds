@@ -1,10 +1,18 @@
 from datasets import Dataset, load_dataset, concatenate_datasets
+from huggingface_hub import snapshot_download
+
 from itertools import chain
 import os
 import time
 
 
 dsn = f"amuvarma/text-messages-6m-iids"
+snapshot_download(
+    repo_id=dsn,
+    repo_type="dataset",   
+    revision="main",        
+    max_workers=64,     
+)
 
 dataset = load_dataset(dsn, split='train')
 print(dataset)
