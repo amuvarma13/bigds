@@ -1,7 +1,7 @@
 from datasets import load_dataset
 from huggingface_hub import snapshot_download
 
-user_name = "CanopyLabs"
+user_name = "amuvarma"
 dsn = f"amuvarma/emilia-snac-merged-{user_name}"
 def _load_dataset(dataset_name):
     snapshot_download(
