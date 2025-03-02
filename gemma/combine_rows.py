@@ -6,7 +6,7 @@ import os
 import time
 
 
-dsn = f"amuvarma/text-messages-6m-iids"
+dsn = f"amuvarma/wikipedia-unfiltered-en-tokenised"
 snapshot_download(
     repo_id=dsn,
     repo_type="dataset",   
@@ -54,4 +54,4 @@ for i in range(num_partitions):
 
 
 combined_dataset = concatenate_datasets(processed_partitions)
-combined_dataset.push_to_hub(f"{dsn}-grouped-2-{chunk_size}")
+combined_dataset.push_to_hub(f"{dsn}-grouped-{chunk_size}")
