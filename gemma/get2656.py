@@ -1,9 +1,9 @@
-from datasets import load_dataset
+from datasets import load_dataset, concatenate_datasets
 from transformers import AutoTokenizer
 from huggingface_hub import snapshot_download
 
 dsn = "amuvarma/wikipedia-unfiltered-en-tokenised-grouped-2048"
-
+dsn1 = "amuvarma/text-messages-6m-iids-grouped-2-2048"
 snapshot_download(
     repo_id=dsn,
     repo_type="dataset",   
@@ -12,6 +12,13 @@ snapshot_download(
 )
 
 ds = load_dataset(dsn, split='train')
+ds1 = load_dataset(dsn1, split='train')
+
+ds_full = concatenate_datasets([ds, ds1])
+
+ds_full = ds_full.shuffle(seed=42).shuffle(42)
+
+ds_full.push_to_hub(f"amuvarma/all-texts-2048-iids")
 
 print(ds)
 # from datasets import Dataset
