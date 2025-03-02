@@ -36,3 +36,9 @@ for start_idx in range(0, ds_length, chunk_size):
     total_tokens += sum(ds_chunk["token_count"])
 
 print("Total number of tokens:", total_tokens)
+
+total_rows_1024 = total_tokens//1024
+total_rows_2656 = total_tokens//2656
+
+print("Total number of rows (2656):", total_rows_2656)
+print("Total number of rows (1024):", total_rows_1024)
