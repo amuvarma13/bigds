@@ -1,6 +1,8 @@
 from datasets import load_dataset
 from huggingface_hub import snapshot_download
-dsn = "amuvarma/snac-raw-10m"
+
+user_name = "CanopyLabsElias"
+dsn = f"amuvarma/emilia-snac-merged-{user_name}"
 def _load_dataset(dataset_name):
     snapshot_download(
         repo_id=dataset_name,
