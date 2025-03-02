@@ -17,7 +17,7 @@ snapshot_download(
 dataset = load_dataset(dsn, split='train')
 print(dataset)
 dataset_length = 6761215
-partition_size = 6761215
+partition_size = 520093
 chunk_size = 2656
 
 
