@@ -48,8 +48,8 @@ for i in range(num_partitions):
     new_dataset = Dataset.from_dict({"input_ids": chunks})
     end_time = time.time()
     print(f"Time taken to chunk: {end_time - start_time}")
-    # push_name = f"{dsn}-{i}-of-{dataset_length//partition_size}"
-    # new_dataset.push_to_hub(push_name)
+    push_name = f"{dsn}-{i}-of-{dataset_length//partition_size}"
+    new_dataset.push_to_hub(push_name)
     processed_partitions.append(new_dataset)
 
 
