@@ -13,10 +13,26 @@ snapshot_download(
 
 ds = load_dataset(dsn, split='train')
 
-filtered_ds = ds.filter(
-    lambda x: len(x["input_ids"]) > 2656,
-    num_proc=60
-)
+from datasets import Dataset
+from tqdm import tqdm
 
-print("Number of rows over 2656 tokens:", filtered_ds.num_rows)
+chunk_size = 100_000  # Adjust as needed
+total_tokens = 0
+ds_length = len(ds)
 
+for start_idx in range(0, ds_length, chunk_size):
+    end_idx = min(start_idx + chunk_size, ds_length)
+    # Select a chunk
+    ds_chunk = ds.select(range(start_idx, end_idx))
+
+    # Map to compute token counts in this chunk
+    ds_chunk = ds_chunk.map(
+        lambda ex: {"token_count": len(ex["input_ids"])},
+        num_proc=60,  # Parallel processing
+        batched=False
+    )
+
+    # Sum the token_count column for this chunk
+    total_tokens += sum(ds_chunk["token_count"])
+
+print("Total number of tokens:", total_tokens)
