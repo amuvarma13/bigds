@@ -29,4 +29,4 @@ def tokenise(example):
 filtered_ds = filtered_ds.map(tokenise, num_proc=60, remove_columns=filtered_ds.column_names)
 
 
-filtered_ds.push_to_hub(f"{dsn}-tokenised")
+filtered_ds.push_to_hub(f"amuvarma/wikipedia-filtered-en-tokenised")
