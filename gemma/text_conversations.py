@@ -43,13 +43,13 @@ def create_input_ids(example):
         content_ids.append(end_of_text)
 
         if role == "user":
-            row_ids.extend(start_of_human)
-            row_ids += content_ids
-            row_ids.extend(end_of_human)
+            row_ids.extend([start_of_human])
+            row_ids.extend(content_ids)
+            row_ids.extend([end_of_human])
         else:
-            row_ids.extend(start_of_ai)
-            row_ids += content_ids
-            row_ids.extend(end_of_ai)
+            row_ids.extend([start_of_ai])
+            row_ids.extend(content_ids)
+            row_ids.extend([end_of_ai])
 
     example["input_ids"] = row_ids
     return example
