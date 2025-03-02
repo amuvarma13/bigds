@@ -18,6 +18,5 @@ datasets = [_load_dataset(dsn) for dsn in dsns]
 
 combined_dataset = concatenate_datasets(datasets)
 combined_dataset = combined_dataset.shuffle(seed=42)
-combined_dataset = combined_dataset.shuffle(seed=42)
 
 combined_dataset.push_to_hub(f"amuvarma/emilia-snac-merged-all-gemma-TTS-grouped-2656")
