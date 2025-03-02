@@ -49,7 +49,7 @@ def create_input_ids(example):
         + [end_of_human]
         + [start_of_ai]
         + [start_of_speech]
-        + example["codes"]
+        + example["codes_list"]
         + [end_of_speech]
         + [end_of_ai]
     )
