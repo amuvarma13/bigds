@@ -11,7 +11,7 @@ dataset = load_dataset(dsn, split='train')
 print(dataset)
 dataset_length = 30000
 partition_size = 30000
-chunk_size = 3072
+chunk_size = 2656
 
 
 dataset_length = len(dataset)
