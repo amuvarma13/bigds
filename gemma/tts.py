@@ -1,12 +1,19 @@
-## TAKES IN DATASET WITH COLUMNS codes_list, question, answer
-
-dsn = "amuvarma/snac-raw-10m-gemma"
-
 from datasets import load_dataset
 import os
 from transformers import AutoTokenizer
-ds = load_dataset(dsn, split='en')
+from huggingface_hub import snapshot_download
 
+user_name = "akv13"
+dsn = f"amuvarma/emilia-snac-merged-{user_name}-gemma"
+
+snapshot_download(
+    repo_id=dsn,
+    repo_type="dataset",   
+    revision="main",        
+    max_workers=64,     
+)
+
+ds = load_dataset(dsn, split='train')
 
 push_name = f"{dsn}-TTS"
 
