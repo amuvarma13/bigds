@@ -4,13 +4,13 @@ import os
 import time
 
 
-user_name = "CanopyElias"
+user_name = "CanopyLabs"
 dsn = f"amuvarma/emilia-snac-merged-{user_name}-gemma-TTS"
 
 dataset = load_dataset(dsn, split='train')
 print(dataset)
-dataset_length = 2985592
-partition_size = 426513
+dataset_length = 3073199
+partition_size = 510000
 chunk_size = 2656
 
 
