@@ -12,6 +12,7 @@ snapshot_download(
 )
 
 ds = load_dataset(dsn, split='train')
+ds = ds.select(range(10000))
 
 tokeniser_length = 256000
 start_of_text = 2
