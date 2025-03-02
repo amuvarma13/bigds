@@ -20,7 +20,7 @@ ds.remove_columns_(["url", "id", "title"])
 filtered_ds = ds.filter(
     lambda x: len(x["text"]) < 35000 and len(x["text"]) > 1000,
     num_proc=60  # Adjust based on your CPU cores
-)
+) 
 
 def tokenise(example):
     example["input_ids"] = tokenizer.encode(example["text"], add_special_tokens=True)
