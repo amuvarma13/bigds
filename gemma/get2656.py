@@ -2,7 +2,7 @@ from datasets import load_dataset
 from transformers import AutoTokenizer
 from huggingface_hub import snapshot_download
 
-dsn = "amuvarma/wikipedia-filtered-en-tokenised"
+dsn = "amuvarma/wikipedia-unfiltered-en-tokenised"
 
 snapshot_download(
     repo_id=dsn,
