@@ -56,7 +56,7 @@ def create_input_ids(example):
     example["input_ids"] = input_ids
     return example
 
-ds = ds.map(create_input_ids, num_proc=num_proc, remove_columns=["text", "codes_list"], batched=True)
+ds = ds.map(create_input_ids, num_proc=20, remove_columns=["text", "codes_list"])
 
 columns_to_keep = ["input_ids"]
 columns_to_remove = [col for col in ds.column_names if col not in columns_to_keep]
