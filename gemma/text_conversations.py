@@ -56,4 +56,4 @@ def create_input_ids(example):
 
 ds = ds.map(create_input_ids, num_proc=20, remove_columns=ds.column_names)
 
-ds.push_to_hub(f"{dsn}-iids")
+ds.push_to_hub(f"{dsn}-iids-30k")
