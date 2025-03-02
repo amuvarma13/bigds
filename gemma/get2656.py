@@ -13,12 +13,12 @@ snapshot_download(
     max_workers=64,     
 )
 
-snapshot_download(
-    repo_id=dsn,
-    repo_type="dataset",   
-    revision="main",        
-    max_workers=64,     
-)
+# snapshot_download(
+#     repo_id=dsn,
+#     repo_type="dataset",   
+#     revision="main",        
+#     max_workers=64,     
+# )
 
 snapshot_download(
     repo_id=dsn1,
