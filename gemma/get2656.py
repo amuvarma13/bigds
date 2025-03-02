@@ -2,8 +2,8 @@ from datasets import load_dataset, concatenate_datasets
 from transformers import AutoTokenizer
 from huggingface_hub import snapshot_download
 
-# dsn = "amuvarma/wikipedia-unfiltered-en-tokenised-grouped-2048"
-# dsn1 = "amuvarma/text-messages-6m-iids-grouped-2-2048"
+dsn = "amuvarma/wikipedia-unfiltered-en-tokenised-grouped-2048"
+dsn1 = "amuvarma/text-messages-6m-iids-grouped-2-2048"
 
 dsn2 = "amuvarma/facebook-natural-reasoning-TTT"
 snapshot_download(
@@ -14,16 +14,17 @@ snapshot_download(
 )
 
 ds2 = load_dataset(dsn2, split='train')
-print(ds2)
 
-# ds = load_dataset(dsn, split='train')
-# ds1 = load_dataset(dsn1, split='train')
 
-# ds_full = concatenate_datasets([ds, ds1])
+ds = load_dataset(dsn, split='train')
+ds1 = load_dataset(dsn1, split='train')
+ds1 = ds1.select(range(1890036))
 
-# ds_full = ds_full.shuffle(seed=42).shuffle(42)
+ds_full = concatenate_datasets([ds, ds1, ds2])
 
-# ds_full.push_to_hub(f"amuvarma/all-texts-2048-iids")
+ds_full = ds_full.shuffle(seed=42).shuffle(42)
+
+ds_full.push_to_hub(f"amuvarma/all-texts-2048-iids")
 
 # print(ds)
 # from datasets import Dataset
