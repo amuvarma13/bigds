@@ -17,16 +17,26 @@ snapshot_download(
 ds = load_dataset(dsn, "20231101.en", split="train")
 ds = ds.shuffle(seed=42).shuffle(42)
 ds.remove_columns(["url", "id", "title"])
-filtered_ds = ds.filter(
-    lambda x: len(x["text"]) < 35000 and len(x["text"]) > 1000,
-    num_proc=60  # Adjust based on your CPU cores
-) 
+from datasets import Dataset
+from tqdm import tqdm
 
-def tokenise(example):
-    example["input_ids"] = tokenizer.encode(example["text"], add_special_tokens=True)
-    return example
+chunk_size = 100_000  # Adjust as needed
+total_tokens = 0
+ds_length = len(ds)
 
-filtered_ds = filtered_ds.map(tokenise, num_proc=60, remove_columns=filtered_ds.column_names)
+for start_idx in range(0, ds_length, chunk_size):
+    end_idx = min(start_idx + chunk_size, ds_length)
+    # Select a chunk
+    ds_chunk = ds.select(range(start_idx, end_idx))
 
+    # Map to compute token counts in this chunk
+    ds_chunk = ds_chunk.map(
+        lambda ex: {"token_count": len(ex["input_ids"])},
+        num_proc=60,  # Parallel processing
+        batched=False
+    )
 
-filtered_ds.push_to_hub(f"amuvarma/wikipedia-filtered-en-tokenised")
+    # Sum the token_count column for this chunk
+    total_tokens += sum(ds_chunk["token_count"])
+
+print("Total number of tokens:", total_tokens)
