@@ -49,7 +49,7 @@ def create_input_ids(example):
     qtext_tokens = tokenizer.encode(example['question'], add_special_tokens=True)
     qtext_tokens.append(end_of_text)  # Append token 1 to the end
 
-    atext_tokens = tokenizer.encode(example['responses']["response"], add_special_tokens=True)
+    atext_tokens = tokenizer.encode(example['responses'][0]["response"], add_special_tokens=True)
     atext_tokens.append(end_of_text)  # Append token 1 to the end
     input_ids = (
 
