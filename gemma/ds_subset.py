@@ -16,3 +16,7 @@ snapshot_download(
 ds = load_dataset(dsn, split='train')
 
 print(ds)
+
+ds = ds.select(range(30000))
+
+ds.push_to_hub(f"{dsn}-30k")
