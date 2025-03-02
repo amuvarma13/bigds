@@ -8,8 +8,8 @@ dsn = f"amuvarma/text-messages-6m-iids"
 
 dataset = load_dataset(dsn, split='train')
 print(dataset)
-dataset_length = 3145501
-partition_size = 520000
+dataset_length = 6761215
+partition_size = 6761215
 chunk_size = 2656
 
 
