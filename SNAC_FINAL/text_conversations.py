@@ -2,7 +2,7 @@ from datasets import load_dataset
 from transformers import AutoTokenizer
 from huggingface_hub import snapshot_download
 
-dsn = "amuvarma/text-messages-6m"
+dsn = "amuvarma/400-playful-conversations"
 
 snapshot_download(
     repo_id=dsn,
@@ -14,9 +14,9 @@ snapshot_download(
 ds = load_dataset(dsn, split='train')
 ds = ds.shuffle(seed=42).shuffle(42)
 
-tokeniser_length = 256000
-start_of_text = 2
-end_of_text = tokeniser_length + 8
+tokeniser_length = 128256
+start_of_text = 128000
+end_of_text = 128009
 
 start_of_speech = tokeniser_length + 1
 end_of_speech = tokeniser_length + 2
@@ -30,7 +30,7 @@ pad_token = tokeniser_length + 7
 
 audio_tokens_start = tokeniser_length + 10
 
-tokenizer_name = "google/gemma-2-9b-it"
+tokenizer_name = "meta-llama/Llama-3.2-3B-Instruct"
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 
 def create_input_ids(example):
