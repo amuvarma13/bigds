@@ -2,7 +2,7 @@ from datasets import load_dataset
 from transformers import AutoTokenizer
 from huggingface_hub import snapshot_download
 
-dsn = "amuvarma/400-playful-conversations"
+dsn = "amuvarma/2000-playful-conversations"
 
 snapshot_download(
     repo_id=dsn,
