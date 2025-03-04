@@ -36,6 +36,7 @@ instruction_list = read_instructions('read_out.txt')
 
 # Load dataset
 ds = load_dataset(dsn, split='train')
+print("original dataset:", ds)
 num_proc = os.cpu_count() - 2
 
 # Tokenize function: remove punctuation, lowercase, and prepend/append special tokens
@@ -64,11 +65,7 @@ ds = ds.filter(lambda x: x.get("codes_list_prompt") is not None and x.get("codes
 # Create input_ids and compute labels. Here we include every token in the response segments,
 # meaning all special tokens in Segment 2 and Segment 3 are used for computing loss.
 def create_input_ids(example):
-    # Build input_ids by concatenating segments:
-    # Segment 0: [start_of_human] + prompt_tokens + [end_of_human]
-    # Segment 1: [start_of_ai] + [start_of_speech] + codes_list_prompt + [end_of_speech] + [end_of_ai]
-    # Segment 2: [start_of_human] + response_tokens + [end_of_human]
-    # Segment 3: [start_of_ai] + [start_of_speech] + codes_list_response + [end_of_speech]
+
     input_ids = (
         [start_of_human] +
         example["prompt_tokens"] +
