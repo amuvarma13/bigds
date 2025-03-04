@@ -60,7 +60,7 @@ def tokenize_fn(example):
 ds = ds.map(tokenize_fn, num_proc=num_proc, desc="Tokenizing")
 
 # Filter out rows missing required codes list fields
-ds = ds.filter(lambda x: x.get("codes_list_prompt") is not None and x.get("codes_list_response") is not None)
+# ds = ds.filter(lambda x: x.get("codes_list_prompt") is not None and x.get("codes_list_response") is not None)
 
 # Create input_ids and compute labels. Here we include every token in the response segments,
 # meaning all special tokens in Segment 2 and Segment 3 are used for computing loss.
