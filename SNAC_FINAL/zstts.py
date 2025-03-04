@@ -5,8 +5,8 @@ from datasets import load_dataset
 from transformers import AutoTokenizer
 
 # Dataset and tokenizer settings
-dsn = "amuvarma/tdt"
-push_name = "amuvarma/tdt-proc"
+dsn = "amuvarma/emilia-debug-zst-pairs"
+push_name = "amuvarma/emilia-debug-zst-pairs-proc"
 tokeniser_length = 128256
 start_of_text = 128000
 end_of_text = 128009
@@ -44,8 +44,8 @@ def tokenize_fn(example):
 
     random_instruction_1 = random.choice(instruction_list)
     random_instruction_2 = random.choice(instruction_list)
-    prompt_text = example["text_prompt"].translate(str.maketrans('', '', string.punctuation)).lower()
-    response_text = example["text_response"].translate(str.maketrans('', '', string.punctuation)).lower()
+    prompt_text = example["text_1"].translate(str.maketrans('', '', string.punctuation)).lower()
+    response_text = example["text_2"].translate(str.maketrans('', '', string.punctuation)).lower()
     
     # Here we simply tokenize without adding extra instructions.
     # Prepend start_of_text and append end_of_text for both sequences.
@@ -75,7 +75,7 @@ def create_input_ids(example):
         [end_of_human] +
         [start_of_ai] +
         [start_of_speech] +
-        example["codes_list_prompt"] +
+        example["codes_list_1"] +
         [end_of_speech] +
         [end_of_ai] +
         [start_of_human] +
@@ -83,7 +83,7 @@ def create_input_ids(example):
         [end_of_human] +
         [start_of_ai] +
         [start_of_speech] +
-        example["codes_list_response"] +
+        example["codes_list_2"] +
         [end_of_speech]
     )
     example["input_ids"] = input_ids
@@ -93,9 +93,9 @@ def create_input_ids(example):
 
     # Calculate segment lengths:
     segment0_len = 1 + len(example["prompt_tokens"]) + 1  # [start_of_human] + prompt_tokens + [end_of_human]
-    segment1_len = 1 + 1 + len(example["codes_list_prompt"]) + 1 + 1  # [start_of_ai] + [start_of_speech] + codes_list_prompt + [end_of_speech] + [end_of_ai]
+    segment1_len = 1 + 1 + len(example["codes_list_1"]) + 1 + 1  # [start_of_ai] + [start_of_speech] + codes_list_prompt + [end_of_speech] + [end_of_ai]
     segment2_len = 1 + len(example["response_tokens"]) + 1  # [start_of_human] + response_tokens + [end_of_human]
-    segment3_len = 1 + 1 + len(example["codes_list_response"]) + 1  # [start_of_ai] + [start_of_speech] + codes_list_response + [end_of_speech]
+    segment3_len = 1 + 1 + len(example["codes_list_2"]) + 1  # [start_of_ai] + [start_of_speech] + codes_list_response + [end_of_speech]
 
     # Label every token in Segment 2 (the text response, including its special tokens)
     segment2_start = segment0_len + segment1_len
