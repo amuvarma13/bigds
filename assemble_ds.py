@@ -25,6 +25,7 @@ audio_features = Features({
 def process_row(row, idx):
     # Construct path to the wav file based on the row index
     wav_path = f"./wavs/{idx}.wav"
+    print(idx)
     
     # Check if the file exists
     if not os.path.exists(wav_path):
