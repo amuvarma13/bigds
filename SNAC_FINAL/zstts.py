@@ -5,8 +5,8 @@ from datasets import load_dataset
 from transformers import AutoTokenizer
 
 # Dataset and tokenizer settings
-dsn = "amuvarma/emilia-debug-zst-pairs"
-push_name = "amuvarma/emilia-debug-zst-pairs-proc"
+dsn = "amuvarma/emilia-snac-merged-with-speaker-all-pairs"
+push_name = "amuvarma/emilia-snac-merged-with-speaker-all-pairs-proc"
 tokeniser_length = 128256
 start_of_text = 128000
 end_of_text = 128009
