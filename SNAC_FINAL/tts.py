@@ -15,7 +15,7 @@ snapshot_download(
 ds = load_dataset(dsn, split='train')
 
 
-push_name = f"{dsn}-TTS-name_tagged"
+push_name = f"{dsn}-TTS-name_tagged-emo_tagged"
 
 tokeniser_length = 128256
 start_of_text = 128000
