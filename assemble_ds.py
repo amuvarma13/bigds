@@ -1,4 +1,4 @@
-from datasets import load_dataset, concatenate_datasets, Audio
+from datasets import load_dataset, concatenate_datasets, Audio, Features, Value, Sequence
 from huggingface_hub import snapshot_download
 import librosa
 import os
@@ -14,6 +14,13 @@ snapshot_download(
 )
 
 ds = load_dataset(dsn, split="train")
+
+# Define the features including the Audio type for enhanced_audio
+audio_features = Features({
+    **ds.features,  # Keep all existing features
+    "enhanced_audio": Audio(),  # Add the new Audio feature
+    "has_wav": Value("bool")   # Temporary field for filtering
+})
 
 def process_row(row, idx):
     # Construct path to the wav file based on the row index
@@ -40,16 +47,14 @@ def process_row(row, idx):
 num_cores = max(1, os.cpu_count() - 2)
 print(f"Using {num_cores} processes for parallel processing")
 
-# Apply the mapping function to the dataset with row indices and parallel processing
+# Apply the mapping function with feature specification
 ds = ds.map(
     function=process_row,
     with_indices=True,
     num_proc=num_cores,
+    features=audio_features,  # Define the output features including Audio type
     desc="Processing audio files",
 )
-
-# Cast the enhanced_audio column to Audio type
-ds = ds.cast_column("enhanced_audio", Audio())
 
 # Filter the dataset to keep only rows with found WAV files
 ds = ds.filter(lambda example: example["has_wav"])
