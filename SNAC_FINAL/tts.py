@@ -42,7 +42,7 @@ num_proc = os.cpu_count() - 2
 
 
 def create_input_ids(example):
-    text_ids = tokenizer.encode(example["text"] + "<zoe>", add_special_tokens=True)
+    text_ids = tokenizer.encode(example["text"] +" "+ "<zoe>", add_special_tokens=True)
     text_ids.append(end_of_text)
     example["text_tokens"] = text_ids
     input_ids = (
