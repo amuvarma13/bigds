@@ -1,4 +1,4 @@
-dsn = "amuvarma/emilia-snac-merged-CanopyElias"
+dsn = "amuvarma/brian-48k-KRVv68cDw2PBeOJypLrzaiI4kol2-enhanced-clipped-snacced"
 
 from datasets import load_dataset
 import os
@@ -15,9 +15,7 @@ snapshot_download(
 ds = load_dataset(dsn, split='train')
 
 
-
-
-push_name = "amuvarma/emilia-snac-merged-CanopyElias-TTS"
+push_name = "amuvarma/brian-48k-KRVv68cDw2PBeOJypLrzaiI4kol2-enhanced-clipped-snacced-TTS"
 
 tokeniser_length = 128256
 start_of_text = 128000
