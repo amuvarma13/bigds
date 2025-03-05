@@ -47,5 +47,7 @@ ds = ds.map(
 # Cast the enhanced_audio column to Audio type
 ds = ds.cast_column("enhanced_audio", Audio())
 
+ds = ds.push_to_hub("amuvarma/brian-48k-KRVv68cDw2PBeOJypLrzaiI4kol2-enhanced")
+
 # Now ds contains the original data plus the enhanced_audio column
 print(f"Dataset now has {len(ds)} rows with columns: {ds.column_names}")
