@@ -23,3 +23,46 @@ ds = ds.map(lambda x: {"emotion": x["emotion"].lower()})
 unique_emotions = ds.unique("emotion")
 print(unique_emotions)
 
+{
+    "happy": "happy",
+    "normally": "normal",
+    "longer": "longer",
+    "sad": "sad",
+    "frustrated": "frustrated",
+    "pausing": "normal",
+    "read slowly": "slow",
+    "disgust": "disgust",
+    "excited": "excited",
+    "whisper": "whisper",
+    "panicky": "panicky",
+    "curious": "curious",
+    "surprise": "surprise",
+    "chuckle": "chuckle",
+    "slow": "slow",
+    "fast": "fast",
+    "crying": "crying",
+    "with a deep voice": "deep",
+    "sleepy": "sleepy",
+    "angry": "angry",
+    "normal": "normal",
+    "hmm": "curious",
+    "with a high pitched voice": "high",
+    "shout": "shout",
+    "emphasise the word": "normal",
+    "ooh": "ooh",
+    "excitement": "excited"
+}
+
+#next replace the emotions with the new values
+
+def map_emotion(row):
+    if row["emotion"] in unique_emotions:
+        row["emotion"] = unique_emotions[row["emotion"]]
+
+    else:
+        row["emotion"] = "normal"
+    return row
+
+ds = ds.map(map_emotion, num_proc=60)
+
+print(ds)
