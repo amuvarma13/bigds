@@ -56,6 +56,7 @@ print(unique_emotions)
 #next replace the emotions with the new values
 
 def map_emotion(row):
+    print(row["emotion"])
     if "emotion" in row:
         if row["emotion"] in unique_emotions:
             row["emotion"] = unique_emotions[row["emotion"]]
