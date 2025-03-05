@@ -49,7 +49,7 @@ def tokenize_fn(example):
     # Here we simply tokenize without adding extra instructions.
     # Prepend start_of_text and append end_of_text for both sequences.
     prompt_ids = [start_of_text] + tokenizer.encode(prompt_text, add_special_tokens=False) + [end_of_text]
-    response_ids = [start_of_text] + tokenizer.encode( response_text, add_special_tokens=False) + [end_of_text]
+    response_ids = [start_of_text] + tokenizer.encode(response_text, add_special_tokens=False) + [end_of_text]
     
     example["prompt_tokens"] = prompt_ids
     example["response_tokens"] = response_ids
@@ -83,8 +83,6 @@ def create_input_ids(example):
     )
     example["input_ids"] = input_ids
 
-
-
     # Initialize labels with -100 (ignore index)
     labels = [-100] * len(input_ids)
 
@@ -94,13 +92,25 @@ def create_input_ids(example):
     segment2_len = 1 + len(example["response_tokens"]) + 1  # [start_of_human] + response_tokens + [end_of_human]
     segment3_len = 1 + 1 + len(example["codes_list_2"]) + 1  # [start_of_ai] + [start_of_speech] + codes_list_response + [end_of_speech]
 
+    # Include all special tokens in the loss calculation
+    # For the first segment (prompt)
+    for i, token in enumerate(input_ids):
+        if tokeniser_length < token <= tokeniser_length + 10:
+            labels[i] = token
+    
+    # Label all tokens in segment 2 (response text, including special tokens)
     segment2_start = segment0_len + segment1_len
     for i in range(segment2_start, segment2_start + segment2_len):
         labels[i] = input_ids[i]
 
-    # Label every token in Segment 3 (the codes_list_response, including its special tokens)
+    # Label all tokens in segment 3 (codes_list_response, including special tokens)
     segment3_start = segment0_len + segment1_len + segment2_len
     for i in range(segment3_start, segment3_start + segment3_len):
+        labels[i] = input_ids[i]
+
+    # Add segment 1 (first set of codes) to loss calculation
+    segment1_start = segment0_len
+    for i in range(segment1_start, segment1_start + segment1_len):
         labels[i] = input_ids[i]
 
     example["labels"] = labels
