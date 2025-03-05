@@ -29,6 +29,6 @@ merged_dataset = concatenate_datasets(all_datasets)
 
 print(merged_dataset)
 
-merged_dataset.push_to_hub(f"amuvarma/emilia-snac-merged-{repo_name}")
+merged_dataset.push_to_hub(f"amuvarma/emilia-snac-merged-with-speaker-all")
 
  
