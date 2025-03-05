@@ -1,7 +1,7 @@
 from datasets import load_dataset, Dataset
 from huggingface_hub import snapshot_download
 from concurrent.futures import ThreadPoolExecutor
-from tqdm.notebook import tqdm  # Use tqdm.notebook for Jupyter Notebook
+from tqdm import tqdm  # use standard tqdm
 import time  # optional, for simulating processing delay
 
 # Define the dataset repository
@@ -28,8 +28,7 @@ def pair_in_chunk(dataset, start, end, chunk_index):
     paired_rows = []
     i = start
     # Create a progress bar for this chunk.
-    # Setting a unique position helps display multiple progress bars concurrently.
-    pbar = tqdm(total=(end - start), desc=f"Chunk {chunk_index}", position=chunk_index, leave=True)
+    pbar = tqdm(total=(end - start), desc=f"Chunk {chunk_index}", leave=True)
     while i < end - 1:
         row1 = dataset[i]
         row2 = dataset[i + 1]
@@ -47,7 +46,7 @@ def pair_in_chunk(dataset, start, end, chunk_index):
         else:
             i += 1
             pbar.update(1)
-        # Uncomment below to simulate processing delay if needed
+        # Optionally simulate processing delay
         # time.sleep(0.001)
     pbar.close()
     return paired_rows
