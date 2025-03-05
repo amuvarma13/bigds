@@ -71,4 +71,6 @@ ds = ds.map(map_emotion, num_proc=60)
 
 ds = ds.shuffle(seed=42).shuffle(seed=42)
 
+ds = ds.filter(lambda x: x["emotion"].lower() != "whisper")
+
 ds.push_to_hub("amuvarma/brian-luna-combined_emotion_mapped")
