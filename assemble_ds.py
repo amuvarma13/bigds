@@ -16,6 +16,10 @@ snapshot_download(
 ds = load_dataset(dsn, split="train")
 
 def process_row(row, idx):
+    # Initialize the enhanced_audio field with a placeholder
+    # This ensures all rows have this field, even if no WAV is found
+    row["enhanced_audio"] = {"array": np.zeros(0), "sampling_rate": 16000}
+    
     # Construct path to the wav file based on the row index
     wav_path = f"./wavs/{idx}.wav"
     
@@ -28,7 +32,7 @@ def process_row(row, idx):
     # Load audio using librosa with default sample rate
     audio_array, sampling_rate = librosa.load(wav_path, sr=None)
     
-    # Create enhanced_audio field with array and sampling rate
+    # Update enhanced_audio field with array and sampling rate
     row["enhanced_audio"] = {"array": audio_array, "sampling_rate": sampling_rate}
     row["has_wav"] = True
     
@@ -38,7 +42,7 @@ def process_row(row, idx):
 num_cores = max(1, os.cpu_count() - 2)
 print(f"Using {num_cores} processes for parallel processing")
 
-# Apply the mapping function to the dataset with row indices and parallel processing
+# First, add the enhanced_audio column to all rows
 ds = ds.map(
     function=process_row,
     with_indices=True,
@@ -46,16 +50,16 @@ ds = ds.map(
     desc="Processing audio files",
 )
 
+# Cast the enhanced_audio column to Audio type before filtering
+ds = ds.cast_column("enhanced_audio", Audio())
+
 # Filter the dataset to keep only rows with found WAV files
 ds = ds.filter(lambda example: example["has_wav"])
 
 # Remove the temporary has_wav column
 ds = ds.remove_columns("has_wav")
 
-# Cast the enhanced_audio column to Audio type
-ds = ds.cast_column("enhanced_audio", Audio())
-
-# Now ds contains only rows with matching WAV files plus the enhanced_audio column
+# Now ds contains only rows with matching WAV files
 print(f"Dataset now has {len(ds)} rows with columns: {ds.column_names}")
 print(f"Rows with missing WAV files were removed")
 
