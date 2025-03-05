@@ -23,7 +23,7 @@ ds = ds.map(lambda x: {"emotion": x["emotion"].lower()})
 unique_emotions = ds.unique("emotion")
 print(unique_emotions)
 
-{
+emotion_map = {
     "happy": "happy",
     "normally": "normal",
     "longer": "longer",
@@ -58,8 +58,8 @@ print(unique_emotions)
 def map_emotion(row):
     print(row["emotion"])
     if "emotion" in row:
-        if row["emotion"] in unique_emotions:
-            row["emotion"] = unique_emotions[row["emotion"]]
+        if row["emotion"] in emotion_map:
+            row["emotion"] = emotion_map[row["emotion"]]
  
         else:
             row["emotion"] = "normal"
