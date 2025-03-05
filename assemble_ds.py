@@ -21,14 +21,16 @@ def process_row(row, idx):
     
     # Check if the file exists
     if not os.path.exists(wav_path):
-        # Return None to indicate this row should be filtered out
-        return None
+        # Add a flag to indicate this row should be filtered out later
+        row["has_wav"] = False
+        return row
     
     # Load audio using librosa with default sample rate
     audio_array, sampling_rate = librosa.load(wav_path, sr=None)
     
     # Create enhanced_audio field with array and sampling rate
     row["enhanced_audio"] = {"array": audio_array, "sampling_rate": sampling_rate}
+    row["has_wav"] = True
     
     return row
 
@@ -37,15 +39,18 @@ num_cores = max(1, os.cpu_count() - 2)
 print(f"Using {num_cores} processes for parallel processing")
 
 # Apply the mapping function to the dataset with row indices and parallel processing
-# The filter_function=None parameter ensures rows that return None are filtered out
 ds = ds.map(
     function=process_row,
     with_indices=True,
     num_proc=num_cores,
-    remove_columns=None,  # Keep all original columns
     desc="Processing audio files",
-    filter_function=lambda x: x is not None  # Filter out None returns (missing WAVs)
 )
+
+# Filter the dataset to keep only rows with found WAV files
+ds = ds.filter(lambda example: example["has_wav"])
+
+# Remove the temporary has_wav column
+ds = ds.remove_columns("has_wav")
 
 # Cast the enhanced_audio column to Audio type
 ds = ds.cast_column("enhanced_audio", Audio())
