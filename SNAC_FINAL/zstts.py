@@ -43,15 +43,13 @@ num_proc = os.cpu_count() - 2
 def tokenize_fn(example):
     # Remove punctuation and lowercase prompt and response texts
 
-    random_instruction_1 = random.choice(instruction_list)
-    random_instruction_2 = random.choice(instruction_list)
-    prompt_text = example["text_1"].translate(str.maketrans('', '', string.punctuation)).lower()
-    response_text = example["text_2"].translate(str.maketrans('', '', string.punctuation)).lower()
+    prompt_text = example["text_1"].translate(str.maketrans('', '', string.punctuation))
+    response_text = example["text_2"].translate(str.maketrans('', '', string.punctuation))
     
     # Here we simply tokenize without adding extra instructions.
     # Prepend start_of_text and append end_of_text for both sequences.
-    prompt_ids = [start_of_text] + tokenizer.encode(random_instruction_1 + " " + prompt_text, add_special_tokens=False) + [end_of_text]
-    response_ids = [start_of_text] + tokenizer.encode(random_instruction_2 + " " + response_text, add_special_tokens=False) + [end_of_text]
+    prompt_ids = [start_of_text] + tokenizer.encode(prompt_text, add_special_tokens=False) + [end_of_text]
+    response_ids = [start_of_text] + tokenizer.encode( response_text, add_special_tokens=False) + [end_of_text]
     
     example["prompt_tokens"] = prompt_ids
     example["response_tokens"] = response_ids
@@ -85,6 +83,8 @@ def create_input_ids(example):
     )
     example["input_ids"] = input_ids
 
+
+
     # Initialize labels with -100 (ignore index)
     labels = [-100] * len(input_ids)
 
@@ -94,7 +94,6 @@ def create_input_ids(example):
     segment2_len = 1 + len(example["response_tokens"]) + 1  # [start_of_human] + response_tokens + [end_of_human]
     segment3_len = 1 + 1 + len(example["codes_list_2"]) + 1  # [start_of_ai] + [start_of_speech] + codes_list_response + [end_of_speech]
 
-    # Label every token in Segment 2 (the text response, including its special tokens)
     segment2_start = segment0_len + segment1_len
     for i in range(segment2_start, segment2_start + segment2_len):
         labels[i] = input_ids[i]
@@ -106,6 +105,14 @@ def create_input_ids(example):
 
     example["labels"] = labels
     example["attention_mask"] = [1] * len(input_ids)
+
+    max_length = 8192
+
+    if len(input_ids) > max_length:
+        example["input_ids"] = input_ids[:max_length]
+        example["labels"] = labels[:max_length]
+        example["attention_mask"] = [1] * max_length        
+
     return example
 
 ds = ds.map(create_input_ids, num_proc=num_proc, desc="Creating input IDs")

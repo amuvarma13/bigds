@@ -1,13 +1,20 @@
-from datasets import load_dataset
+from datasets import load_dataset, Dataset
+from tqdm import tqdm
+from huggingface_hub import snapshot_download
+
 dsn = "amuvarma/emilia-snac-merged-with-speaker-all"
+
+snapshot_download(
+        repo_id=dsn,
+        repo_type="dataset",   
+        revision="main",        
+        max_workers=64,     
+)
+
 ds = load_dataset(dsn, split="en")
 
-# Sort the dataset by "speaker_id"
 sorted_ds = ds.sort("speaker")
 
-
-from tqdm import tqdm
-from datasets import Dataset
 
 def pair_consecutive_rows(dataset):
     used_speakers = set()   # Ensure each speaker is used only once
