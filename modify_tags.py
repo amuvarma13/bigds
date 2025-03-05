@@ -11,6 +11,15 @@ ds2 = load_dataset(dsn2, split="train")
 ds1 = ds1.map(lambda x: {"source": "brian"})
 ds2 = ds2.map(lambda x: {"source": "luna"})
 
+#next merge the datasets
+from datasets import concatenate_datasets
 
-print(ds1.column_names)
-print(ds2[0]["source"])
+ds = concatenate_datasets([ds1, ds2])
+
+#next make the emotion column all lowercase 
+ds = ds.map(lambda x: {"emotion": x["emotion"].lower()})
+
+#next print all unique emotions as a list
+unique_emotions = ds.unique("emotion")
+print(unique_emotions)
+
