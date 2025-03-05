@@ -56,12 +56,16 @@ print(unique_emotions)
 #next replace the emotions with the new values
 
 def map_emotion(row):
-    if row["emotion"] in unique_emotions:
-        row["emotion"] = unique_emotions[row["emotion"]]
+    if "emotion" in row
+        if row["emotion"] in unique_emotions:
+            row["emotion"] = unique_emotions[row["emotion"]]
 
+        else:
+            row["emotion"] = "normal"
+        return row
     else:
         row["emotion"] = "normal"
-    return row
+        return row
 
 ds = ds.map(map_emotion, num_proc=60)
 
