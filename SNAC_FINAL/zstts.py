@@ -92,12 +92,6 @@ def create_input_ids(example):
     segment2_len = 1 + len(example["response_tokens"]) + 1  # [start_of_human] + response_tokens + [end_of_human]
     segment3_len = 1 + 1 + len(example["codes_list_2"]) + 1  # [start_of_ai] + [start_of_speech] + codes_list_response + [end_of_speech]
 
-    # Include all special tokens in the loss calculation
-    # For the first segment (prompt)
-    for i, token in enumerate(input_ids):
-        if tokeniser_length < token <= tokeniser_length + 10:
-            labels[i] = token
-    
     # Label all tokens in segment 2 (response text, including special tokens)
     segment2_start = segment0_len + segment1_len
     for i in range(segment2_start, segment2_start + segment2_len):
@@ -107,11 +101,12 @@ def create_input_ids(example):
     segment3_start = segment0_len + segment1_len + segment2_len
     for i in range(segment3_start, segment3_start + segment3_len):
         labels[i] = input_ids[i]
-
-    # Add segment 1 (first set of codes) to loss calculation
-    segment1_start = segment0_len
-    for i in range(segment1_start, segment1_start + segment1_len):
-        labels[i] = input_ids[i]
+        
+    # Include all special tokens in the loss calculation
+    # We only include special tokens, not the entire first code list
+    for i, token in enumerate(input_ids):
+        if tokeniser_length < token <= tokeniser_length + 10:
+            labels[i] = token
 
     example["labels"] = labels
     example["attention_mask"] = [1] * len(input_ids)
