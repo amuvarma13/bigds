@@ -56,7 +56,6 @@ emotion_map = {
 #next replace the emotions with the new values
 
 def map_emotion(row):
-    print(row["emotion"])
     if "emotion" in row:
         if row["emotion"] in emotion_map:
             row["emotion"] = emotion_map[row["emotion"]]
@@ -70,4 +69,6 @@ def map_emotion(row):
 
 ds = ds.map(map_emotion, num_proc=60)
 
-print(ds)
+ds = ds.shuffle(seed=42).shuffle(seed=42)
+
+ds.push_to_hub("amuvarma/brian-luna-combined_emotion_mapped")
