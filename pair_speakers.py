@@ -11,7 +11,7 @@ snapshot_download(
         max_workers=64,     
 )
 
-ds = load_dataset(dsn, split="en")
+ds = load_dataset(dsn, split="train")
 
 sorted_ds = ds.sort("speaker")
 
