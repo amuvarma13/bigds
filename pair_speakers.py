@@ -41,7 +41,7 @@ def pair_consecutive_rows(dataset):
                 pbar.update(2)
             else:
                 i += 1
-                pbar.update(1)
+                pbar.update(1) 
 
     return paired_rows
 
