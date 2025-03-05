@@ -1,4 +1,4 @@
-dsn = "amuvarma/luna-48k-b7CS6GHVkhPt9lmufYchXdy7eLo1-enhanced-clipped-snacced"
+dsn = "amuvarma/brian-48k-KRVv68cDw2PBeOJypLrzaiI4kol2-enhanced-clipped-snacced"
 
 from datasets import load_dataset
 import os
@@ -42,7 +42,7 @@ num_proc = os.cpu_count() - 2
 
 
 def create_input_ids(example):
-    text_ids = tokenizer.encode(example["text"] +" "+ "<zoe>", add_special_tokens=True)
+    text_ids = tokenizer.encode(example["text"] +" "+ "<zac>", add_special_tokens=True)
     text_ids.append(end_of_text)
     example["text_tokens"] = text_ids
     input_ids = (
