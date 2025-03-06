@@ -67,5 +67,7 @@ columns_to_remove = [col for col in ds.column_names if col not in columns_to_kee
 ds = ds.remove_columns(columns_to_remove)
 print(ds.column_names)
 
+ds = ds.shuffle(seed=42).shuffle(seed=42)
+
 
 ds.push_to_hub(push_name)
