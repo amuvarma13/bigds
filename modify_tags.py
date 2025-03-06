@@ -86,4 +86,4 @@ ds = ds.shuffle(seed=42).shuffle(seed=42)
 
 # ds = ds.filter(lambda x: x["emotion"].lower() != "whisper")
 
-ds.push_to_hub("amuvarma/luna-48k-full-enhanced_emotion_mapped-deb")
+ds.push_to_hub("amuvarma/luna-48k-full-enhanced_mapped")
