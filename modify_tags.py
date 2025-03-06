@@ -1,20 +1,21 @@
 from datasets import load_dataset
 
-dsn1 = "amuvarma/brian-48k-KRVv68cDw2PBeOJypLrzaiI4kol2-enhanced-clipped-snacced"
-dsn2 = "amuvarma/luna-48k-b7CS6GHVkhPt9lmufYchXdy7eLo1-enhanced-clipped-snacced"
+dsn1 = "amuvarma/luna-48k-full-enhanced"
+# dsn2 = "amuvarma/luna-48k-b7CS6GHVkhPt9lmufYchXdy7eLo1-enhanced-clipped-snacced"
 
 ds1 = load_dataset(dsn1, split="train")
-ds2 = load_dataset(dsn2, split="train")
+# ds2 = load_dataset(dsn2, split="train")
 
 
 #first add a column to each dataset to indicate the source brian=>brian and luna=>luna
-ds1 = ds1.map(lambda x: {"source": "brian"})
-ds2 = ds2.map(lambda x: {"source": "luna"})
+# ds1 = ds1.map(lambda x: {"source": "brian"})
+# ds2 = ds2.map(lambda x: {"source": "luna"})
 
 #next merge the datasets
-from datasets import concatenate_datasets
+# from datasets import concatenate_datasets
 
-ds = concatenate_datasets([ds1, ds2])
+# ds = concatenate_datasets([ds1, ds2])
+ds = ds1
 
 #next make the emotion column all lowercase 
 ds = ds.map(lambda x: {"emotion": x["emotion"].lower()})
@@ -71,6 +72,6 @@ ds = ds.map(map_emotion, num_proc=60)
 
 ds = ds.shuffle(seed=42).shuffle(seed=42)
 
-ds = ds.filter(lambda x: x["emotion"].lower() != "whisper")
+# ds = ds.filter(lambda x: x["emotion"].lower() != "whisper")
 
-ds.push_to_hub("amuvarma/brian-luna-combined_emotion_mapped")
+ds.push_to_hub("amuvarma/luna-48k-full-enhanced_emotion_mapped")
