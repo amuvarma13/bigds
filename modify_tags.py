@@ -72,9 +72,15 @@ def map_emotion(row):
         return row
     else:
         row["emotion"] = "normal"
+
+    if row["emotion"] == "whisper":
+        row["audio"] = row["audio"]
+    else:
+        row["audio"] = row["enhanced_audio"]
+    
         return row
 
-ds = ds.map(map_emotion, num_proc=60)
+ds = ds.map(map_emotion, num_proc=60, remove_columns=["enhanced_audio"])
 
 ds = ds.shuffle(seed=42).shuffle(seed=42)
 
