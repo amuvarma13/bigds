@@ -23,9 +23,15 @@ ds = ds.map(lambda x: {"emotion": x["emotion"].lower()})
 #next print all unique emotions as a list
 unique_emotions = ds.unique("emotion")
 print(unique_emotions)
-
 emotion_map = {
     "happy": "happy",
+    "normal-longest": "normal",
+    "normal-long": "normal",
+    "uhsandahs-1": "normal",
+    "uhsandahs":"happy",
+    "emphasise the word": "normal",
+    "sound-ew":"digust", 
+    "sound-ew-1":"disgust",
     "normally": "normal",
     "longer": "longer",
     "sad": "sad",
@@ -50,7 +56,7 @@ emotion_map = {
     "with a high pitched voice": "high",
     "shout": "shout",
     "emphasise the word": "normal",
-    "ooh": "ooh",
+    "ooh": "surprise",
     "excitement": "excited"
 }
 
