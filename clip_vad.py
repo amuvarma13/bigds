@@ -25,7 +25,7 @@ def process_row(row):
     wav_tensor = torch.from_numpy(wav).to(torch.float32)
 
     # Resample for Silero VAD model
-    silero_wav = resampler(wav_tensor).squeeze().to("cuda")
+    silero_wav = resampler(wav_tensor).squeeze()
 
     # Get speech timestamps
     speech_timestamps = get_speech_timestamps(
