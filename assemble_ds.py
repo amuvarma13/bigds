@@ -4,7 +4,7 @@ import librosa
 import os
 import numpy as np
 
-dsn = "amuvarma/luna-48k-b7CS6GHVkhPt9lmufYchXdy7eLo1"
+dsn = "amuvarma/brian-48k-KRVv68cDw2PBeOJypLrzaiI4kol2"
 
 snapshot_download(
     repo_id=dsn,
@@ -68,4 +68,4 @@ print(f"Dataset now has {len(ds)} rows with columns: {ds.column_names}")
 print(f"Rows with missing WAV files were removed")
 
 # Push the enhanced dataset to the Hugging Face Hub 
-ds = ds.push_to_hub("amuvarma/luna-48k-b7CS6GHVkhPt9lmufYchXdy7eLo1-enhanced") 
+ds = ds.push_to_hub("amuvarma/brian-48k-KRVv68cDw2PBeOJypLrzaiI4kol2-full-enhanced") 
