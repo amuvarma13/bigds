@@ -71,10 +71,8 @@ def map_emotion(row):
             row["emotion"] = "normal"
 
         if row["emotion"] == "whisper":
-            print("choosing audio")
             row["audio"] = row["audio"]
         else:
-            print("choosing enhanced audio")
             row["audio"] = row["enhanced_audio"]
     
         return row
