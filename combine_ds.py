@@ -10,13 +10,13 @@ def _load_dataset(dsn):
     )
     return load_dataset(dsn, split='train')
 
-accs = ["amuvarma", "CanopyLabs", "CanopyLabsElias", "eliasfiz", "CanopyElias", "akv13"]
+accs = ["DyqtR9tWy9TfTeMyq59s6Ke4jEq1", "6QYh18mJTKevBkRLRZqsfiPc7oH2", "U3czDRQZoTRFBAK3z6FVc0V5EYC3", "b7CS6GHVkhPt9lmufYchXdy7eLo1"]
 
-dsns = [f"amuvarma/emilia-snac-merged-{acc}-gemma-TTS-grouped-2656" for acc in accs]
+dsns = [f"amuvarma/luna-48k-{acc}-enhanced" for acc in accs]
 
 datasets = [_load_dataset(dsn) for dsn in dsns]
 
 combined_dataset = concatenate_datasets(datasets)
 combined_dataset = combined_dataset.shuffle(seed=42)
 
-combined_dataset.push_to_hub(f"amuvarma/emilia-snac-merged-all-gemma-TTS-grouped-2656")
+combined_dataset.push_to_hub(f"amuvarma/luna-48k-full-enhanced")
