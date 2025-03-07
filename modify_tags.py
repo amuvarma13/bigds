@@ -77,5 +77,8 @@ ds = ds.map(map_emotion, num_proc=60, remove_columns=["enhanced_audio"])
 ds = ds.shuffle(seed=42).shuffle(seed=42)
 print(ds)
 
+unique_emotions = ds.unique("emotion")
+print(unique_emotions)
+
 
 ds.push_to_hub("amuvarma/luna-48k-full-mapped")
