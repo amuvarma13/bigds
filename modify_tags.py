@@ -47,8 +47,15 @@ emotion_map = {
     "shout": "shout",
     "emphasise the word": "normal",
     "ooh": "surprise",
-    "excitement": "excited"
+    "excitement": "excited", 
+    "ugh": "disgust",
 }
+
+#check all emotions are in the map
+
+for emotion in unique_emotions:
+    if emotion not in emotion_map:
+        print(emotion)
 
 #next replace the emotions with the new values
 
