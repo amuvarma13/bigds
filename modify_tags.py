@@ -4,17 +4,7 @@ dsn1 = "amuvarma/luna-48k-5k-snacced"
 # dsn2 = "amuvarma/luna-48k-b7CS6GHVkhPt9lmufYchXdy7eLo1-enhanced-clipped-snacced"
 
 ds1 = load_dataset(dsn1, split="train")
-# ds2 = load_dataset(dsn2, split="train")
 
-
-#first add a column to each dataset to indicate the source brian=>brian and luna=>luna
-# ds1 = ds1.map(lambda x: {"source": "brian"})
-# ds2 = ds2.map(lambda x: {"source": "luna"})
-
-#next merge the datasets
-# from datasets import concatenate_datasets
-
-# ds = concatenate_datasets([ds1, ds2])
 ds = ds1
 
 #next make the emotion column all lowercase 
