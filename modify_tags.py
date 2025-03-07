@@ -44,7 +44,7 @@ emotion_map = {
     "panicky": "panicky",
     "curious": "curious",
     "surprise": "surprise",
-    "chuckle": "chuckle",
+    "chuckle": "happy",
     "slow": "slow",
     "fast": "fast",
     "crying": "crying",
