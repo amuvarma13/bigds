@@ -1,4 +1,4 @@
-dsn = "amuvarma/luna-48k-5k-snacced"
+dsn = "amuvarma/luna-48k-full-mapped"
 
 from datasets import load_dataset
 import os
