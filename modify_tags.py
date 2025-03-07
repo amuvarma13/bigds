@@ -1,6 +1,6 @@
 from datasets import load_dataset
 
-dsn1 = "amuvarma/luna-48k-full-enhanced"
+dsn1 = "amuvarma/luna-48k-5k-snacced"
 # dsn2 = "amuvarma/luna-48k-b7CS6GHVkhPt9lmufYchXdy7eLo1-enhanced-clipped-snacced"
 
 ds1 = load_dataset(dsn1, split="train")
@@ -69,22 +69,14 @@ def map_emotion(row):
  
         else:
             row["emotion"] = "normal"
-
-        if row["emotion"] == "whisper":
-            row["audio"] = row["audio"]
-        else:
-            row["audio"] = row["enhanced_audio"]
-    
-        return row
     else:
         row["emotion"] = "normal"
 
   
 
-ds = ds.map(map_emotion, num_proc=60, remove_columns=["enhanced_audio"])
+ds = ds.map(map_emotion, num_proc=60)
 
 ds = ds.shuffle(seed=42).shuffle(seed=42)
 
-# ds = ds.filter(lambda x: x["emotion"].lower() != "whisper")
 
-ds.push_to_hub("amuvarma/luna-48k-full-enhanced_mapped")
+ds.push_to_hub("amuvarma/luna-48k-full-mapped")
