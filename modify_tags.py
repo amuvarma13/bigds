@@ -49,6 +49,7 @@ emotion_map = {
     "ooh": "surprise",
     "excitement": "excited", 
     "ugh": "disgust",
+    "sigh": "normal",
 }
 
 #check all emotions are in the map
