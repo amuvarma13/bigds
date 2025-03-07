@@ -64,11 +64,12 @@ def map_emotion(row):
     if "emotion" in row:
         if row["emotion"] in emotion_map:
             row["emotion"] = emotion_map[row["emotion"]]
- 
         else:
             row["emotion"] = "normal"
     else:
         row["emotion"] = "normal"
+    return row
+
 
   
 
