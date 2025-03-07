@@ -41,7 +41,7 @@ num_proc = os.cpu_count() - 2
 
 
 #filter out all rows without codes list
-ds = ds.filter(lambda x: "codes_list" in x)
+ds = ds.filter(lambda x: "codes_list" in x) 
 ds = ds.filter(lambda x: len(x["codes_list"]) > 0)
 
 
