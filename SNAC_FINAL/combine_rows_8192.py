@@ -4,12 +4,12 @@ import os
 import time
 
 account_name = "amuvarma"
-dsn = f"amuvarma/emilia-snac-merged-18m-mod7-TTS-src"
+dsn = f"amuvarma/emilia-snac-merged-18m-mod7-TTS-8192"
 
 dataset = load_dataset(dsn, split='train')
 print(dataset)
 dataset_length = 17114684
-partition_size = 3000000
+partition_size = 3422000
 chunk_size = 8192
 
 
