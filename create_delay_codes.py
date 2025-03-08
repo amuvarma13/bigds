@@ -9,20 +9,23 @@ snapshot_download(
 )
 
 ds = load_dataset(dsn, split='train')
+ds = ds.select(range(1000))
 def map_function(example):
     codes = example['codes_list']
     filtered_codes = []
     
-    for i in range(0, len(codes), 7):
-        # Append the 0th element of the block
+    # Start at index 7 to “shift back” every 7th element (i.e. skip the original 0th)
+    for i in range(7, len(codes), 7):
+        # Append the element that was at the start of the block (now shifted back by 7 positions)
         filtered_codes.append(codes[i])
         
-        # Append the 4th element if it exists
+        # Append the 4th element of the block (if it exists)
         if i + 4 < len(codes):
             filtered_codes.append(codes[i + 4])
     
     example['codes_list'] = filtered_codes
     return example
+
 
 
 
