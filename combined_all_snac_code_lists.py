@@ -25,6 +25,6 @@ for dsn in dss:
 ds = concatenate_datasets(all_ds)
 
 print(ds)
-ds.push_to_hub("amuvarma/emilia-snac-merged-18m")
+ds.push_to_hub("amuvarma/emilia-snac-merged-18m") 
 
 
