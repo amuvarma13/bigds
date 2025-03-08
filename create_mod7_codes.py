@@ -9,18 +9,21 @@ snapshot_download(
 )
 
 ds = load_dataset(dsn, split='train')
-
 def map_function(example):
-    # Get the codes_list from the example
     codes = example['codes_list']
+    filtered_codes = []
     
-    # Keep only every 7th element starting from index 0
-    filtered_codes = codes[::7]
+    for i in range(0, len(codes), 7):
+        # Append the 0th element of the block
+        filtered_codes.append(codes[i])
+        
+        # Append the 4th element if it exists
+        if i + 4 < len(codes):
+            filtered_codes.append(codes[i + 4])
     
-    # Create a new example with the filtered codes
     example['codes_list'] = filtered_codes
-    
     return example
+
 
 # Apply the map function to your dataset
 filtered_dataset = ds.map(map_function, num_proc=64)
