@@ -4,7 +4,7 @@ import os
 import time
 
 account_name = "amuvarma"
-dsn = f"amuvarma/emilia-snac-merged-18m-mod7-TTS-src"
+dsn = f"amuvarma/emilia-snac-merged-18m-mod7-delay"
 
 dataset = load_dataset(dsn, split='train')
 print(dataset)
@@ -46,4 +46,4 @@ for i in range(num_partitions):
 
 
 combined_dataset = concatenate_datasets(processed_partitions)
-combined_dataset.push_to_hub(f"amuvarma/emilia-snac-merged-18m-mod7-TTS-8192")
+combined_dataset.push_to_hub(f"amuvarma/emilia-snac-merged-18m-mod7-delay-8192")
