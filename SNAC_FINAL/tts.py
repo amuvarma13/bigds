@@ -1,4 +1,4 @@
-dsn = "amuvarma/enhanced_combined_with_source"
+dsn = "amuvarma/emilia-snac-merged-18m-mod7"
 
 from datasets import load_dataset
 import os
