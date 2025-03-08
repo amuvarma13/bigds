@@ -1,4 +1,4 @@
-dsn = "amuvarma/emilia-snac-merged-18m-mod7"
+dsn = "amuvarma/emilia-snac-merged-18m-mod7-delay"
 
 from datasets import load_dataset
 import os
@@ -15,7 +15,7 @@ snapshot_download(
 ds = load_dataset(dsn, split='train')
 
 
-push_name = f"{dsn}-TTS-src"
+push_name = f"{dsn}-TTS"
 
 tokeniser_length = 128256
 start_of_text = 128000
