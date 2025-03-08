@@ -23,5 +23,5 @@ def map_function(example):
     return example
 
 # Apply the map function to your dataset
-filtered_dataset = ds.map(map_function)
+filtered_dataset = ds.map(map_function, num_proc=64)
 filtered_dataset.push_to_hub("amuvarma/emilia-snac-merged-18m-mod7")
