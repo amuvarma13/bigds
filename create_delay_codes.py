@@ -9,7 +9,7 @@ snapshot_download(
 )
 
 ds = load_dataset(dsn, split='train')
-ds = ds.select(range(1000))
+# ds = ds.select(range(1000))
 def map_function(example):
     codes = example['codes_list']
     # Make a copy so we can modify positions without losing the original values.
