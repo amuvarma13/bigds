@@ -8,8 +8,8 @@ dsn = f"amuvarma/emilia-snac-merged-18m-mod7-TTS-src"
 
 dataset = load_dataset(dsn, split='train')
 print(dataset)
-dataset_length = 3145501
-partition_size = 524200
+dataset_length = 17114684
+partition_size = 3000000
 chunk_size = 8192
 
 
@@ -40,8 +40,8 @@ for i in range(num_partitions):
     new_dataset = Dataset.from_dict({"input_ids": chunks})
     end_time = time.time()
     print(f"Time taken to chunk: {end_time - start_time}")
-    push_name = f"{dsn}-{i}-of-{dataset_length//partition_size}"
-    new_dataset.push_to_hub(push_name)
+    # push_name = f"{dsn}-{i}-of-{dataset_length//partition_size}"
+    # new_dataset.push_to_hub(push_name)
     processed_partitions.append(new_dataset)
 
 
