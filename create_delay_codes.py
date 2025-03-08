@@ -9,7 +9,7 @@ snapshot_download(
 )
 
 ds = load_dataset(dsn, split='train')
-ds = ds.select(range(1000))
+# ds = ds.select(range(1000))
 def map_function(example):
     codes = example['codes_list']
     filtered_codes = []
@@ -18,10 +18,6 @@ def map_function(example):
     for i in range(7, len(codes), 7):
         # Append the element that was at the start of the block (now shifted back by 7 positions)
         filtered_codes.append(codes[i])
-        
-        # Append the 4th element of the block (if it exists)
-        if i + 4 < len(codes):
-            filtered_codes.append(codes[i + 4])
     
     example['codes_list'] = filtered_codes
     return example
@@ -31,4 +27,4 @@ def map_function(example):
 
 # Apply the map function to your dataset
 filtered_dataset = ds.map(map_function, num_proc=64)
-filtered_dataset.push_to_hub("amuvarma/emilia-snac-merged-18m-mod7")
+filtered_dataset.push_to_hub("amuvarma/emilia-snac-merged-18m-mod7-delay")
