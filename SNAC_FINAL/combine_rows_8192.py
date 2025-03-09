@@ -8,8 +8,8 @@ dsn = f"amuvarma/podcast-all-TTS"
 
 dataset = load_dataset(dsn, split='train')
 print(dataset)
-dataset_length = 380,839
-partition_size = 380,839
+dataset_length = 380839
+partition_size = 380839
 chunk_size = 8192
 
 
