@@ -1,4 +1,4 @@
-dsn = "amuvarma/podcast-all"
+dsn = "amuvarma/podcast-snac-mod7-1-5"
 
 from datasets import load_dataset
 import os
