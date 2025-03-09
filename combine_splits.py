@@ -22,7 +22,7 @@ def merge_split(repo_name):
     all_datasets.append(merged_dataset)
 
 
-merge_split(repo_name)
+merge_split(all_repo_names[0])
 
 # Merge all datasets into a single Dataset
 merged_dataset = concatenate_datasets(all_datasets)
