@@ -1,10 +1,10 @@
 from huggingface_hub import snapshot_download
 from datasets import load_dataset, concatenate_datasets
 
-all_repo_names = ["CanopyLabsElias", "CanopyElias", "CanopyLabs", "amuvarma", "eliasfiz", "akv13"]
+all_repo_names = ["eliasfiz/podcast-snac"]
 all_datasets = []
 def merge_split(repo_name):
-    repo_id = f"{repo_name}/emilia-snac-with-speaker"
+    repo_id = f"{repo_name}"
 
     snapshot_download(
         repo_id=repo_id,
@@ -21,14 +21,14 @@ def merge_split(repo_name):
 
     all_datasets.append(merged_dataset)
 
-for repo_name in all_repo_names:
-    merge_split(repo_name)
+
+merge_split(repo_name)
 
 # Merge all datasets into a single Dataset
 merged_dataset = concatenate_datasets(all_datasets)
 
 print(merged_dataset)
 
-merged_dataset.push_to_hub(f"amuvarma/emilia-snac-merged-with-speaker-all")
+merged_dataset.push_to_hub(f"amuvarma/podcast-all")
 
  
