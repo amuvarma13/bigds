@@ -10,7 +10,7 @@ def mask_out_ids(example):
     labels = []
     for token_id in example['input_ids']:
         # if token_id < threshold or (lower_bound <= token_id < upper_bound):
-        if token_id < threshold or (lower_bound <= token_id < upper_bound):
+        if token_id < threshold:
             labels.append(token_id)
         else:
             labels.append(-100)
