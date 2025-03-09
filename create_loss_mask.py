@@ -1,5 +1,5 @@
 from datasets import load_dataset
-dsn = "amuvarma/emilia-snac-merged-all-TTS-grouped-8192-sample-1000"
+dsn = "amuvarma/podcast-all-TTS-8192"
 ds = load_dataset(dsn, split='train')
 def mask_out_ids(example):
 
@@ -9,8 +9,8 @@ def mask_out_ids(example):
     
     labels = []
     for token_id in example['input_ids']:
-        # if token_id < threshold or (lower_bound <= token_id < upper_bound):
-        if token_id < threshold:
+        if token_id < threshold or (lower_bound <= token_id < upper_bound):
+        # if token_id < threshold:
             labels.append(token_id)
         else:
             labels.append(-100)
