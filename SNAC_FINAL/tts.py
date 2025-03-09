@@ -1,4 +1,4 @@
-dsn = "amuvarma/emilia-snac-merged-18m-mod7-delay"
+dsn = "amuvarma/podcast-all"
 
 from datasets import load_dataset
 import os
