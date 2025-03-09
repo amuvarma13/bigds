@@ -9,6 +9,11 @@ snapshot_download(
 )
 
 ds = load_dataset(dsn, split='train')
+
+#filter out all rows without codes list  
+ds = ds.filter(lambda x: x["codes_list"] is not None, num_proc=64)
+ds = ds.filter(lambda x: len(x["codes_list"]) > 0, num_proc=64)
+
 def map_function(example):
     codes = example['codes_list']
     filtered_codes = []
