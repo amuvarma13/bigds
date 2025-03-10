@@ -14,7 +14,7 @@ snapshot_download(
     max_workers=64,
 )
 
-dataset = load_dataset(dsn, split='train')
+dataset = load_dataset(dsn)
 print(dataset)
 dataset_length = 17114684
 partition_size = 570489
