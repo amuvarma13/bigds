@@ -1,6 +1,6 @@
 from datasets import load_dataset
 from huggingface_hub import snapshot_download
-dsn = "amuvarma/emilia-snac-merged-18m"
+dsn = "amuvarma/brian-48k-KRVv68cDw2PBeOJypLrzaiI4kol2-enhanced-clipped-snacced"
 snapshot_download(
         repo_id=dsn,
         repo_type="dataset",   
@@ -40,4 +40,4 @@ def map_function(example):
 
 # Apply the map function to your dataset
 filtered_dataset = ds.map(map_function, num_proc=64)
-filtered_dataset.push_to_hub("amuvarma/emilia-snac-merged-18m-mod7-delay")
+filtered_dataset.push_to_hub("amuvarma/brian-48k-KRVv68cDw2PBeOJypLrzaiI4kol2-enhanced-clipped-snacced-delay")
