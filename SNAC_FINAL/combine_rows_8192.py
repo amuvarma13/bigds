@@ -14,7 +14,7 @@ dsn = f"amuvarma/emilia-snac-merged-18m-smol-TTS"
 #     max_workers=64,
 # )
 
-dataset = load_dataset(dsn, split='train')
+dataset = load_dataset("amuvarma/emilia-snac-merged-18m-smol-TTS", streaming=True)
 print(dataset)
 dataset_length = 17114684
 partition_size = 570489
