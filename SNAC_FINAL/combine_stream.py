@@ -15,13 +15,17 @@ dataset = load_dataset(dsn, streaming=True)
 train_dataset = dataset['train']
 
 # If starting from a later partition, we need to skip examples
-start_partition = 13  # Start from partition 15
+start_partition = 15  # Start from partition 15
 if start_partition > 0:
     examples_to_skip = start_partition * partition_size
     print(f"Skipping first {examples_to_skip} examples to start from partition {start_partition}")
     # Skip examples by iterating through them but not processing them
+    skip_count = 0
     for _ in islice(train_dataset, examples_to_skip):
-        pass
+        skip_count += 1
+        if skip_count % 10000 == 0:
+            print(f"  Skipped {skip_count}/{examples_to_skip} examples...")
+    print(f"  Finished skipping {skip_count} examples. Now starting from partition {start_partition}")
 
 # Filter to keep only input_ids
 # First, peek at a sample to get column names
