@@ -13,6 +13,7 @@ dsn = f"amuvarma/emilia-snac-merged-18m-smol-TTS"
 #     revision="main",
 #     max_workers=64,
 # )
+
 dataset = load_dataset("amuvarma/emilia-snac-merged-18m-smol-TTS", streaming=True)
 print(dataset)  # Shows IterableDatasetDict
 
@@ -31,6 +32,10 @@ columns_to_remove = [col for col in columns if col not in columns_to_keep]
 
 # Remove unwanted columns
 filtered_dataset = train_dataset.remove_columns(columns_to_remove)
+dataset_length = len(dataset)
+
+dataset = dataset.remove_columns([col for col in dataset.column_names if col not in ['input_ids']])
+
 
 num_partitions = dataset_length // partition_size
 print(f"Number of partitions: {num_partitions}")
