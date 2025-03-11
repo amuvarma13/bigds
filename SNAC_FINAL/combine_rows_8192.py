@@ -7,14 +7,14 @@ import time
 account_name = "amuvarma"
 dsn = f"amuvarma/emilia-snac-merged-18m-smol-TTS"
 
-snapshot_download(
-    repo_id=dsn,
-    repo_type="dataset",
-    revision="main",
-    max_workers=64,
-)
+# snapshot_download(
+#     repo_id=dsn,
+#     repo_type="dataset",
+#     revision="main",
+#     max_workers=64,
+# )
 
-dataset = load_dataset(dsn)
+dataset = load_dataset(dsn, split='train')
 print(dataset)
 dataset_length = 17114684
 partition_size = 570489
