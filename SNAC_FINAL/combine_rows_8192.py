@@ -13,18 +13,24 @@ dsn = f"amuvarma/emilia-snac-merged-18m-smol-TTS"
 #     revision="main",
 #     max_workers=64,
 # )
-
 dataset = load_dataset("amuvarma/emilia-snac-merged-18m-smol-TTS", streaming=True)
-print(dataset)
-dataset_length = 17114684
-partition_size = 570489
-chunk_size = 8192
+print(dataset)  # Shows IterableDatasetDict
 
+# Access the 'train' split specifically
+train_dataset = dataset['train']
 
-dataset_length = len(dataset)
+# To get column names in a streaming dataset:
+# First, get a sample from the dataset to inspect its features
+sample = next(iter(train_dataset))
+columns = list(sample.keys())
+print(f"Columns: {columns}")
 
-dataset = dataset.remove_columns([col for col in dataset.column_names if col not in ['input_ids']])
+# Now you can filter columns
+columns_to_keep = ['input_ids']
+columns_to_remove = [col for col in columns if col not in columns_to_keep]
 
+# Remove unwanted columns
+filtered_dataset = train_dataset.remove_columns(columns_to_remove)
 
 num_partitions = dataset_length // partition_size
 print(f"Number of partitions: {num_partitions}")
