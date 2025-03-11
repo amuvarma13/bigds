@@ -15,7 +15,7 @@ dataset = load_dataset(dsn, streaming=True)
 train_dataset = dataset['train']
 
 # If starting from a later partition, we need to skip examples
-start_partition = 15  # Start from partition 15
+start_partition = 13  # Start from partition 15
 if start_partition > 0:
     examples_to_skip = start_partition * partition_size
     print(f"Skipping first {examples_to_skip} examples to start from partition {start_partition}")
