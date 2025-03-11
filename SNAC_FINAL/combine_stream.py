@@ -14,6 +14,15 @@ num_partitions = math.ceil(total_expected_examples / partition_size)
 dataset = load_dataset(dsn, streaming=True)
 train_dataset = dataset['train']
 
+# If starting from a later partition, we need to skip examples
+start_partition = 15  # Start from partition 15
+if start_partition > 0:
+    examples_to_skip = start_partition * partition_size
+    print(f"Skipping first {examples_to_skip} examples to start from partition {start_partition}")
+    # Skip examples by iterating through them but not processing them
+    for _ in islice(train_dataset, examples_to_skip):
+        pass
+
 # Filter to keep only input_ids
 # First, peek at a sample to get column names
 sample = next(iter(train_dataset))
@@ -24,8 +33,11 @@ filtered_dataset = train_dataset.remove_columns(columns_to_remove)
 print(f"Number of partitions to process: {num_partitions}")
 processed_partitions = []
 
-# Process dataset in partitions
-for i in range(num_partitions):
+# Set the starting partition index
+start_partition = 15  # Start from partition 15
+
+# Process dataset in partitions, starting from the specified index
+for i in range(start_partition, num_partitions):
     print(f"Processing partition {i+1}/{num_partitions}")
     start_time = time.time()
     
