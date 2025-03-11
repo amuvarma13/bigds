@@ -4,21 +4,20 @@ from itertools import chain
 import os
 import time
 
-account_name = "amuvarma"
-dsn = f"amuvarma/emilia-snac-merged-18m-smol-TTS"
+dsn = f"amuvarma/emilia-snac-merged-18m-TTS"
 
-# snapshot_download(
-#     repo_id=dsn,
-#     repo_type="dataset",
-#     revision="main",
-#     max_workers=64,
-# )
+snapshot_download(
+    repo_id=dsn,
+    repo_type="dataset",
+    revision="main",
+    max_workers=64,
+)
 
-dataset = load_dataset("amuvarma/emilia-snac-merged-18m-smol-TTS", streaming=True)
+dataset = load_dataset("amuvarma/emilia-snac-merged-18m-TTS", split='train')
 print(dataset)
 dataset_length = 17114684
 partition_size = 570489
-chunk_size = 8192
+chunk_size = 3072
 
 
 dataset_length = len(dataset)
@@ -54,4 +53,4 @@ for i in range(num_partitions):
 
 
 combined_dataset = concatenate_datasets(processed_partitions)
-combined_dataset.push_to_hub(f"amuvarma/emilia-snac-merged-18m-smol-TTS-8192")
+combined_dataset.push_to_hub(f"amuvarma/emilia-snac-merged-18m-TTS-3072")
