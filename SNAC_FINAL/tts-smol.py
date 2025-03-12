@@ -1,4 +1,4 @@
-dsn = "amuvarma/emilia-snac-merged-18m-smol"
+dsn = "amuvarma/brian-for-snac"
 
 from datasets import load_dataset
 import os
@@ -38,6 +38,7 @@ tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 
 
 num_proc = os.cpu_count() - 2
+
 
 
 #filter out all rows without codes list  
