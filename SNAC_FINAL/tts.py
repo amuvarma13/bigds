@@ -12,7 +12,7 @@ snapshot_download(
     max_workers=64,     
 )
 
-ds = load_dataset(dsn, split='split_8')
+ds = load_dataset(dsn, split='train')
 
 # #filter out rows where the source isnt zac
 # name_to_filter = "zac"
