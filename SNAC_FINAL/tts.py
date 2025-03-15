@@ -14,8 +14,12 @@ snapshot_download(
 
 ds = load_dataset(dsn, split='train')
 
+#filter out rows where the source isnt zac
+name_to_filter = "zac"
+ds = ds.filter(lambda x: x["source"] == name_to_filter, num_proc=64)
 
-push_name = f"{dsn}-TTS"
+
+push_name = f"{dsn}-TTS-{name_to_filter}"
 
 tokeniser_length = 128256
 start_of_text = 128000
