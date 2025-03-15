@@ -14,12 +14,12 @@ snapshot_download(
 
 ds = load_dataset(dsn, split='train')
 
-#filter out rows where the source isnt zac
-name_to_filter = "zac"
-ds = ds.filter(lambda x: x["source"] == name_to_filter, num_proc=64)
+# #filter out rows where the source isnt zac
+# name_to_filter = "zac"
+# ds = ds.filter(lambda x: x["source"] == name_to_filter, num_proc=64)
 
 
-push_name = f"{dsn}-TTS-{name_to_filter}"
+push_name = f"{dsn}-TTS"
 
 tokeniser_length = 128256
 start_of_text = 128000
@@ -51,7 +51,7 @@ ds = ds.filter(lambda x: len(x["codes_list"]) > 0, num_proc=64)
 
 
 def create_input_ids(example):
-    text_ids = tokenizer.encode(example["text"] + f'[{example["source"]}]',  add_special_tokens=True)
+    text_ids = tokenizer.encode(example["text"] + f' <{example["source"]}>',  add_special_tokens=True)
     text_ids.append(end_of_text)
     example["text_tokens"] = text_ids
     input_ids = (
