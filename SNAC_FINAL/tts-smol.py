@@ -1,4 +1,4 @@
-dsn = "amuvarma/brian-for-snac"
+dsn = "amuvarma/emilia-snac-merged-18m-smol"
 
 from datasets import load_dataset
 import os

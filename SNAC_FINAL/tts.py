@@ -1,4 +1,4 @@
-dsn = "amuvarma/emilia-snac-merged-18m"
+dsn = "amuvarma/voice-actors-13-full-audio-snacced"
 
 from datasets import load_dataset
 import os
@@ -47,7 +47,7 @@ ds = ds.filter(lambda x: len(x["codes_list"]) > 0, num_proc=64)
 
 
 def create_input_ids(example):
-    text_ids = tokenizer.encode(example["text"],  add_special_tokens=True)
+    text_ids = tokenizer.encode(example["text"] + f"[{example["source"]}]",  add_special_tokens=True)
     text_ids.append(end_of_text)
     example["text_tokens"] = text_ids
     input_ids = (
