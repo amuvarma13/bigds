@@ -1,4 +1,4 @@
-dsn = "amuvarma/voice-actors-13-splits-audio-snacced-jess"
+dsn = "amuvarma/voice-actors-13-splits-audio-snacced-jess-16k"
 
 from datasets import load_dataset
 import os
