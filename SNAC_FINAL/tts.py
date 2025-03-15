@@ -1,4 +1,4 @@
-dsn = "amuvarma/voice-actors-13-splits-audio-snacced"
+dsn = "amuvarma/voice-actors-13-splits-audio-snacced-jess"
 
 from datasets import load_dataset
 import os
@@ -12,7 +12,7 @@ snapshot_download(
     max_workers=64,     
 )
 
-ds = load_dataset(dsn, split='split_10')
+ds = load_dataset(dsn, split='split_8')
 
 # #filter out rows where the source isnt zac
 # name_to_filter = "zac"
